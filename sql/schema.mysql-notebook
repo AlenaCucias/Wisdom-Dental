@@ -1,0 +1,183 @@
+{
+    "type": "MySQLNotebook",
+    "version": "1.0",
+    "caption": "Script",
+    "content": "CREATE DATABASE WisdomDental_db;\nUSE WisdomDental_db;\n\nCREATE TABLE Patients (\n    patient_id INT PRIMARY KEY AUTO_INCREMENT,\n    first_name VARCHAR(50) NOT NULL,\n    last_name VARCHAR(50) NOT NULL,\n    phone_number VARCHAR(15),\n    email VARCHAR(100) UNIQUE,\n    password CHAR(64),   \n    treatment_plan TEXT    \n);\n\nCREATE TABLE Staff (\n    staff_id INT PRIMARY KEY AUTO_INCREMENT,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(15),\n    password CHAR(64),\n    role ENUM('Dentist', 'Assistant', 'Receptionist', 'Admin'),\n    hours_worked INT\n);\n\nCREATE TABLE Admins (\n    admin_id INT PRIMARY KEY AUTO_INCREMENT,\n    staff_id INT,\n    first_name VARCHAR(50),\n    last_name VARCHAR(50),\n    email VARCHAR(100) UNIQUE,\n    phone_number VARCHAR(15),\n    password CHAR(64),\n    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id) ON DELETE CASCADE\n);\n\nCREATE TABLE Treatments (\n    treatment_id INT PRIMARY KEY AUTO_INCREMENT,\n    name VARCHAR(100) NOT NULL UNIQUE,\n    description TEXT,\n    cost DECIMAL(10, 2) NOT NULL\n);\n\nCREATE TABLE Appointments (\n    appointment_id INT PRIMARY KEY AUTO_INCREMENT,\n    patient_id INT,\n    treatment_id INT,\n    doctor_name VARCHAR(50),\n    appointment_date DATE,\n    appointment_time TIME,\n    notes TEXT,\n    booked BOOLEAN,\n    paid BOOLEAN DEFAULT FALSE,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE,\n    FOREIGN KEY (treatment_id) REFERENCES Treatments(treatment_id) ON DELETE SET NULL\n);\n\nCREATE TABLE Payments (\n    payment_id INT PRIMARY KEY AUTO_INCREMENT,\n    patient_id INT,\n    appointment_id INT,\n    amount DECIMAL(10, 2) NOT NULL,\n    payment_method ENUM('Credit Card', 'Debit Card', 'Cash', 'Insurance') DEFAULT 'Cash',\n    date DATE,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE,\n    FOREIGN KEY (appointment_id) REFERENCES Appointments(appointment_id) ON DELETE CASCADE\n);\n\nCREATE TABLE Xrays (\n    xray_id INT PRIMARY KEY AUTO_INCREMENT,\n    patient_id INT,\n    image_path VARCHAR(1024),\n    date DATE,\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE\n);\n\nCREATE TABLE Feedback (\n    feedback_id INT PRIMARY KEY AUTO_INCREMENT,\n    name VARCHAR(50),\n    email VARCHAR(100),\n    comments TEXT,\n    role ENUM('Current Patient', 'Former Patient'),\n    rating INT CHECK (rating BETWEEN 1 AND 5),\n    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+    "options": {
+        "tabSize": 4,
+        "indentSize": 4,
+        "insertSpaces": true,
+        "defaultEOL": "LF",
+        "trimAutoWhitespace": true
+    },
+    "viewState": null,
+    "contexts": [
+        {
+            "state": {
+                "start": 1,
+                "end": 85,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 0,
+                            "index": 0,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 1,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 2,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 3,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 4,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 5,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 6,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        },
+                        {
+                            "type": 0,
+                            "index": 7,
+                            "content": "MySQL Error (1046): ClassicSession.run_sql: No database selected",
+                            "language": "ansi"
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": ""
+                    }
+                },
+                "currentHeight": 200,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 32
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 32,
+                            "length": 21
+                        },
+                        "contentStart": 33,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 53,
+                            "length": 263
+                        },
+                        "contentStart": 55,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 316,
+                            "length": 294
+                        },
+                        "contentStart": 318,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 610,
+                            "length": 300
+                        },
+                        "contentStart": 612,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 910,
+                            "length": 173
+                        },
+                        "contentStart": 912,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1083,
+                            "length": 442
+                        },
+                        "contentStart": 1085,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1525,
+                            "length": 431
+                        },
+                        "contentStart": 1527,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 1956,
+                            "length": 213
+                        },
+                        "contentStart": 1958,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 2169,
+                            "length": 293
+                        },
+                        "contentStart": 2171,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 2462,
+                            "length": 1
+                        },
+                        "contentStart": 2461,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        }
+    ]
+}
