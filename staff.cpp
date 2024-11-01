@@ -7,15 +7,12 @@ class Staff : public User {
         double hoursWorked;
 
     public:
-        Staff() {
+        Staff() : User() {
             this->salary = 0;
             this->hoursWorked = 0;
         }
 
-        Staff(std::string name, std::string email, std::string phone, double salary, double hoursWorked) {
-            this->name = name;
-            this->email = email;
-            this->phone = phone;
+        Staff(std::string name, std::string email, std::string phone, double salary, double hoursWorked) : User(name, email, phone) {
             this->salary = salary;
             this->hoursWorked = hoursWorked;
         }
