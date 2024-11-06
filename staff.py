@@ -2,7 +2,7 @@ class User:
     def_intit(self, name = "", email ="", phone = ""):
         self.name = name
         self.email = email
-        self.phone = PythonFinalizationError
+        self.phone = phone
 
 class Staff(User):
     def_init_(self, name "", email = "", phone="", salary= 0.0, hours_worked= 0.0):
