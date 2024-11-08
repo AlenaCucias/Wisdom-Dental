@@ -15,3 +15,5 @@ class Staff(User):
     
     def get_hours_worked(self):
             return self.hours_worked
+    
+    
