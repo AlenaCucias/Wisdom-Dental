@@ -1,40 +1,42 @@
+from User import User
+
 class Patient(User):
 
-    def __init__(self, amountDue, treatmentRecieved):
-        super().__init__(name, email, phone)
-        self.amountDue = amountDue
-        self.treatmentRecieved = treatmentRecieved
+    def __init__(self, name, email, phone_number, amount_due, treatment_recieved):
+        super().__init__(name, email, phone_number)
+        self.amount_due = amount_due
+        self.treatment_recieved = treatment_recieved
     
-    def getAmountDue(self):
-        return self.amountDue
+    def get_amount_due(self):
+        return self.amount_due
     
-    def getTreatmentRecieved(self):
-        return self.treatmentRecieved
+    def get_treatment_recieved(self):
+        return self.treatment_recieved
     
-    def setTreatmentRecieved(self, treatmentRecieved):
-        self.treatmentRecieved = treatmentRecieved
+    def set_treatment_recieved(self, treatment_recieved):
+        self.treatment_recieved = treatment_recieved
     
     # I put 'pass' as a placeholder
-    def scheduleAppointment():
+    def schedule_appointment():
         pass
 
-    def rescheduleAppointment():
+    def reschedule_appointment():
         pass
 
-    def cancelAppointment():
+    def cancel_appointment():
         pass
 
-    def makePayment():
+    def make_payment():
         pass
 
-    def viewPaymentDetails():
+    def view_payment_details():
         pass
 
-    def viewDentalHistory():
+    def view_dental_history():
         pass
 
-    def viewTreatmentPlan():
+    def view_treatment_plan():
         pass
 
-    def viewXray():  
+    def view_Xray():  
         pass  

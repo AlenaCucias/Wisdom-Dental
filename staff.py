@@ -1,12 +1,8 @@
-class User: 
-    def_intit(self, name = "", email ="", phone = ""):
-        self.name = name
-        self.email = email
-        self.phone = phone
+from User import User
 
 class Staff(User):
-    def_init_(self, name "", email = "", phone="", salary= 0.0, hours_worked= 0.0):
-        super()._init_(name, email, phone)
+    def __init__(self, name, email, phone_number, salary, hours_worked):
+        super()._init_(name, email, phone_number)
         self.salary = salary
         self.hours_worked = hours_worked
     

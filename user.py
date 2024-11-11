@@ -1,18 +1,18 @@
 class User:
 
-    def __init__(self, name, email, phoneNumber):
+    def __init__(self, name, email, phone_number):
         self.name = name
         self.email = email
-        self.phoneNumber = phoneNumber
+        self.phone_number = phone_number
 
-    def getName(self):
+    def get_name(self):
         return self.name
     
-    def getEmail(self):
+    def get_email(self):
         return self.email
     
-    def getPhoneNumber(self):
-        return self.phoneNumber
+    def get_phone_number(self):
+        return self.phone_number
     
     # I put 'pass' as a placeholder 
     def signup():
