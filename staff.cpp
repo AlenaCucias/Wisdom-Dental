@@ -1,5 +1,6 @@
 #include <string>
 #include "user.cpp"
+using namespace std;
 
 class Staff : public User {
     private:
@@ -12,7 +13,7 @@ class Staff : public User {
             this->hoursWorked = 0;
         }
 
-        Staff(std::string name, std::string email, std::string phone, double salary, double hoursWorked) : User(name, email, phone) {
+        Staff(string name, string email, string phone, double salary, double hoursWorked) : User(name, email, phone) {
             this->salary = salary;
             this->hoursWorked = hoursWorked;
         }

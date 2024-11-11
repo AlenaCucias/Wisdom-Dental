@@ -1,10 +1,11 @@
 #include <string>
+using namespace std;
 
 class User {
-    public: 
-        std::string name;
-        std::string email;
-        std::string phone;
+    protected: 
+        string name;
+        string email;
+        string phone;
 
     
     public:
@@ -14,21 +15,21 @@ class User {
             this->phone = "";
         }
 
-        User(std::string name, std::string email, std::string phone) {
+        User(string name, string email, string phone) {
             this->name = name;
             this->email = email;
             this->phone = phone;
         }
 
-        std::string getName() {
+        string getName() {
             return this->name;
         }
 
-        std::string getEmail() {
+        string getEmail() {
             return email;
         }
 
-        std::string getPhone() {
+        string getPhone() {
             return phone;
         }
 
