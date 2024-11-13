@@ -1,8 +1,8 @@
-from User import User
+from user import User
 
 class Staff(User):
     def __init__(self, name, email, phone_number, salary, hours_worked):
-        super()._init_(name, email, phone_number)
+        super().__init__(name, email, phone_number)
         self.salary = salary
         self.hours_worked = hours_worked
     
