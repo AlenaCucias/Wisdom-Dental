@@ -710,4 +710,220 @@
   flex: 0 0 auto !important;
   margin-right: -74.00px !important;
 }
-/*feedback page */
+/* feedback page END */
+
+
+/* This section is for the Admin Page (CSS) */
+.admin-page {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.admin-page .div {
+  background-color: #ffffff;
+  height: 1142px;
+  overflow: hidden;
+  position: relative;
+  width: 1366px;
+}
+
+
+.admin-page .title {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 250px;
+  letter-spacing: 0;
+  line-height: 36px;
+  position: absolute;
+  top: 183px;
+  white-space: nowrap;
+}
+
+
+.admin-page .description {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 250px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 254px;
+  white-space: nowrap;
+}
+
+
+.admin-page .rectangle {
+  background-color: #7d9db6;
+  border-radius: 50px;
+  height: 30px;
+  left: 1291px;
+  position: absolute;
+  top: -385px;
+  width: 83px;
+}
+
+
+.admin-page .group {
+  height: 106px;
+  left: 332px;
+  position: absolute;
+  top: 573px;
+  width: 977px;
+}
+
+
+.admin-page .img {
+  height: 106px;
+  left: 332px;
+  position: absolute;
+  top: 769px;
+  width: 977px;
+}
+
+
+.admin-page .group-wrapper {
+  box-shadow: 0px 4px 4px #00000040;
+  height: 98px;
+  left: 336px;
+  position: absolute;
+  top: 377px;
+  width: 969px;
+}
+
+
+.admin-page .overlap-group-wrapper {
+  height: 98px;
+  width: 971px;
+}
+
+
+.admin-page .overlap-group {
+  background-color: #839cb4;
+  border-radius: 25px;
+  height: 98px;
+  position: relative;
+  width: 969px;
+}
+
+
+.admin-page .text-wrapper {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  left: 382px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 37px;
+  white-space: nowrap;
+}
+
+
+.admin-page .overlap {
+  background-color: #7d9db6;
+  height: 1142px;
+  left: 0;
+  position: absolute;
+  top: 2px;
+  width: 220px;
+}
+
+
+.admin-page .group-2 {
+  height: 183px;
+  left: 59px;
+  position: absolute;
+  top: 161px;
+  width: 104px;
+}
+
+
+.admin-page .label-normal {
+  align-items: center;
+  background-color: #d8d8d880;
+  border: 0.5px solid;
+  border-color: #0000001a;
+  border-radius: 2px;
+  display: inline-flex;
+  gap: 2px;
+  justify-content: center;
+  left: 29px;
+  overflow: hidden;
+  padding: 2px 4px;
+  position: absolute;
+  top: 163px;
+}
+
+
+.admin-page .label-text {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 16px;
+  margin-top: -0.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+
+.admin-page .title-2 {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  top: 116px;
+  white-space: nowrap;
+}
+
+
+.admin-page .avatar {
+  background-color: #d8d8d880;
+  border-radius: 50px;
+  height: 100px;
+  left: 2px;
+  position: absolute;
+  top: 0;
+  width: 100px;
+}
+
+
+.admin-page .email-johndoe-gmail {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 17px;
+  letter-spacing: 0;
+  line-height: 30px;
+  position: absolute;
+  top: 399px;
+  width: 191px;
+}
+
+
+.admin-page .span {
+  font-weight: 700;
+}
+
+
+.admin-page .text-wrapper-2 {
+  font-family: "Roboto-Regular", Helvetica;
+}
+/* This is the END of the ADMIN PAGE (CSS) */
+
