@@ -35,7 +35,7 @@ const HomePage = () => {
             </p>
           </Row>
           <Row>
-            <Link to='/login'>
+            <Link to='/login' className='text-start'>
               <button className="primary-wrapper btn rounded shadow text-start">
                 <div className="primary">
                   <div className="title-2">Book An Appointment</div>
