@@ -5,6 +5,7 @@ import smile from "../components/homeSmile.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Core React component
 import { faBookmark, faStar } from '@fortawesome/free-regular-svg-icons'; // Specific icon
 import { faFileWaveform } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 
 
@@ -89,7 +90,7 @@ const HomePage = () => {
                   <div className="item">
                     <div className="frame-2">
                       <div className="d-flex justify-content-center pt-3">
-                        <div className="size-48-instance"><FontAwesomeIcon icon={faStar} size='4x' /></div>
+                        <div className=""><FontAwesomeIcon icon={faStar} size='4x' /></div>
                       </div>
                     </div>
                     <div className="frame-3">
@@ -113,7 +114,9 @@ const HomePage = () => {
       </Row>
       <div className="div-wrapper">
         <div className="rounded shadow">
-          <button type='button' className='btn shadow rounded btn-lg title-wrapper title-5'>Learn More About Us!</button>
+          <Link to="/feedback">
+            <button type='button' className='btn shadow rounded btn-lg title-wrapper title-5'>Learn More About Us!</button>
+          </Link>
         </div>
       </div>
     </div>
