@@ -1,4 +1,4 @@
-from patient import Patient 
+from Patient import Patient 
 from staff import Staff
 from appointment import Appointment
 
