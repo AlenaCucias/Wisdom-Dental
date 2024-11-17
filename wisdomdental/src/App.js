@@ -1,6 +1,6 @@
 import HomePage from './Pages/HomePage';
 import Header from './components/Header';
-import FeedbackPage from './compents/FeedbackPage';
+//import FeedbackPage from './FeedbackPageCopy';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 

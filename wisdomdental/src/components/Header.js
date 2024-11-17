@@ -1,5 +1,6 @@
 import React from 'react'
-import { Navbar, NavbarBrand, Container, NavItem, NavLink, Nav } from 'reactstrap'
+import { Navbar, NavbarBrand, Container, NavItem, NavLink, Nav, NavbarToggler, Collapse } from 'reactstrap'
+import {Link} from 'react-router-dom';
 import WisdomLogo from './logo.png';
 
 const Header = () => {
