@@ -21,7 +21,7 @@ const Header = () => {
                           </NavLink>
                         </NavItem>
                         <NavItem>
-                          <NavLink className='nav-link' to='/'>
+                          <NavLink className='nav-link' to='/feedback'>
                             <button type="button" className='btn shadow rounded roboto-regular' >Feedback/FAQs</button>
                           </NavLink>
                         </NavItem>
