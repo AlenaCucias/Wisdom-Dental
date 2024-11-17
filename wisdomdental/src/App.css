@@ -141,7 +141,7 @@
   line-height: 48px;
   position: relative;
 }
-.home-page .list {
+.home-page .list {  
   align-items: center;
   align-self: stretch;
   background-color: #ffffff;
@@ -151,7 +151,6 @@
   justify-content: center;
   overflow: hidden;
   width: 100%;
-
 } 
 .home-page .title-3 {
   align-self: stretch;
@@ -194,11 +193,11 @@
   width: 100px;
 }
 .home-page .size-48 {
-  height: 64px !important;
-  left: 18px !important;
-  position: absolute !important;
-  top: 18px !important;
-  width: 64px !important;
+    height: 64px !important;
+    left: 18px !important;
+    position: absolute !important;
+    top: 18px !important;
+    width: 64px !important;
 } 
 .home-page .frame-3 {
   align-items: flex-start;
@@ -274,3 +273,2006 @@
   letter-spacing: 0;
   line-height: 48px;
 }
+ /* Feedback Page*/
+ .feedback-page-copy {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.feedback-page-copy .frame-wrapper {
+  height: 1659px;
+  width: 1366px;
+}
+
+.feedback-page-copy .frame-2 {
+  align-items: flex-start;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 1850px;
+  padding: 0px 0px 200px;
+  position: relative;
+  width: 1366px;
+}
+
+.feedback-page-copy .navbar-design-2-final-for-now {
+  align-self: stretch !important;
+  width: 100% !important;
+}
+
+.feedback-page-copy .navbar-design-instance {
+  height: 1px !important;
+  left: 25px !important;
+  top: 35px !important;
+  width: 20px !important;
+}
+
+.feedback-page-copy .section {
+  gap: 40px;
+  height: 152px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px 170px;
+  position: relative;
+  width: 100%;
+}
+
+.feedback-page-copy .container {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 12px;
+  position: relative;
+}
+
+.feedback-page-copy .title-2 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 32px;
+  margin-left: -37.00px;
+  margin-right: -37.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 1100px;
+}
+
+.feedback-page-copy .vector {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 152px;
+  width: 1366px;
+}
+
+.feedback-page-copy .frame-3 {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  height: 893px;
+  position: relative;
+  width: 100%;
+}
+
+.feedback-page-copy .overlap-group-wrapper {
+  height: 893px;
+  position: relative;
+  width: 784px;
+}
+
+.feedback-page-copy .overlap-group-2 {
+  height: 893px;
+  left: 40px;
+  position: relative;
+  width: 705px;
+}
+
+.feedback-page-copy .rectangle {
+  background-color: #0909091f;
+  border-radius: 55.15px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 821px;
+  left: 0;
+  position: absolute;
+  top: 36px;
+  width: 705px;
+}
+
+.feedback-page-copy .list {
+  height: 893px;
+  left: 70px;
+  position: absolute;
+  top: 0;
+  width: 564px;
+}
+
+.feedback-page-copy .container-2 {
+  height: 106px;
+  left: 0;
+  position: absolute;
+  top: 73px;
+  width: 343px;
+}
+
+.feedback-page-copy .title-3 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 44.1px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 52.9px;
+  position: absolute;
+  top: -1px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .description {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 17.6px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 26.5px;
+  position: absolute;
+  top: 78px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .row {
+  height: 65px;
+  left: 0;
+  position: absolute;
+  top: 222px;
+  width: 564px;
+}
+
+.feedback-page-copy .input {
+  height: 65px;
+  position: relative;
+}
+
+.feedback-page-copy .title-4 {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 15.2px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: -1px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .textfield {
+  background-color: #ffffff;
+  border: 1.08px solid;
+  border-color: #0000001a;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 0;
+  position: absolute;
+  top: 26px;
+  width: 564px;
+}
+
+.feedback-page-copy .text {
+  color: #00000080;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15.2px;
+  font-weight: 400;
+  left: 13px;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .input-wrapper {
+  height: 65px;
+  left: 0;
+  position: absolute;
+  top: 331px;
+  width: 564px;
+}
+
+.feedback-page-copy .div-wrapper {
+  height: 65px;
+  left: 0;
+  position: absolute;
+  top: 440px;
+  width: 564px;
+}
+
+.feedback-page-copy .selection-wrapper {
+  height: 66px;
+  left: 0;
+  position: absolute;
+  top: 549px;
+  width: 564px;
+}
+
+.feedback-page-copy .selection {
+  height: 66px;
+  position: relative;
+}
+
+.feedback-page-copy .chip-group {
+  height: 39px;
+  left: 0;
+  position: absolute;
+  top: 26px;
+  width: 564px;
+}
+
+.feedback-page-copy .chip {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 278px;
+}
+
+.feedback-page-copy .text-2 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15.2px;
+  font-weight: 400;
+  left: 88px;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .chip-2 {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 286px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 278px;
+}
+
+.feedback-page-copy .row-2 {
+  height: 66px;
+  left: 0;
+  position: absolute;
+  top: 658px;
+  width: 564px;
+}
+
+.feedback-page-copy .chip-3 {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 69px;
+}
+
+.feedback-page-copy .text-3 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15.2px;
+  font-weight: 400;
+  left: 27px;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .chip-4 {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 78px;
+  position: absolute;
+  top: 0;
+  width: 69px;
+}
+
+.feedback-page-copy .text-4 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15.2px;
+  font-weight: 400;
+  left: 19px;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .chip-5 {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 156px;
+  position: absolute;
+  top: 0;
+  width: 69px;
+}
+
+.feedback-page-copy .text-5 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15.2px;
+  font-weight: 400;
+  left: 12px;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .chip-6 {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 234px;
+  position: absolute;
+  top: 0;
+  width: 78px;
+}
+
+.feedback-page-copy .text-6 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15.2px;
+  font-weight: 400;
+  left: 9px;
+  letter-spacing: 0;
+  line-height: 21.7px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .chip-7 {
+  background-color: #0000000d;
+  border-radius: 6.51px;
+  height: 39px;
+  left: 321px;
+  position: absolute;
+  top: 0;
+  width: 93px;
+}
+
+.feedback-page-copy .button-2 {
+  box-shadow: 0px 4px 4px #00000040;
+  height: 53px;
+  left: 0;
+  position: absolute;
+  top: 767px;
+  width: 534px;
+}
+
+.feedback-page-copy .seconday {
+  border: 1.08px solid;
+  border-color: #839cb4;
+  border-radius: 8.68px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 53px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 260px;
+}
+
+.feedback-page-copy .title-5 {
+  color: #839cb4;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 17.4px;
+  font-weight: 500;
+  left: 109px;
+  letter-spacing: 0;
+  line-height: 26.0px;
+  position: absolute;
+  top: 11px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .primary {
+  background-color: #839cb4;
+  border-radius: 8.68px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 53px;
+  left: 273px;
+  position: absolute;
+  top: 0;
+  width: 260px;
+}
+
+.feedback-page-copy .title-6 {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 17.4px;
+  font-weight: 500;
+  left: 102px;
+  letter-spacing: 0;
+  line-height: 26.0px;
+  position: absolute;
+  top: 12px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .frame-4 {
+  align-items: flex-end;
+  background-color: #ffffff;
+  border: 4.42px solid;
+  border-color: #7d9db6;
+  border-radius: 44.2px;
+  box-shadow: 0px 4px 4px #00000040;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  left: 800px;
+  overflow: hidden;
+  padding: 0px 41px 70px;
+  position: absolute;
+  top: 198px;
+  width: 529px;
+}
+
+.feedback-page-copy .reviews {
+  align-self: stretch;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.feedback-page-copy .container-3 {
+  height: 85px;
+  left: 0;
+  position: absolute;
+  top: 48px;
+  width: 281px;
+}
+
+.feedback-page-copy .title-7 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 35.4px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 42.4px;
+  position: absolute;
+  top: -1px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .p {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 14.1px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 21.2px;
+  position: absolute;
+  top: 63px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .img {
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 180px;
+  width: 282px;
+}
+
+.feedback-page-copy .card {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: #0000000d;
+  border-radius: 5.3px;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+  padding: 14px 20px;
+  position: relative;
+  width: 100%;
+}
+
+.feedback-page-copy .user {
+  align-self: stretch;
+  height: 28.29px;
+  position: relative;
+  width: 100%;
+}
+
+.feedback-page-copy .avatar {
+  height: 28px;
+  position: relative;
+  width: 471px;
+}
+
+.feedback-page-copy .avatar-2 {
+  background-color: #0000001a;
+  border-radius: 28.29px;
+  height: 28px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 28px;
+}
+
+.feedback-page-copy .title-wrapper {
+  height: 18px;
+  left: 35px;
+  position: absolute;
+  top: 5px;
+  width: 436px;
+}
+
+.feedback-page-copy .title-8 {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 12.4px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 17.7px;
+  position: absolute;
+  top: -1px;
+  white-space: nowrap;
+}
+
+.feedback-page-copy .title-9 {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 14.1px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 21.2px;
+  position: relative;
+}
+
+.feedback-page-copy .frame-5 {
+  height: 8.67px;
+  position: relative;
+  width: 51.51px;
+}
+
+.feedback-page-copy .FAQ-section {
+  align-items: center;
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+  left: 0;
+  padding: 60px 170px;
+  position: absolute;
+  top: 1210px;
+  width: 1366px;
+}
+
+.feedback-page-copy .container-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+  position: relative;
+}
+
+.feedback-page-copy .container-4 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.feedback-page-copy .FAQ-heading {
+  
+}
+
+.feedback-page-copy .accordion-instance {
+  flex: 0 0 auto !important;
+  margin-right: -74.00px !important;
+}
+/* feedback page END */
+
+
+/* This section is for the Admin Page (CSS) */
+.admin-page {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.admin-page .div {
+  background-color: #ffffff;
+  height: 1142px;
+  overflow: hidden;
+  position: relative;
+  width: 1366px;
+}
+
+
+.admin-page .title {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 250px;
+  letter-spacing: 0;
+  line-height: 36px;
+  position: absolute;
+  top: 183px;
+  white-space: nowrap;
+}
+
+
+.admin-page .description {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 250px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 254px;
+  white-space: nowrap;
+}
+
+
+.admin-page .rectangle {
+  background-color: #7d9db6;
+  border-radius: 50px;
+  height: 30px;
+  left: 1291px;
+  position: absolute;
+  top: -385px;
+  width: 83px;
+}
+
+
+.admin-page .group {
+  height: 106px;
+  left: 332px;
+  position: absolute;
+  top: 573px;
+  width: 977px;
+}
+
+
+.admin-page .img {
+  height: 106px;
+  left: 332px;
+  position: absolute;
+  top: 769px;
+  width: 977px;
+}
+
+
+.admin-page .group-wrapper {
+  box-shadow: 0px 4px 4px #00000040;
+  height: 98px;
+  left: 336px;
+  position: absolute;
+  top: 377px;
+  width: 969px;
+}
+
+
+.admin-page .overlap-group-wrapper {
+  height: 98px;
+  width: 971px;
+}
+
+
+.admin-page .overlap-group {
+  background-color: #839cb4;
+  border-radius: 25px;
+  height: 98px;
+  position: relative;
+  width: 969px;
+}
+
+
+.admin-page .text-wrapper {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  left: 382px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 37px;
+  white-space: nowrap;
+}
+
+
+.admin-page .overlap {
+  background-color: #7d9db6;
+  height: 1142px;
+  left: 0;
+  position: absolute;
+  top: 2px;
+  width: 220px;
+}
+
+
+.admin-page .group-2 {
+  height: 183px;
+  left: 59px;
+  position: absolute;
+  top: 161px;
+  width: 104px;
+}
+
+
+.admin-page .label-normal {
+  align-items: center;
+  background-color: #d8d8d880;
+  border: 0.5px solid;
+  border-color: #0000001a;
+  border-radius: 2px;
+  display: inline-flex;
+  gap: 2px;
+  justify-content: center;
+  left: 29px;
+  overflow: hidden;
+  padding: 2px 4px;
+  position: absolute;
+  top: 163px;
+}
+
+
+.admin-page .label-text {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 16px;
+  margin-top: -0.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+
+.admin-page .title-2 {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  top: 116px;
+  white-space: nowrap;
+}
+
+
+.admin-page .avatar {
+  background-color: #d8d8d880;
+  border-radius: 50px;
+  height: 100px;
+  left: 2px;
+  position: absolute;
+  top: 0;
+  width: 100px;
+}
+
+
+.admin-page .email-johndoe-gmail {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 17px;
+  letter-spacing: 0;
+  line-height: 30px;
+  position: absolute;
+  top: 399px;
+  width: 191px;
+}
+
+
+.admin-page .span {
+  font-weight: 700;
+}
+
+
+.admin-page .text-wrapper-2 {
+  font-family: "Roboto-Regular", Helvetica;
+}
+/* This is the END of the ADMIN PAGE (CSS) */
+
+/* Information Page START */
+
+.information-page {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  min-height: 3047px;
+  min-width: 1366px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .page {
+  align-items: center;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 1366px;
+}
+
+.information-page .navbar-design-2-final-for-now {
+  align-self: stretch !important;
+  width: 100% !important;
+}
+
+.information-page .navbar-design-instance {
+  height: 1px !important;
+  left: 25px !important;
+  top: 35px !important;
+  width: 20px !important;
+}
+
+.information-page .section {
+  align-items: center;
+  align-self: stretch;
+  background-color: #ffffff;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 40px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px 170px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .container {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 12px;
+  position: relative;
+}
+
+.information-page .text-wrapper {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 32px;
+  margin-left: -37.00px;
+  margin-right: -37.00px;
+  margin-top: -1.00px;
+  position: relative;
+  width: 1100px;
+}
+
+.information-page .vector {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 152px;
+  width: 1366px;
+}
+
+.information-page .div {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 60px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px 170px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .container-2 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  justify-content: center;
+  margin-left: -37.00px;
+  margin-right: -37.00px;
+  position: relative;
+  width: 1100px;
+}
+
+.information-page .container-3 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .title-2 {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 48px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.information-page .at-wisdom-dental {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 26px;
+  position: relative;
+}
+
+.information-page .list {
+  padding: 20px 0px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .row {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 40px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .article {
+  align-items: flex-start;
+  border: 1px solid;
+  border-color: #0000001a;
+  border-radius: 6px;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  gap: 16px;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+}
+
+.information-page .version {
+  height: 100px;
+  object-fit: cover;
+  position: relative;
+  width: 100px;
+}
+
+.information-page .frame-2 {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 8px;
+  position: relative;
+}
+
+.information-page .title-3 {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 28px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.information-page .p {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: relative;
+}
+
+.information-page .image-container {
+  align-items: flex-start;
+  display: flex;
+}
+  
+.information-page .img {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 976px;
+  width: 1366px;
+}
+
+.information-page .container-4 {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  height: 696px;
+  justify-content: center;
+  margin-left: -37.00px;
+  margin-right: -37.00px;
+  position: relative;
+  width: 1100px;
+}
+
+.information-page .avatar {
+  background-color: #d8d8d880;
+  border-radius: 50px;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+  width: 100px;
+}
+
+.information-page .professional-photo {
+  height: 165px;
+  left: -10px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 112px;
+}
+
+.information-page .title-4 {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 32px;
+  margin-top: -1.00px;
+  position: relative;
+}
+
+.information-page .selection {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .label-normal {
+  align-items: center;
+  background-color: #d8d8d880;
+  border: 0.5px solid;
+  border-color: #0000001a;
+  border-radius: 2px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2px 4px;
+  position: relative;
+}
+
+.information-page .label-text {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 16px;
+  margin-top: -0.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.information-page .icon {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: #000000;
+  display: -webkit-box;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 62.5px;
+  font-weight: 400;
+  height: 119px;
+  left: -10px;
+  letter-spacing: 0;
+  line-height: 100px;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  text-overflow: ellipsis;
+  top: -11px;
+  white-space: nowrap;
+  width: 120px;
+}
+
+.information-page .description {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.32px;
+  line-height: normal;
+  position: relative;
+}
+
+.information-page .icon-2 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: #000000;
+  display: -webkit-box;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 62.5px;
+  font-weight: 400;
+  height: 120px;
+  left: -10px;
+  letter-spacing: 0;
+  line-height: 100px;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  text-overflow: ellipsis;
+  top: -11px;
+  white-space: nowrap;
+  width: 120px;
+}
+
+.information-page .vector-2 {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 816px;
+  width: 1366px;
+}
+
+.information-page .container-5 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-left: -37.00px;
+  margin-right: -37.00px;
+  position: relative;
+  width: 1100px;
+}
+
+.information-page .title-5 {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 48px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+}
+
+.information-page .primary-wrapper {
+  all: unset;
+  align-items: center;
+  align-self: stretch;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 55px;
+  justify-content: center;
+  padding: 0px 91px;
+  position: relative;
+  width: 100%;
+}
+
+.information-page .primary {
+  align-items: center;
+  background-color: #7d9db6;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px #00000040;
+  display: flex;
+  flex-direction: column;
+  height: 42px;
+  justify-content: center;
+  padding: 12px;
+  position: relative;
+  width: 240px;
+}
+
+.information-page .title-6 {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 24px;
+  margin-bottom: -2.00px;
+  margin-top: -4.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.information-page .vector-3 {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 247px;
+  width: 1366px;
+}
+
+.information-page .container-6 {
+  height: 212px;
+  margin-left: -37.00px;
+  margin-right: -37.00px;
+  position: relative;
+  width: 1100px;
+}
+
+.information-page .title-7 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 40px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  top: -1px;
+  white-space: nowrap;
+}
+
+.information-page .article-wrapper {
+  height: 137px;
+  left: 0;
+  position: absolute;
+  top: 72px;
+  width: 550px;
+}
+
+.information-page .article-2 {
+  border: 1px solid;
+  border-color: #0000001a;
+  border-radius: 6px;
+  height: 132px;
+  position: relative;
+  width: 537px;
+}
+
+.information-page .image-container-2 {
+  height: 100px;
+  left: 16px;
+  position: absolute;
+  top: 16px;
+  width: 100px;
+}
+
+.information-page .overlap {
+  height: 138px;
+  left: 132px;
+  position: absolute;
+  top: 0;
+  width: 952px;
+}
+
+.information-page .frame-3 {
+  height: 60px;
+  left: 0;
+  position: absolute;
+  top: 16px;
+  width: 952px;
+}
+
+.information-page .title-8 {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  position: absolute;
+  top: -1px;
+  white-space: nowrap;
+}
+
+.information-page .subtitle {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 35px;
+  white-space: nowrap;
+}
+
+.information-page .div-wrapper {
+  height: 138px;
+  left: 418px;
+  position: absolute;
+  top: 0;
+  width: 308px;
+}
+
+.information-page .phone-call {
+  height: 80px !important;
+  left: 10px !important;
+  position: absolute !important;
+  top: 10px !important;
+  width: 80px !important;
+}
+
+.information-page .overlap-group-wrapper {
+  height: 60px;
+  left: 132px;
+  position: absolute;
+  top: 16px;
+  width: 952px;
+}
+
+.information-page .overlap-group-2 {
+  height: 60px;
+  position: relative;
+  top: -1px;
+  width: 128px;
+}
+
+.information-page .title-9 {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 28px;
+  position: absolute;
+  top: 0;
+}
+
+.information-page .subtitle-2 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 36px;
+  white-space: nowrap;
+}
+
+.information-page .vector-4 {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 332px;
+  width: 1366px;
+}
+
+.information-page .map-container {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  height: 300px;
+  padding: 4px 0px;
+  position: relative;
+}
+
+.information-page .image {
+  align-self: stretch;
+  background-color: #0000000d;
+  border-radius: 6px;
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+
+.information-page .overlap-group-3 {
+  background-image: url(./image-2.svg);
+  background-size: 100% 100%;
+  height: 1100px;
+  left: -37px;
+  position: relative;
+  top: -404px;
+  width: 1100px;
+}
+
+.information-page .title-10 {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  left: 53px;
+  letter-spacing: 0;
+  line-height: 22px;
+  position: absolute;
+  text-align: center;
+  top: 557px;
+  width: 994px;
+}
+
+.information-page .ic-location {
+  height: 24px;
+  left: 538px;
+  position: absolute;
+  top: 526px;
+  width: 24px;
+}
+
+.information-page .vector-5 {
+  height: 1px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 420px;
+  width: 1366px;
+}
+
+/* Information Page END */
+
+/* Patient Dashboard Start */
+.patient-dashboard {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.patient-dashboard .div {
+  background-color: #ffffff;
+  height: 1246px;
+  overflow: hidden;
+  position: relative;
+  width: 1366px;
+}
+
+.patient-dashboard .group {
+  height: 1142px;
+  left: 0;
+  position: absolute;
+  top: 104px;
+  width: 1440px;
+}
+
+.patient-dashboard .div-2 {
+  background-color: #ffffff;
+  height: 1142px;
+  position: relative;
+}
+
+.patient-dashboard .text-wrapper {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 257px;
+  letter-spacing: 0;
+  line-height: 36px;
+  position: absolute;
+  top: 55px;
+  white-space: nowrap;
+}
+
+.patient-dashboard .description {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 257px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 119px;
+  white-space: nowrap;
+}
+
+.patient-dashboard .overlap {
+  background-image: url(./group-3.png);
+  background-size: 100% 100%;
+  height: 1160px;
+  left: 0;
+  position: absolute;
+  top: -18px;
+  width: 220px;
+}
+
+.patient-dashboard .email-johndoe-gmail {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 14px;
+  letter-spacing: 0;
+  line-height: 30px;
+  position: absolute;
+  top: 276px;
+  width: 191px;
+}
+
+.patient-dashboard .span {
+  font-weight: 700;
+}
+
+.patient-dashboard .text-wrapper-2 {
+  font-family: "Roboto-Regular", Helvetica;
+}
+
+.patient-dashboard .group-wrapper {
+  height: 184px;
+  left: 57px;
+  position: absolute;
+  top: 55px;
+  width: 102px;
+}
+
+.patient-dashboard .group-2 {
+  height: 184px;
+  position: relative;
+  width: 104px;
+}
+
+.patient-dashboard .label-normal {
+  align-items: center;
+  background-color: #d8d8d880;
+  border: 0.5px solid;
+  border-color: #0000001a;
+  border-radius: 2px;
+  display: inline-flex;
+  gap: 2px;
+  justify-content: center;
+  left: 29px;
+  overflow: hidden;
+  padding: 2px 4px;
+  position: absolute;
+  top: 164px;
+}
+
+.patient-dashboard .label-text {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 16px;
+  margin-top: -0.50px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.patient-dashboard .title-2 {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  top: 116px;
+  white-space: nowrap;
+}
+
+.patient-dashboard .avatar {
+  background-color: #d8d8d880;
+  border-radius: 50px;
+  height: 100px;
+  left: 2px;
+  position: absolute;
+  top: 0;
+  width: 100px;
+}
+
+.patient-dashboard .overlap-2 {
+  height: 361px;
+  left: 294px;
+  position: absolute;
+  top: 205px;
+  width: 454px;
+}
+
+.patient-dashboard .overlap-group-wrapper {
+  box-shadow: 0px 4px 4px #00000040;
+  height: 269px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 454px;
+}
+
+.patient-dashboard .overlap-group-2 {
+  height: 269px;
+  position: relative;
+  width: 452px;
+}
+
+.patient-dashboard .rectangle {
+  height: 260px;
+  left: 11px;
+  position: absolute;
+  top: 0;
+  width: 430px;
+}
+
+.patient-dashboard .title-3 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 74.6px;
+  position: absolute;
+  text-align: center;
+  top: 10px;
+  width: 452px;
+}
+
+.patient-dashboard .list {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  height: 165px;
+  justify-content: center;
+  left: 32px;
+  position: absolute;
+  top: 104px;
+  width: 388px;
+}
+
+.patient-dashboard .row {
+  align-items: flex-start;
+  display: flex;
+  gap: 40px;
+  height: 208px;
+  margin-bottom: -21.50px;
+  margin-top: -21.50px;
+  position: relative;
+  width: 360px;
+}
+
+.patient-dashboard .item {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 20px;
+  justify-content: center;
+  padding: 12px 0px;
+  position: relative;
+}
+
+.patient-dashboard .frame-2 {
+}
+
+.patient-dashboard .p {
+}
+
+
+.patient-dashboard .subtitle {
+}
+
+
+.patient-dashboard .primary {
+  align-items: center;
+  background-color: #839cb4;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px #00000040;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 106px;
+  padding: 12px;
+  position: absolute;
+  top: 313px;
+  width: 240px;
+}
+
+.patient-dashboard .title-4 {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 24px;
+  margin-top: -1.00px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.patient-dashboard .group-3 {
+  height: 116px;
+  left: 113px;
+  position: absolute;
+  top: 203px;
+  width: 330px;
+}
+
+.patient-dashboard .overlap-3 {
+  background-color: #e2e2e2;
+  border-radius: 50px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 260px;
+  left: 834px;
+  position: absolute;
+  top: 201px;
+  width: 430px;
+}
+
+.patient-dashboard .title-5 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 700;
+  left: 157px;
+  letter-spacing: 0;
+  line-height: 74.6px;
+  position: absolute;
+  text-align: center;
+  top: 19px;
+  white-space: nowrap;
+}
+
+.patient-dashboard .metric-wrapper {
+  align-items: flex-start;
+  display: flex;
+  gap: 20px;
+  height: 89px;
+  left: 115px;
+  position: absolute;
+  top: 95px;
+  width: 204px;
+}
+
+.patient-dashboard .metric {
+  align-items: flex-start;
+  border: 1px solid;
+  border-color: #0000001a;
+  border-radius: 6px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 4px;
+  height: 91px;
+  margin-bottom: -2.00px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+}
+
+.patient-dashboard .title-6 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: #00000080;
+  display: -webkit-box;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 24px;
+  margin-top: -1.00px;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.patient-dashboard .data {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  color: #000000;
+  display: -webkit-box;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 36px;
+  margin-bottom: -4.00px;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.patient-dashboard .text-wrapper-3 {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 15px;
+  font-weight: 400;
+  left: 177px;
+  letter-spacing: 0;
+  line-height: 28px;
+  position: absolute;
+  top: 206px;
+  white-space: nowrap;
+}
+
+.patient-dashboard .overlap-wrapper {
+  height: 98px;
+  left: 308px;
+  position: absolute;
+  top: 944px;
+  width: 971px;
+}
+
+.patient-dashboard .div-wrapper {
+  background-color: #839cb4;
+  border-radius: 25px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 98px;
+  position: relative;
+  width: 969px;
+}
+
+.patient-dashboard .text-wrapper-4 {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  left: 379px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 40px;
+  white-space: nowrap;
+  width: 211px;
+}
+
+.patient-dashboard .group-4 {
+  box-shadow: 0px 4px 4px #00000040;
+  height: 98px;
+  left: 308px;
+  position: absolute;
+  top: 622px;
+  width: 969px;
+}
+
+.patient-dashboard .group-5 {
+  height: 98px;
+  width: 971px;
+}
+
+.patient-dashboard .overlap-group-3 {
+  background-color: #839cb4;
+  border-radius: 25px;
+  height: 98px;
+  position: relative;
+  width: 969px;
+}
+
+.patient-dashboard .text-wrapper-5 {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  left: 373px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 37px;
+  white-space: nowrap;
+}
+
+.patient-dashboard .img {
+  height: 106px;
+  left: 304px;
+  position: absolute;
+  top: 783px;
+  width: 977px;
+}
+
+.patient-dashboard .primary-wrapper {
+  all: unset;
+  align-items: flex-start;
+  background-color: #7d9db6;
+  border-radius: 8px;
+  box-shadow: 0px 4px 4px #00000040;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  left: 929px;
+  overflow: hidden;
+  position: absolute;
+  top: 518px;
+  width: 240px;
+}
+
+.patient-dashboard .title-wrapper {
+  align-items: center;
+  align-self: stretch;
+  background-color: #839cb4;
+  border-radius: 8px;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px;
+  position: relative;
+  width: 100%;
+}
+
+.patient-dashboard .navbar-design-2-final-for-now {
+  border-color: unset !important;
+  left: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+}
+
+/* Patient Dashboard End */
