@@ -35,11 +35,14 @@ const HomePage = () => {
             </p>
           </Row>
           <Row>
-            <button className="primary-wrapper btn rounded shadow text-start">
-              <div className="primary">
-                <div className="title-2">Book An Appointment</div>
-              </div>
-            </button>
+            <Link to='/login'>
+              <button className="primary-wrapper btn rounded shadow text-start">
+                <div className="primary">
+                  <div className="title-2">Book An Appointment</div>
+                </div>
+              </button>
+            </Link>
+            
           </Row>
         </Col>
       </Row>
