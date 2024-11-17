@@ -142,12 +142,4 @@ export const PatientDashboard = () => {
   );
 };
 
-import React from 'react'
-
-const patientDashboard = () => {
-  return (
-    <div>patientDashboard</div>
-  )
-}
-
 export default PatientDashboard
