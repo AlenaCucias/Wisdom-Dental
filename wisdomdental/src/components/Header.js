@@ -1,6 +1,8 @@
 import React from 'react'
-import { Navbar, NavbarBrand, Container, NavItem, NavLink, Nav } from 'reactstrap'
+import { Navbar, NavbarBrand, Container, NavItem, Nav } from 'reactstrap'
 import WisdomLogo from './logo.png';
+import { NavLink } from 'react-router-dom';
+
 
 const Header = () => {
   return (
@@ -9,22 +11,22 @@ const Header = () => {
                 <Container>
                     <Nav>
                         <NavItem>
-                          <NavLink>
+                          <NavLink className='nav-link' to='/'>
                             <button type="button" className='btn shadow rounded roboto-regular' >Home</button>
                           </NavLink>
                         </NavItem>
                         <NavItem>
-                          <NavLink>
+                          <NavLink className='nav-link' to='/'>
                             <button type="button" className='btn shadow rounded roboto-regular' >About Us</button>
                           </NavLink>
                         </NavItem>
                         <NavItem>
-                          <NavLink>
+                          <NavLink className='nav-link' to='/'>
                             <button type="button" className='btn shadow rounded roboto-regular' >Feedback/FAQs</button>
                           </NavLink>
                         </NavItem>
                         <NavItem>
-                          <NavLink>
+                          <NavLink className='nav-link' to='/login'>
                             <button type="button" className='btn shadow rounded roboto-regular' >Sign In</button>
                           </NavLink>
                         </NavItem>
