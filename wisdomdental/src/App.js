@@ -4,6 +4,11 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './Pages/LoginPage';
 import FeedbackPage from './Pages/FeedbackPage';
+import CreateAccountPage from './Pages/CreateAccountPage';
+import PatientDashboard from './Pages/PatientDashboard';
+import StaffDashboard from './Pages/StaffDashboard';
+import Admin from './Pages/Admin';
+import AboutPage from './Pages/AboutPage';
 
 function App() {
   return (
@@ -13,6 +18,11 @@ function App() {
           <Route path = '/' element={<HomePage />} />
           <Route path='login' element={<LoginPage />} />
           <Route path='feedback' element={<FeedbackPage />} />
+          <Route path='createAccount' element={<CreateAccountPage />} />
+          <Route path='patientDashboard' element={<PatientDashboard />} />
+          <Route path='staffDashboard' element={<StaffDashboard />} />
+          <Route path='adminDashboard' element={<Admin />} />
+          <Route path='about' element={<AboutPage />} />
         </Routes>
     </div>
   );
