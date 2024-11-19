@@ -36,6 +36,7 @@
     transform: rotate(360deg);
   }
 }
+/*Navbar*/
 .navbar-brand {
   max-width: 4rem;
   margin-right: 2rem;
@@ -52,6 +53,8 @@
   margin-bottom: 2rem;
   min-height: 4rem;
 }
+/*navbar end*/
+/*whole project*/
 .roboto-regular {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
@@ -66,6 +69,12 @@
   color: white !important;
   background-color: #839cb4 !important;
 }
+.btn:hover {
+  background-color: #4c6379 !important;
+  color: white;
+}
+/*whole project end*/
+/*homepage*/
 .home-page {
   display: flex;
   flex-direction: column;
@@ -273,6 +282,7 @@
   letter-spacing: 0;
   line-height: 48px;
 }
+/*end homepage*/
  /* Feedback Page*/
  .feedback-page-copy {
   background-color: transparent;
@@ -2276,3 +2286,120 @@
 }
 
 /* Patient Dashboard End */
+
+/*login page*/
+.login-page {
+align-items: center;
+background-color: #ffffff;
+display: flex;
+flex-direction: column;
+height: 1138px;
+position: relative;
+}
+.login-page .section {
+  align-items: center;
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+  left: 0;
+  overflow: hidden;
+  padding: 73px 170px;
+  top: 120px;
+  width: 1366px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.login-page .title-3 {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 48px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+  width: 700px;
+}
+.login-page .description {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: relative;
+  text-align: center;
+}
+
+
+  .login-page .seconday {
+  align-items: center;
+  background-color: #839cb4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px;
+  position: relative;
+  width: 200px;
+}
+.login-page .seconday:hover {
+  background-color: #4c6379 !important;
+  color: white;
+}
+.login-page .container-2 {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 15px;
+  position: relative;
+}
+.login-page .form {
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  padding: 73px 170px;
+  top: 497px;
+}
+.login-page .container {
+  flex: 1;
+  flex-grow: 1;
+  position: relative;
+}
+.login-page .title {
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 40px;
+  font-weight: 700;
+  left: 0px;
+  letter-spacing: 0;
+  line-height: 48px;
+  position: absolute;
+  width: 483px;
+  align-items: start;
+  justify-content: center;
+}
+  .login-page .leftSplit {
+    height: 50%;
+    width: 40%;
+    z-index: 1;
+    top: 0;
+    padding-top: 20px;
+  }
+  .login-page .left {
+    left: 0;
+  }
+  .login-page .rightSplit {
+    margin-left: 500px;
+    margin-top: -4rem !important;
+    width: 50%;
+  }
+  .login-page .faint-line {
+    border: 0;
+    border-top: 1px solid rgba(185, 193, 206, 0.541);
+    height: 10px;
+    width: 95%
+  }
+
+/*end login page*/

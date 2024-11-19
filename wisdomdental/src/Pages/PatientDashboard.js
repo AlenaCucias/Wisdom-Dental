@@ -1,8 +1,8 @@
 import React from "react";
-import { NavbarDesign } from "./NavbarDesign";
-import group19 from "./group-19.png";
-import rectangle4138 from "./rectangle-4138.svg";
-import "./style.css";
+// import { NavbarDesign } from "./NavbarDesign";
+// import group19 from "./group-19.png";
+// import rectangle4138 from "./rectangle-4138.svg";
+// import "./style.css";
 
 export const PatientDashboard = () => {
   return (
@@ -49,11 +49,11 @@ export const PatientDashboard = () => {
             <div className="overlap-2">
               <div className="overlap-group-wrapper">
                 <div className="overlap-group-2">
-                  <img
+                  {/* <img
                     className="rectangle"
                     alt="Rectangle"
                     src={rectangle4138}
-                  />
+                  /> */}
 
                   <div className="title-3">Upcoming Appointments</div>
 
@@ -121,7 +121,7 @@ export const PatientDashboard = () => {
               </div>
             </div>
 
-            <img className="img" alt="Group" src={group19} />
+            {/* <img className="img" alt="Group" src={group19} /> */}
 
             <button className="primary-wrapper">
               <div className="title-wrapper">
@@ -131,12 +131,12 @@ export const PatientDashboard = () => {
           </div>
         </div>
 
-        <NavbarDesign
+        {/* <NavbarDesign
           arrow="image.svg"
           buttonNavigationPillLabel="Logout"
           className="navbar-design-2-final-for-now"
           websiteIconPic="image.png"
-        />
+        /> */}
       </div>
     </div>
   );
