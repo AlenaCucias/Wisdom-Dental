@@ -117,7 +117,7 @@ const HomePage = () => {
       </Row>
       <div className="div-wrapper">
         <div className="rounded shadow">
-          <Link to="/feedback">
+          <Link to="/about">
             <button type='button' className='btn shadow rounded btn-lg title-wrapper title-5'>Learn More About Us!</button>
           </Link>
         </div>
