@@ -13,7 +13,7 @@ export const PatientDashboard = () => {
             <div className="text-wrapper">Patient Dashboard</div>
 
             <p className="description">
-              Welcome back, John! View and manage your dental information here.
+              Welcome back! View and manage your dental information here.
             </p>
 
             <div className="overlap">

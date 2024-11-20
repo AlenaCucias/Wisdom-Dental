@@ -2358,7 +2358,7 @@
   letter-spacing: 0;
   line-height: 36px;
   position: absolute;
-  top: 55px;
+  top: -70px;
   white-space: nowrap;
 }
 
@@ -2371,15 +2371,16 @@
   letter-spacing: 0;
   line-height: 24px;
   position: absolute;
-  top: 119px;
+  top: -13px;
   white-space: nowrap;
 }
 
+/*sidebar*/
 .patient-dashboard .overlap {
   /* background-image: url(./group-3.png); */
-  background-size: 100% 100%;
+  /*background-size: 100% 100%;*/
   background-color: #7D9DB6;
-  height: 1160px;
+  height: 1500px;
   left: 0px;
   position: absolute;
   top: -100px;
@@ -2478,7 +2479,7 @@
   height: 361px;
   left: 294px;
   position: absolute;
-  top: 205px;
+  top: 80px;
   width: 452px;
 }
 
@@ -2639,7 +2640,7 @@
   height: 260px;
   left: 834px;
   position: absolute;
-  top: 201px;
+  top: 80px;
   width: 430px;
 }
 
@@ -2738,7 +2739,7 @@
   height: 98px;
   left: 308px;
   position: absolute;
-  top: 944px;
+  top: 819px;
   width: 971px;
 }
 
@@ -2786,7 +2787,7 @@
   height: 98px;
   left: 308px;
   position: relative;
-  top: 789px;
+  top: 664px;
   width: 969px;
 }
 .patient-dashboard .text-wrapper-9 {
@@ -2810,7 +2811,7 @@
   height: 98px;
   left: 308px;
   position: relative;
-  top: 530px;
+  top: 405px;
   width: 969px;
 }
 
@@ -2848,7 +2849,7 @@
   left: 929px;
   overflow: hidden;
   position: absolute;
-  top: 518px;
+  top: 393px;
   width: 240px;
 }
 
