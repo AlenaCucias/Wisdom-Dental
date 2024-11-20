@@ -382,7 +382,6 @@
   position: relative;
   width: 100%;
 }
-
 .feedback-page-copy .overlap-group-wrapper {
   flex-shrink: 0;
   flex-basis: auto;
@@ -397,14 +396,15 @@
   white-space: nowrap;
   z-index: 12;
 }
-
+/* change here
 .feedback-page-copy .overlap-group-2 {
   height: 893px;
   left: 40px;
   position: relative;
   width: 705px;
 }
-
+  */
+/* grey rectangle */
 .feedback-page-copy .rectangle {
   background-color: #0909091f;
   border-radius: 55.15px;
@@ -415,7 +415,7 @@
   top: 36px;
   width: 705px;
 }
-/*chang here */
+/*change here */
 .feedback-page-copy .list {
   position: absolute;
   width: 564.034px;
@@ -424,7 +424,6 @@
   left: 110px;
   z-index: 27;
 }
-
 .feedback-page-copy .container-2 {
   height: 106px;
   left: 0;
@@ -432,7 +431,6 @@
   top: 73px;
   width: 343px;
 }
-
 .feedback-page-copy .title-3 {
   display: block;
   position: relative;
@@ -462,7 +460,6 @@
   white-space: nowrap;
   z-index: 30;
 }
-
 .feedback-page-copy .row {
   height: 65px;
   left: 0;
@@ -538,7 +535,7 @@
   width: 564px;
 }
 /*
-.feedback-page-copy .selection-wrapper {
+.yfeedback-page-copy .selection-wrapper {
   position: absolute;
   width: 564.034px;
   height: 65.694px;
@@ -576,7 +573,7 @@
   width: 564.034px;
   height: 39.355px;
   margin: 4.339px 0 0 0;
-  z-index: 52;
+  z-index: 60;
 }
 
 .feedback-page-copy .chip {
@@ -631,6 +628,7 @@
   height: 65.694px;
   margin: 43.387px 0 0 0;
   z-index: 57;
+  top: 55px;
 }
 
 .feedback-page-copy .chip-3 {
@@ -654,7 +652,7 @@
   left: 26.71px;
   color: #000000;
   font-family: Roboto, var(--default-font-family);
-  font-size: 15.185527801513672px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 21.694px;
   text-align: left;
@@ -666,7 +664,7 @@
   position: absolute;
   width: 69.42px;
   height: 39.355px;
-  top: 0;
+  top: 0px;
   left: 78.097px;
   background: rgba(0, 0, 0, 0.05);
   z-index: 63;
@@ -675,18 +673,19 @@
 
 .feedback-page-copy .text-4 {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   height: 22px;
   top: 8.677px;
+  width: 50%;
   left: 19.21px;
   color: #000000;
   font-family: Roboto, var(--default-font-family);
-  font-size: 15.185527801513672px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 21.694px;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   z-index: 64;
 
@@ -694,70 +693,81 @@
 
 .feedback-page-copy .chip-5 {
   position: absolute;
-  width: 69.42px;
+  width: 80px; /* Increase width to fit three stars */
   height: 39.355px;
   top: 0;
   left: 156.194px;
   background: rgba(0, 0, 0, 0.05);
   z-index: 65;
   border-radius: 6.508px;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center stars vertically */
+  justify-content: space-around; /* Space stars evenly */
+  padding: 5px; /* Optional padding for better spacing */
+  box-sizing: border-box;
 }
 
 .feedback-page-copy .text-5 {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: absolute;
-  height: 22px;
-  top: 8.677px;
-  left: 11.71px;
-  color: #000000;
-  font-family: Roboto, var(--default-font-family);
-  font-size: 15.185527801513672px;
-  font-weight: 400;
-  line-height: 21.694px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 66;
-}
+    display: flex; /* Align stars in a row */
+    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Space stars evenly */
+    position: relative; /* Make it relative to its container */
+    color: #000000;
+    font-family: Roboto, var(--default-font-family);
+    font-size: 18px; /* Adjust font size to fit */
+    font-weight: 400;
+    line-height: 22px;
+    text-align: center; /* Center stars horizontally */
+    white-space: nowrap; /* Prevent text wrapping */
+    z-index: 66;
+    width: 100%; /* Ensure it spans the container */
+  }
 
 .feedback-page-copy .chip-6 {
   position: absolute;
-  width: 78.355px;
+  width: 110px; /* Increase width to fit four stars */
   height: 39.355px;
   top: 0;
-  left: 234.291px;
+  left: 245.291px;
   background: rgba(0, 0, 0, 0.05);
   z-index: 67;
   border-radius: 6.508px;
+  display: flex; /* Enable flexbox for alignment */
+  align-items: center; /* Center stars vertically */
+  justify-content: space-around; /* Evenly space the stars */
+  padding: 5px; /* Optional padding for spacing */
+  box-sizing: border-box;
 }
 
 .feedback-page-copy .text-6 {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: absolute;
-  height: 22px;
-  top: 8.677px;
-  left: 8.678px;
+  display: flex; /* Arrange stars in a row */
+  align-items: center; /* Center vertically */
+  justify-content: space-between; /* Space stars evenly */
+  position: relative; /* Align stars within the container */
   color: #000000;
   font-family: Roboto, var(--default-font-family);
-  font-size: 15.185527801513672px;
+  font-size: 18px; /* Adjust size to fit */
   font-weight: 400;
-  line-height: 21.694px;
-  text-align: left;
-  white-space: nowrap;
-  z-index: 70;
+  line-height: 22px;
+  text-align: center; /* Center horizontally */
+  white-space: nowrap; /* Prevent text wrapping */
+  z-index: 67;
+  width: 100%;
 }
 
 .feedback-page-copy .chip-7 {
   background-color: #0000000d;
   border-radius: 6.51px;
   height: 39px;
-  left: 321px;
   position: absolute;
   top: 0;
-  width: 93px;
+  left: 360px;
+  width: 150px; /* Increase width to fit 5 stars */
+  display: flex; /* Enable flexbox */
+  align-items: center; /* Center stars vertically */
+  justify-content: space-around; /* Space stars evenly */
+  padding: 5px; /* Optional: Add padding for breathing room */
+  box-sizing: border-box; /* Include padding in dimensions */
 }
 .feedback-page-copy .button-2 {
   position: relative;
@@ -868,7 +878,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  position: absolute;
+  position: relative;
   height: 18px;
   top: 0;
   left: 0;
@@ -1020,7 +1030,7 @@
   width: 1100px;
   z-index: 101;
 }
-  */
+*/
 
 .feedback-page-copy .container-4 {
   display: flex;
@@ -1033,6 +1043,7 @@
   position: relative;
   z-index: 102;
 }
+
 .feedback-page-copy .faq-section {
   display: flex;
   align-items: center;
@@ -1048,6 +1059,7 @@
   padding: 60px 170px 60px 170px;
   z-index: 100;
 }
+
 .feedback-page-copy .frame-33 {
   display: flex;
   flex-direction: column;
@@ -1427,7 +1439,6 @@
   width: 12px;
   height: 7px;
   margin: 6.5px 0 0 4px;
-  background: url("C:\Users\helen\OneDrive\桌面\CSC 131\Wisdom-Dental\Wisdom-Dental\wisdomdental\src\assest\Icon.png") no-repeat center;
   background-size: 100% 100%;
   z-index: 133;
 }

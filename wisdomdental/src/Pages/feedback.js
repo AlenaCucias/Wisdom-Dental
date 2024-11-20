@@ -59,7 +59,6 @@ export const FeedbackPageCopy = () => {
                       </div>
                     </div>
                   </div>
-
                   <div className="div-wrapper">
                     <div className="input">
                       <div className="title-3">Comments</div>
