@@ -43,15 +43,22 @@
 }
 .navbar-brand img {
   width: 100%;
-  height: 100%;
-  margin-left: 2rem;
   max-width: 4rem;
+  height: auto;
+}
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
 }
 .navbar-dark {
   background-color: #7495AF;
   background-image: #7495af;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   min-height: 4rem;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
 }
 /*navbar end*/
 /*whole project*/
@@ -2984,3 +2991,91 @@ position: relative;
   }
 
 /*end login page*/
+.staff-dashboard {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+.staff-dashboard .div {
+  background-color: #ffffff;
+  height: 1142px;
+  overflow: hidden;
+  position: relative;
+  width: 1366px;
+}
+.staff-dashboard .overlap {
+  height: 1142px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1365px;
+}
+.staff-dashboard .title {
+  color: #000000;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 250px;
+  letter-spacing: 0;
+  line-height: 36px;
+  position: absolute;
+  top: 183px;
+  white-space: nowrap;
+}
+.staff-dashboard .description {
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  left: 250px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 254px;
+  white-space: nowrap;
+}
+.staff-dashboard .group {
+  background-color: #7d9db6;
+  height: 1142px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 220px;
+}
+  
+.staff-dashboard .group-2 {
+  height: 183px;
+  left: 41px;
+  position: absolute;
+  top: 163px;
+  width: 140px;
+}
+.staff-dashboard .label-normal {
+  align-items: center;
+  background-color: #d8d8d880;
+  border: 0.5px solid;
+  border-color: #0000001a;
+  border-radius: 2px;
+  display: inline-flex;
+  gap: 2px;
+  justify-content: center;
+  left: 46px;
+  overflow: hidden;
+  padding: 2px 4px;
+  position: absolute;
+  top: 163px;
+}
+.staff-dashboard .sidebar {
+  position: fixed;
+  top: 4rem; /* Adjust to match the navbar height */
+  left: 0;
+  width: 200px;
+  background-color: #f4f4f4;
+  height: calc(100vh - 4rem); /* Take the remaining height below the navbar */
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+  padding: 1rem;
+}
+/*staff dashboard*/
