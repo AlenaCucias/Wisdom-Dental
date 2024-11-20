@@ -2025,13 +2025,40 @@
 }
 
 .patient-dashboard .frame-2 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 100%
 }
 
 .patient-dashboard .p {
+  align-self: stretch;
+  color: #000000;
+  font-family:"Roboto-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 28px;
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
 }
 
 
 .patient-dashboard .subtitle {
+  align-self:stretch;
+  color: #00000080;
+  font-family:"Roboto-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: relative;
+  text-align: center;
 }
 
 
