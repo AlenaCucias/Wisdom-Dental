@@ -1849,10 +1849,11 @@
 .patient-dashboard .overlap {
   /* background-image: url(./group-3.png); */
   background-size: 100% 100%;
+  background-color: #7D9DB6;
   height: 1160px;
-  left: 0;
+  left: 0px;
   position: absolute;
-  top: -18px;
+  top: -100px;
   width: 220px;
 }
 
@@ -1943,21 +1944,24 @@
   width: 100px;
 }
 
+/*appointment*/
 .patient-dashboard .overlap-2 {
   height: 361px;
   left: 294px;
   position: absolute;
   top: 205px;
-  width: 454px;
+  width: 452px;
 }
 
 .patient-dashboard .overlap-group-wrapper {
   box-shadow: 0px 4px 4px #00000040;
-  height: 269px;
+  background-color: #e2e2e2;
+  border-radius: 50px;
+  height: 260px;
   left: 0;
   position: absolute;
   top: 0;
-  width: 454px;
+  width: 452px;
 }
 
 .patient-dashboard .overlap-group-2 {
@@ -2098,6 +2102,7 @@
   width: 330px;
 }
 
+/*payment*/
 .patient-dashboard .overlap-3 {
   background-color: #e2e2e2;
   border-radius: 50px;
@@ -2231,7 +2236,7 @@
   width: 211px;
 }
 
-.patient-dashboard .group-4 {
+/*.patient-dashboard .group-4 {
   box-shadow: 0px 4px 4px #00000040;
   height: 98px;
   left: 308px;
@@ -2243,13 +2248,40 @@
 .patient-dashboard .group-5 {
   height: 98px;
   width: 971px;
+}*/
+
+.patient-dashboard .overlap-group-4 {
+  background-color: #839cb4;
+  box-shadow: 0px 4px 4px #00000040;
+  border-radius: 25px;
+  height: 98px;
+  left: 308px;
+  position: relative;
+  top: 789px;
+  width: 969px;
+}
+.patient-dashboard .text-wrapper-9 {
+  color: #ffffff;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  left: 379px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 40px;
+  white-space: nowrap;
+  width: 211px;
 }
 
 .patient-dashboard .overlap-group-3 {
   background-color: #839cb4;
+  box-shadow: 0px 4px 4px #00000040;
   border-radius: 25px;
   height: 98px;
+  left: 308px;
   position: relative;
+  top: 530px;
   width: 969px;
 }
 
