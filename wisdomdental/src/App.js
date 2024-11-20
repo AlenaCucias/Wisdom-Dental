@@ -8,8 +8,7 @@ import CreateAccountPage from './Pages/CreateAccountPage';
 import PatientDashboard from './Pages/PatientDashboard';
 import StaffDashboard from './Pages/StaffDashboard';
 import Admin from './Pages/Admin';
-import AboutPage from './Pages/AboutPage';
-
+import { InformationPage } from './Pages/Information';
 function App() {
   return (
     <div className="App">
@@ -22,7 +21,7 @@ function App() {
           <Route path='patientDashboard' element={<PatientDashboard />} />
           <Route path='staffDashboard' element={<StaffDashboard />} />
           <Route path='adminDashboard' element={<Admin />} />
-          <Route path='about' element={<AboutPage />} />
+          <Route path='info' element={<InformationPage />} />
         </Routes>
     </div>
   );

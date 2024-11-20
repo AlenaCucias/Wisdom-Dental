@@ -1,21 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { PhoneCall } from "./PhoneCall";
-import arrow2 from "./arrow-2.svg";
-import icLocation from "./ic-location.svg";
-import imageContainer from "./image-container.svg";
-import image1 from "./image.png";
-import image from "./image.svg";
-import professionalPhotoLinkedinProfilePictureBeautifulLookingWomanLightColor1078199105241 from "./professional-photo-linkedin-profile-picture-beautiful-looking-woman-light-color-1078199-10524-1.png";
-import "./style.css";
-import vector2002 from "./vector-200-2.svg";
-import vector2003 from "./vector-200-3.svg";
-import vector2004 from "./vector-200-4.svg";
-import vector2005 from "./vector-200-5.svg";
-import vector200 from "./vector-200.svg";
-import version0 from "./version-0.png";
-import version1 from "./version-1.png";
-import websiteIconPic1 from "./website-icon-pic-1.png";
+// import { PhoneCall } from "./PhoneCall";
+// import arrow2 from "./arrow-2.svg";
+// import icLocation from "./ic-location.svg";
+// import imageContainer from "./image-container.svg";
+// import image1 from "./image.png";
+// import image from "./image.svg";
+// import professionalPhotoLinkedinProfilePictureBeautifulLookingWomanLightColor1078199105241 from "./professional-photo-linkedin-profile-picture-beautiful-looking-woman-light-color-1078199-10524-1.png";
+// import "./style.css";
+// import vector2002 from "./vector-200-2.svg";
+// import vector2003 from "./vector-200-3.svg";
+// import vector2004 from "./vector-200-4.svg";
+// import vector2005 from "./vector-200-5.svg";
+// import vector200 from "./vector-200.svg";
+// import version0 from "./version-0.png";
+// import version1 from "./version-1.png";
+// import websiteIconPic1 from "./website-icon-pic-1.png";
 
 export const InformationPage = () => {
   return (
@@ -28,7 +28,7 @@ export const InformationPage = () => {
                 <div className="ellipse" />
               </div>
 
-              <img className="arrow" alt="Arrow" src={arrow2} />
+              {/* <img className="arrow" alt="Arrow" src={arrow2} /> */}
             </div>
           </div>
 
@@ -60,11 +60,11 @@ export const InformationPage = () => {
             </button>
           </div>
 
-          <img
+          {/* <img
             className="website-icon-pic"
             alt="Website icon pic"
             src={websiteIconPic1}
-          />
+          /> */}
         </div>
 
         <div className="section">
@@ -72,7 +72,7 @@ export const InformationPage = () => {
             <div className="title">About Us</div>
           </div>
 
-          <img className="vector" alt="Vector" src={vector200} />
+          {/* <img className="vector" alt="Vector" src={vector200} /> */}
         </div>
 
         <div className="div">
@@ -110,7 +110,7 @@ export const InformationPage = () => {
             <div className="list">
               <div className="row">
                 <div className="article">
-                  <img className="version" alt="Version" src={version1} />
+                  {/* <img className="version" alt="Version" src={version1} /> */}
 
                   <div className="frame-2">
                     <div className="title-3">Commitment to Excellence</div>
@@ -126,7 +126,7 @@ export const InformationPage = () => {
               <div className="row">
                 <div className="article">
                   <div className="image-container">
-                    <img className="version" alt="Version" src={version0} />
+                    {/* <img className="version" alt="Version" src={version0} /> */}
                   </div>
 
                   <div className="frame-2">
@@ -142,7 +142,7 @@ export const InformationPage = () => {
               <div className="row">
                 <div className="article">
                   <div className="image-container">
-                    <img className="version" alt="Version" src={image1} />
+                    {/* <img className="version" alt="Version" src={image1} /> */}
                   </div>
 
                   <div className="frame-2">
@@ -158,7 +158,7 @@ export const InformationPage = () => {
             </div>
           </div>
 
-          <img className="img" alt="Vector" src={image} />
+          {/* <img className="img" alt="Vector" src={image} /> */}
         </div>
 
         <div className="div">
@@ -170,13 +170,13 @@ export const InformationPage = () => {
             <div className="list">
               <div className="row">
                 <div className="avatar">
-                  <img
+                  {/* <img
                     className="professional-photo"
                     alt="Professional photo"
                     src={
                       professionalPhotoLinkedinProfilePictureBeautifulLookingWomanLightColor1078199105241
                     }
-                  />
+                  /> */}
                 </div>
 
                 <div className="container">
@@ -260,7 +260,7 @@ export const InformationPage = () => {
             </div>
           </div>
 
-          <img className="vector-2" alt="Vector" src={vector2002} />
+          {/* <img className="vector-2" alt="Vector" src={vector2002} /> */}
         </div>
 
         <div className="div">
@@ -277,7 +277,7 @@ export const InformationPage = () => {
             </button>
           </div>
 
-          <img className="vector-3" alt="Vector" src={vector2003} />
+          {/* <img className="vector-3" alt="Vector" src={vector2003} /> */}
         </div>
 
         <div className="div">
@@ -286,11 +286,11 @@ export const InformationPage = () => {
 
             <div className="article-wrapper">
               <div className="article-2">
-                <img
+                {/* <img
                   className="image-container-2"
                   alt="Image container"
                   src={imageContainer}
-                />
+                /> */}
 
                 <div className="overlap">
                   <div className="frame-3">
@@ -302,12 +302,12 @@ export const InformationPage = () => {
                   <div className="div-wrapper">
                     <div className="article-2">
                       <div className="image-container-2">
-                        <PhoneCall className="phone-call" />
+                        {/* <PhoneCall className="phone-call" /> */}
                       </div>
 
                       <div className="overlap-group-wrapper">
                         <div className="overlap-group-2">
-                          <div className="title-9">Phone</div>
+                          {/* <div className="title-9">Phone</div> */}
 
                           <div className="subtitle-2">+1(123) 456-7890</div>
                         </div>
@@ -319,7 +319,7 @@ export const InformationPage = () => {
             </div>
           </div>
 
-          <img className="vector-4" alt="Vector" src={vector2004} />
+          {/* <img className="vector-4" alt="Vector" src={vector2004} /> */}
         </div>
 
         <div className="div">
@@ -331,16 +331,16 @@ export const InformationPage = () => {
                   95819
                 </p>
 
-                <img
+                {/* <img
                   className="ic-location"
                   alt="Ic location"
                   src={icLocation}
-                />
+                /> */}
               </div>
             </div>
           </div>
 
-          <img className="vector-5" alt="Vector" src={vector2005} />
+          {/* <img className="vector-5" alt="Vector" src={vector2005} /> */}
         </div>
       </div>
     </div>
