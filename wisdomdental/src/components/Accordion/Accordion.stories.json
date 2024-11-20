@@ -1,0 +1,20 @@
+import { Accordion } from ".";
+
+export default {
+  title: "Components/Accordion",
+  component: Accordion,
+  argTypes: {
+    stateProp: {
+      options: ["open", "default"],
+      control: { type: "select" },
+    },
+  },
+};
+
+export const Default = {
+  args: {
+    stateProp: "open",
+    className: {},
+    accordionItemTitle: "Question",
+  },
+};
