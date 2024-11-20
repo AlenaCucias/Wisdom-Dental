@@ -1,0 +1,36 @@
+.chevron-down {
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+  
+  .chevron-down.thirty-two {
+    height: 32px;
+    width: 32px;
+  }
+  
+  .chevron-down.forty {
+    height: 40px;
+    width: 40px;
+  }
+  
+  .chevron-down.twenty {
+    height: 20px;
+    width: 20px;
+  }
+  
+  .chevron-down.sixteen {
+    height: 16px;
+    width: 16px;
+  }
+  
+  .chevron-down.forty-eight {
+    height: 48px;
+    width: 48px;
+  }
+  
+  .chevron-down.twenty-four {
+    height: 24px;
+    width: 24px;
+  }
+  

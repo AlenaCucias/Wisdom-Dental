@@ -1,0 +1,29 @@
+import { AccordionItem } from ".";
+
+export default {
+  title: "Components/AccordionItem",
+  component: AccordionItem,
+  argTypes: {
+    state: {
+      options: ["closed", "open"],
+      control: { type: "select" },
+    },
+  },
+};
+
+export const Default = {
+  args: {
+    content:
+      "Answer the frequently asked question in a simple sentence, a longish paragraph, or even in a list.",
+    title: "Title",
+    state: "closed",
+    className: {},
+    accordionTitleClassName: {},
+    divClassName: {},
+    chevronDownSize: "https://c.animaapp.com/khMdpB74/img/size-20@2x.png",
+    divClassNameOverride: {},
+    chevronUp: "https://c.animaapp.com/khMdpB74/img/chevron-up-1@2x.png",
+    accordionContentClassName: {},
+    bodyClassName: {},
+  },
+};

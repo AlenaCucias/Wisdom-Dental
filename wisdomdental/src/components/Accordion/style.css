@@ -1,0 +1,66 @@
+.accordion {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 67px;
+    position: relative;
+    width: 1100px;
+  }
+  
+  .accordion .class {
+    align-self: stretch !important;
+    background-color: #7d9db6bf !important;
+    border: unset !important;
+    border-color: unset !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+  }
+  
+  .accordion .class-2 {
+    align-self: stretch !important;
+    background-color: #7d9db6 !important;
+    border: unset !important;
+    border-color: unset !important;
+    height: 54px !important;
+    width: 100% !important;
+  }
+  
+  .accordion .class-3 {
+    align-self: stretch !important;
+  }
+  
+  .accordion .class-4 {
+    color: #ffffff !important;
+    font-family: var(--button-font-font-family) !important;
+    font-size: var(--button-font-font-size) !important;
+    font-style: var(--button-font-font-style) !important;
+    font-weight: var(--button-font-font-weight) !important;
+    letter-spacing: var(--button-font-letter-spacing) !important;
+    line-height: var(--button-font-line-height) !important;
+  }
+  
+  .accordion .class-5 {
+    color: #ffffff !important;
+    font-family: var(--button-font-font-family) !important;
+    font-size: var(--button-font-font-size) !important;
+    font-style: var(--button-font-font-style) !important;
+    font-weight: var(--button-font-font-weight) !important;
+    letter-spacing: var(--button-font-letter-spacing) !important;
+    line-height: var(--button-font-line-height) !important;
+    margin-top: -2.00px !important;
+  }
+  
+  .accordion .class-6 {
+    padding: 5px 0px !important;
+  }
+  
+  .accordion .class-7 {
+    color: #ffffff !important;
+    font-family: "Roboto", Helvetica !important;
+    font-size: 16px !important;
+    font-style: unset !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+    line-height: 24px !important;
+  }
+  
