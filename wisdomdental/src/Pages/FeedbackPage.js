@@ -15,69 +15,21 @@ export const FeedbackPage = () => {
     <div className="feedback-page-copy">
       <div className="frame-wrapper">
         <div className="frame">
-          <div className="navbar-design">
-            <div className="back-button">
-              <div className="overlap-group">
-                <div className="ellipse-wrapper">
-                  <div className="ellipse" />
-                </div>
-
-                {/* <img className="arrow" alt="Arrow" src={arrow2} /> */}
-              </div>
-            </div>
-
-            <div className="navigation-pill-list">
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">Home</div>
-                </div>
-              </button>
-
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">About Us</div>
-                </div>
-              </button>
-
-              <Link to="/feedback-page-u40copyu41">
-                <button className="button">
-                  <div className="navigation-pill">
-                    <div className="text-wrapper">Feedback/FAQs</div>
-                  </div>
-                </button>
-              </Link>
-
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">Sign in</div>
-                </div>
-              </button>
-            </div>
-
-            {/* <img
-              className="website-icon-pic"
-              alt="Website icon pic"
-              src={websiteIconPic1}
-            /> */}
-          </div>
-
+          {/* Navbar section removed */}
           <div className="section">
             <div className="container">
               <div className="title">Feedback</div>
             </div>
-
+          </div>
             {/* <img className="vector" alt="Vector" src={image} /> */}
           </div>
-
           <div className="div">
             <div className="overlap-group-wrapper">
               <div className="overlap-group-2">
                 <div className="rectangle" />
-
-                <div className="list">
-                  <div className="container-2">
-                    <div className="title-2">How Did We Do?</div>
-
+                  <div className="list">
+                    <div className="container-2">
+                      <div className="title-2">How Did We Do?</div>
                     <p className="description">
                       Please leave us a review of your experience
                     </p>
@@ -280,8 +232,6 @@ export const FeedbackPage = () => {
                       </p>
 
                       {/* <ChevronUp className="icon-instance-node" /> */}
-                    </div>
-
                     <div className="accordion-content">
                       <p className="body">
                         We are open from 9:00 am - 5:00 pm on weekdays. We are
