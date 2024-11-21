@@ -46,38 +46,31 @@ export const FeedbackPage = () => {
                       Please leave us a review of your experience
                     </p>
                   </div>
-
                   <div className="row">
-                    <div className="input">
-                      <div className="title-3">Name</div>
-
-                      <div className="textfield">
-                        <div className="text">Your Name</div>
-                      </div>
-                    </div>
+                    <FBUserInput
+                      label="Name"
+                      placeholder="Your Name"
+                      onInputChange={(value) => console.log("Name:", value)}
+                    />
                   </div>
 
                   <div className="input-wrapper">
-                    <div className="input">
-                      <p className="title-3">
-                        Email (Optional, Required for a Response)
-                      </p>
-
-                      <div className="textfield">
-                        <div className="text">Email</div>
-                      </div>
-                    </div>
+                    <FBUserInput
+                      label="Email (Optional, Required for a Response)"
+                      placeholder="Email"
+                      type="email"
+                      onInputChange={(value) => console.log("Email:", value)}
+                    />
                   </div>
 
                   <div className="div-wrapper">
-                    <div className="input">
-                      <div className="title-3">Comments</div>
-
-                      <div className="textfield">
-                        <div className="text">Write your comments here</div>
-                      </div>
-                    </div>
+                    <FBUserInput
+                      label="Comments"
+                      placeholder="Write your comments here"
+                      onInputChange={(value) => console.log("Comments:", value)}
+                    />
                   </div>
+
                   <PatientSelection /> 
                   <div className="row-2">
                     <div className="selection">
@@ -107,6 +100,9 @@ export const FeedbackPage = () => {
                     </div>
                   </div>
                   <div className="button-2">
+                  <button className='secondary'>
+                  <span className='clear'>Clear</span>
+                </button>
                     <button className="primary">
                       <span className="title-5">Submit</span>
                     </button>

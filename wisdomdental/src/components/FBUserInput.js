@@ -1,57 +1,42 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-const FBUserInput = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [comment, setComment] = useState("");
+const FBUserInput = ({ label, placeholder, type, onInputChange }) => {
+  const [value, setValue] = useState("");
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setValue(newValue);
+    if (onInputChange) {
+      onInputChange(newValue); // Pass input value to parent component
+    }
+  };
 
   return (
-    <div className="feedback-page-copy">
-      <div className="row">
-        <div className="input">
-          <div className="title-3">Name</div>
-          <div className="textfield">
-            <input
-              type="text"
-              className="text"
-              placeholder="Your Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="input-wrapper">
-        <div className="input">
-          <p className="title-3">Email (Optional, Required for a Response)</p>
-          <div className="textfield">
-            <input
-              type="email"
-              className="text"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="div-wrapper">
-        <div className="input">
-          <div className="title-3">Comments</div>
-          <div className="textfield">
-            <textarea
-              className="text"
-              placeholder="Write your comments here"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          </div>
-        </div>
+    <div className="input">
+      <p className="title-3">{label}</p>
+      <div className="textfield">
+        <input
+          className="text"
+          type={type}
+          value={value}
+          placeholder={placeholder}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );
+};
+
+FBUserInput.propTypes = {
+  label: PropTypes.string.isRequired, // Label text for the input
+  placeholder: PropTypes.string, // Placeholder text inside the input box
+  type: PropTypes.string, // Input type (text, email, etc.)
+  onInputChange: PropTypes.func, // Callback for input change
+};
+
+FBUserInput.defaultProps = {
+  type: "text",
 };
 
 export default FBUserInput;
