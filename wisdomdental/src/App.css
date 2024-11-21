@@ -356,6 +356,7 @@
 }
 .feedback-page-copy .title-2 {
   display: block;
+  left:-20px;
   position: relative;
   height: 53px;
   margin: 0 0 0 0;
@@ -452,6 +453,7 @@
   display: block;
   position: relative;
   height: 27px;
+  left: -20px;
   margin: 26.472px 0 0 0;
   color: #000000;
   font-family: Roboto, var(--default-font-family);
@@ -464,7 +466,6 @@
 }
 .feedback-page-copy .row {
   height: 65px;
-  left: 0;
   position: absolute;
   top: 222px;
   width: 564px;
@@ -472,6 +473,7 @@
 
 .feedback-page-copy .input {
   height: 65px;
+  left: -20px;
   position: relative;
 }
 
@@ -537,7 +539,7 @@
   width: 564px;
 }
 /*
-.yfeedback-page-copy .selection-wrapper {
+.feedback-page-copy .selection-wrapper {
   position: absolute;
   width: 564.034px;
   height: 65.694px;
@@ -548,13 +550,12 @@
   overflow: hidden;
 }
 */
-
 .feedback-page-copy .selection {
   position: absolute;
   width: 564.034px;
   height: 65.694px;
   top: 548.55px;
-  left: 0;
+  left: -20px;
   font-size: 0px;
   z-index: 50;
   overflow: hidden;
@@ -623,7 +624,10 @@
   overflow: hidden;
   border-radius: 6.508px;
 }
-
+.feedback-page-copy .selected{
+  background-color: #4CAF50; /* Green background for selected chip */
+  color: white;
+}
 .feedback-page-copy .row-2 {
   position: relative;
   width: 564.034px;
@@ -727,7 +731,7 @@
 
 .feedback-page-copy .chip-6 {
   position: absolute;
-  width: 110px; /* Increase width to fit four stars */
+  width: 105px; /* Increase width to fit four stars */
   height: 39.355px;
   top: 0;
   left: 245.291px;
@@ -764,7 +768,7 @@
   position: absolute;
   top: 0;
   left: 360px;
-  width: 150px; /* Increase width to fit 5 stars */
+  width: 140px; /* Increase width to fit 5 stars */
   display: flex; /* Enable flexbox */
   align-items: center; /* Center stars vertically */
   justify-content: space-around; /* Space stars evenly */
@@ -775,8 +779,9 @@
   position: relative;
   width: 533.663px;
   height: 53.032px;
-  margin: 666.387px 0 0 0;
+  margin: 43.387px 0 0 0;
   z-index: 71;
+  top: 600px;
   overflow: hidden;
 }
 
@@ -795,13 +800,13 @@
 }
 
 .feedback-page-copy .title-5 {
-  display: flex;
+ display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   position: absolute;
   height: 27px;
-  top: 13.016px;
-  left: 102.162px;
+  top: calc(50% - 13.5px);
+  left: calc(50% - 28px);
   color: #ffffff;
   font-family: Roboto, var(--default-font-family);
   font-size: 17.354888916015625px;
@@ -809,20 +814,21 @@
   line-height: 26.032px;
   text-align: left;
   white-space: nowrap;
-  z-index: 75;
+  z-index: 73;
 }
 
 .feedback-page-copy .primary {
-  background-color: #839cb4;
-  border-radius: 8.68px;
-  box-shadow: 0px 4px 4px #00000040;
+  position: relative;
+  width: 244px;
   height: 53px;
-  left: 273px;
-  position: absolute;
-  top: 0;
-  width: 260px;
+  margin: 0.29px 0 0 10px;
+  cursor: pointer;
+  background: #839cb4;
+  border: none;
+  z-index: 72;
+  border-radius: 8.677px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
-
 .feedback-page-copy .title-6 {
   display: block;
   position: relative;
@@ -999,6 +1005,16 @@
   line-height: 21.2px;
   position: relative;
 }
+.feedback-page-copy .title-10{
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Regular", Helvetica;
+  font-size: 14.1px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 21.2px;
+  position: relative;
+}
 
 .feedback-page-copy .frame-5 {
   height: 8.67px;
@@ -1021,7 +1037,26 @@
   padding: 60px 170px 60px 170px;
   z-index: 100;
 }
-/*
+.feedback-page-copy .FAQ-heading{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  width: 1100px;
+  height: 32px;
+  top:-90px;
+  color: #000000;
+  font-family: Roboto, var(--default-font-family);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 22;
+}
+
 .feedback-page-copy .container-wrapper {
   display: flex;
   flex-direction: column;
@@ -1033,7 +1068,7 @@
   width: 1100px;
   z-index: 101;
 }
-*/
+
 
 .feedback-page-copy .container-4 {
   display: flex;

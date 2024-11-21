@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PatientSelection from "../components/Patientselection";
+import FBUserInput from "../components/FBUserInput";
 // import { ChevronDown } from "./ChevronDown";
 // import { ChevronUp } from "./ChevronUp";
 // import arrow2 from "./arrow-2.svg";
@@ -11,56 +13,21 @@ import { Link } from "react-router-dom";
 // import websiteIconPic1 from "./website-icon-pic-1.png";
 
 export const FeedbackPage = () => {
+  const handleFormSubmit = (formData) => {
+    console.log("Form Submitted:", formData);
+    // You can handle the form data here, like sending it to a server
+  };
+
   return (
     <div className="feedback-page-copy">
       <div className="frame-wrapper">
         <div className="frame">
-          <div className="navbar-design">
-            <div className="back-button">
-              <div className="overlap-group">
-                <div className="ellipse-wrapper">
-                  <div className="ellipse" />
-                </div>
-
-                {/* <img className="arrow" alt="Arrow" src={arrow2} /> */}
-              </div>
-            </div>
-
-            <div className="navigation-pill-list">
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">Home</div>
-                </div>
-              </button>
-
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">About Us</div>
-                </div>
-              </button>
-
-              <Link to="/feedback-page-u40copyu41">
-                <button className="button">
-                  <div className="navigation-pill">
-                    <div className="text-wrapper">Feedback/FAQs</div>
-                  </div>
-                </button>
-              </Link>
-
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">Sign in</div>
-                </div>
-              </button>
-            </div>
 
             {/* <img
               className="website-icon-pic"
               alt="Website icon pic"
               src={websiteIconPic1}
             /> */}
-          </div>
-
           <div className="section">
             <div className="container">
               <div className="title">Feedback</div>
@@ -111,23 +78,7 @@ export const FeedbackPage = () => {
                       </div>
                     </div>
                   </div>
-
-                  <div className="selection-wrapper">
-                    <div className="selection">
-                      <div className="title-3">Patient Status</div>
-
-                      <div className="chip-group">
-                        <div className="chip">
-                          <div className="text-2">Current Patient</div>
-                        </div>
-
-                        <div className="chip-2">
-                          <div className="text-2">Former Patient</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+                  <PatientSelection /> 
                   <div className="row-2">
                     <div className="selection">
                       <div className="title-3">Overall Rating</div>
@@ -155,20 +106,13 @@ export const FeedbackPage = () => {
                       </div>
                     </div>
                   </div>
-
                   <div className="button-2">
-                    <div className="seconday">
-                      <div className="title-4">Clear</div>
-                    </div>
-
-                    <div className="primary">
-                      <div className="title-5">Submit</div>
-                    </div>
+                    <button className="primary">
+                      <span className="title-5">Submit</span>
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-
             <div className="frame-2">
               <div className="reviews">
                 <div className="container-3">
@@ -221,8 +165,7 @@ export const FeedbackPage = () => {
           <div className="FAQ-section">
             <div className="container-wrapper">
               <div className="container-4">
-                <div className="FAQ-heading">FAQs</div>
-
+                <span className="FAQ-heading">FAQs</span>
                 <div className="accordion">
                   <div className="accordion-item">
                     <div className="accordion-title">
@@ -270,8 +213,8 @@ export const FeedbackPage = () => {
                 </div>
 
                 <div className="accordion">
-                  <div className="accordion-item-2">
-                    <div className="accordion-title-2">
+                  <div className="accordion-item">
+                    <div className="accordion-title">
                       <p className="title-10">
                         What are the operating hours of Wisdom Dental Clinic?
                       </p>
@@ -282,6 +225,7 @@ export const FeedbackPage = () => {
                         We are open from 9:00 am - 5:00 pm on weekdays. We are
                         closed on the weekends.
                       </p>
+                      </div>
                     </div>
                   </div>
                 </div>
