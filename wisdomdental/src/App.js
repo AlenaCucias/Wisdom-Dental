@@ -9,6 +9,8 @@ import PatientDashboard from './Pages/PatientDashboard';
 import StaffDashboard from './Pages/StaffDashboard';
 import Admin from './Pages/Admin';
 import { InformationPage } from './Pages/Information';
+import "bootstrap/dist/css/bootstrap.min.css";
+
 function App() {
   return (
     <div className="App">
