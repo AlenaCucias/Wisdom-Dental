@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 const Header = () => {
   return (
     <div>
-        <Navbar dark sticky='top' expand='md' style={{color: "#7D9DB6"}}>
+        <Navbar className='sticky-top navbar' dark sticky='top' expand='md' style={{color: "#7D9DB6"}}>
                 <Container>
                     <Nav>
                         <NavItem>
