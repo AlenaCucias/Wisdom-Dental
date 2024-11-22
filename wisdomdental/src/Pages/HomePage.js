@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   return (
-    <div className='home-page'>
+    <div className='home-page mt-5'>
       <Row className='mb-5'>
         <Col md="5" className='my-auto pe-4'>
           <div className="image-container">
