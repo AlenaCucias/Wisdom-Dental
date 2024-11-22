@@ -1,16 +1,15 @@
-from flask import Flask, request, jsonify 
-import mysql.connector
-from mysql.connector import Error
+from flask import Flask, request, jsonify
+import gspread
+from google_auth import get_client 
+from datetime import datetime
+from flask_cors import CORS
 
 app = Flask (__name__)
+CORS(app)
 
-#Database connection helper
-def get_db_connection():
-    conn = mysql.connector.connet(host= 'xxxxxx', database = 'xxxx', user='xxxx', password='xxxxxxx')
-    return conn
-
+@app.route('/submit_feedback', methods=['POST'])
 #Endpoint to submit feedback
-def submit_feedback():
+def submit_eedback():
         data = request.json
         comments = data.get ('comments')
         contract_email = data.get('contact_email')
@@ -19,24 +18,44 @@ def submit_feedback():
         star_rating = data.get('star_rating') # 1 to 5
 
         if not patient_name or not comments:
-            return jsonify({'message':'Patient ID and comments are requrired'}), 400
+            return jsonify({'message': 'Patient name and comments are required'}), 400
 
         if patient_status not in ['current', 'former']:
-            return jsonify({'message':'Patient status must be "current" or "former"'}), 400
-        
+            return jsonify({'message': 'Patient status must be "current" or "former"'}), 400
+        if not star_rating or not (1 <= star_rating <= 5):
+            return jsonify({'message': 'Star rating must be between 1 and 5'}), 400
+
+        client = get_client()
+
+        sheet = client.open('WisdomDB').sheet1
+
+        current_date = datetime.now().strftime('%m/%d/%Y')
+
+        row = [
+            "",  # Feedback ID (will be auto-generated)
+            patient_name, 
+            contact_email, 
+            comments, 
+            patient_status, 
+            star_rating, 
+            current_date
+        ]
         conn = get_db_connection()
         cursor = conn.cursor()
-        
         try:
-            cursour.execute(INSERT INTO FEEDBACK (patient_name, comments, contact_email, patient_status, star_rating) values (?, ?, ?, ?, ?), (patient_name, comments, contact_email, patient_status, star_rating))
-            conn.commit()
-            return jsonify({'message':'Feedback submitted succesfully'}), 201
-        except sqlite3.DatabaseError as e:   
-            print(f"Error:{e}")
+        # Get the next available row (this assumes the first row is headers)
+            next_row = len(sheet.get_all_values()) + 1  # Get the next empty row in the sheet
+            feedback_id = next_row  # Feedback ID is assigned based on the row number
+
+            row[0] = feedback_id
+
+            sheet.append_row(row)
+
+            return jsonify({'message': 'Feedback submitted successfully'}), 201
+
+        except Exception as e:
+            print(f"Error: {e}")
             return jsonify({'message': 'Failed to submit feedback'}), 500
 
-        finally:
-            conn.close()
-
-if __name__ == '__main__': #running the flask application
+if __name__ == '__main__':
     app.run(debug=True)
