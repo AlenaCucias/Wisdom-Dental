@@ -1,10 +1,20 @@
 import React from "react";
+import {useState} from 'react';
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  FormGroup,
+  Label,
+  Button,
+} from "reactstrap";
 //import { NavbarDesign } from "./NavbarDesign";
 //import group19 from "./group-19.png";
 //import rectangle4138 from "./rectangle-4138.svg";
 //import "./style.css";
 
 export const PatientDashboard = () => {
+  const [scheduleAppointmentModalOpen, setScheduleAppointmentModalOpen] = useState(false);
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -86,9 +96,16 @@ export const PatientDashboard = () => {
                 </div>
               </div>
 
-              <div className="primary">
-                <div className="title-4">Schedule Appointment</div>
-              </div>
+              <Button onClick={() => setScheduleAppointmentModalOpen(true)}>
+                <div className="title-4"> Schedule Appointment</div>
+              </Button>
+
+              <Modal isOpen={scheduleAppointmentModalOpen}>
+                <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>Schedule Appointment</ModalHeader>
+                <ModalBody>
+                  test
+                </ModalBody>
+              </Modal>
 
               <div className="group-3" />
             </div>
