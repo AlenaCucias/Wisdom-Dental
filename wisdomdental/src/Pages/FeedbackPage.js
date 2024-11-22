@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PatientSelection from "../components/Patientselection";
+import {useState} from 'react'
 import FBUserInput from "../components/FBUserInput";
+import RatingSelection from "../components/Ratingselection";
 // import { ChevronDown } from "./ChevronDown";
 // import { ChevronUp } from "./ChevronUp";
 // import arrow2 from "./arrow-2.svg";
@@ -11,11 +13,33 @@ import FBUserInput from "../components/FBUserInput";
 // import "./style.css";
 // import vector200 from "./vector-200.svg";
 // import websiteIconPic1 from "./website-icon-pic-1.png";
-
 export const FeedbackPage = () => {
   const handleFormSubmit = (formData) => {
     console.log("Form Submitted:", formData);
     // You can handle the form data here, like sending it to a server
+  };
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [name, setName] = useState(""); // State for Name input
+  const [email, setEmail] = useState(""); // State for Email input
+  const [comments, setComments] = useState(""); // State for Comments input
+
+  // Handle input changes in FBUserInput
+  const handleUserInputChange = (setter) => (value) => {
+    setter(value);
+  };
+  // Handle clearing all input fields
+  const handleClear = () => {
+    setSelectedRating(0);
+    setSelectedStatus("");
+    setName("");
+    setEmail("");
+    setComments("");
+  };
+  // Handle form submission (just a placeholder function)
+  const handleSubmit = () => {
+    // Logic for submitting the form
+    alert("Feedback submitted!");
   };
 
   return (
@@ -50,7 +74,8 @@ export const FeedbackPage = () => {
                     <FBUserInput
                       label="Name"
                       placeholder="Your Name"
-                      onInputChange={(value) => console.log("Name:", value)}
+                      value={name}
+                      onInputChange={handleUserInputChange(setName)}
                     />
                   </div>
 
@@ -59,48 +84,24 @@ export const FeedbackPage = () => {
                       label="Email (Optional, Required for a Response)"
                       placeholder="Email"
                       type="email"
-                      onInputChange={(value) => console.log("Email:", value)}
+                      value={email}
+                      onInputChange={handleUserInputChange(setEmail)}
                     />
                   </div>
-
                   <div className="div-wrapper">
                     <FBUserInput
                       label="Comments"
                       placeholder="Write your comments here"
-                      onInputChange={(value) => console.log("Comments:", value)}
+                      value={comments}
+                      onInputChange={handleUserInputChange(setComments)}
                     />
                   </div>
 
-                  <PatientSelection /> 
-                  <div className="row-2">
-                    <div className="selection">
-                      <div className="title-3">Overall Rating</div>
-
-                      <div className="chip-group">
-                        <div className="chip-3">
-                          <div className="text-3">⭐</div>
-                        </div>
-
-                        <div className="chip-4">
-                          <div className="text-4">⭐⭐</div>
-                        </div>
-
-                        <div className="chip-5">
-                          <div className="text-5">⭐⭐⭐</div>
-                        </div>
-
-                        <div className="chip-6">
-                          <div className="text-6">⭐⭐⭐⭐</div>
-                        </div>
-
-                        <div className="chip-7">
-                          <div className="text-6">⭐⭐⭐⭐⭐</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <PatientSelection selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/> 
+                  <div className="overallrating">Overall Rating</div>
+                  <RatingSelection selectedRating={selectedRating} setSelectedRating={setSelectedRating}/>
                   <div className="button-2">
-                  <button className='secondary'>
+                  <button className='secondary'onClick={handleClear}>
                   <span className='clear'>Clear</span>
                 </button>
                     <button className="primary">

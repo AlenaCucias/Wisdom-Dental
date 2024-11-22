@@ -566,6 +566,7 @@
   overflow: hidden;
 }
 */
+
 .feedback-page-copy .selection {
   position: absolute;
   width: 564.034px;
@@ -599,7 +600,7 @@
   position: absolute;
   width: 277.678px;
   height: 39.355px;
-  top: 0;
+  top:0;
   left: 0;
   cursor: pointer;
   background: rgba(0, 0, 0, 0.05);
@@ -608,6 +609,7 @@
   overflow: hidden;
   border-radius: 6.508px;
 }
+
 
 .feedback-page-copy .text-2 {
   display: flex;
@@ -650,9 +652,24 @@
   height: 65.694px;
   margin: 43.387px 0 0 0;
   z-index: 57;
-  top: 55px;
+  top: 80px;
 }
-
+.feedback-page-copy .overallrating{
+  display: block;
+  position: relative;
+  height: 22px;
+  margin: 0 0 10px 0;
+  color: #000000;
+  font-family: Roboto, var(--default-font-family);
+  font-size: 15.185527801513672px;
+  font-weight: 500;
+  line-height: 21.694px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 100;
+  top: 668px;
+  left: -20px;
+}
 .feedback-page-copy .chip-3 {
   position: absolute;
   width: 69.42px;
@@ -715,68 +732,80 @@
 
 .feedback-page-copy .chip-5 {
   position: absolute;
-  width: 80px; /* Increase width to fit three stars */
+  width: 80px; 
   height: 39.355px;
   top: 0;
   left: 156.194px;
   background: rgba(0, 0, 0, 0.05);
   z-index: 65;
   border-radius: 6.508px;
-  display: flex; /* Use flexbox for alignment */
-  align-items: center; /* Center stars vertically */
-  justify-content: space-around; /* Space stars evenly */
-  padding: 5px; /* Optional padding for better spacing */
+  display: flex; 
+  align-items: center; 
+  justify-content: space-around; 
+  padding: 5px; 
   box-sizing: border-box;
 }
 
 .feedback-page-copy .text-5 {
-    display: flex; /* Align stars in a row */
-    align-items: center; /* Center vertically */
-    justify-content: space-between; /* Space stars evenly */
-    position: relative; /* Make it relative to its container */
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    position: relative;
     color: #000000;
     font-family: Roboto, var(--default-font-family);
-    font-size: 18px; /* Adjust font size to fit */
+    font-size: 18px; 
     font-weight: 400;
     line-height: 22px;
-    text-align: center; /* Center stars horizontally */
-    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center; 
+    white-space: nowrap;
     z-index: 66;
-    width: 100%; /* Ensure it spans the container */
+    width: 100%; 
   }
-
 .feedback-page-copy .chip-6 {
   position: absolute;
-  width: 105px; /* Increase width to fit four stars */
+  width: 105px; 
   height: 39.355px;
   top: 0;
   left: 245.291px;
   background: rgba(0, 0, 0, 0.05);
   z-index: 67;
   border-radius: 6.508px;
-  display: flex; /* Enable flexbox for alignment */
-  align-items: center; /* Center stars vertically */
-  justify-content: space-around; /* Evenly space the stars */
-  padding: 5px; /* Optional padding for spacing */
+  display: flex; 
+  align-items: center; 
+  justify-content: space-around; 
+  padding: 5px; 
   box-sizing: border-box;
 }
-
 .feedback-page-copy .text-6 {
-  display: flex; /* Arrange stars in a row */
-  align-items: center; /* Center vertically */
-  justify-content: space-between; /* Space stars evenly */
-  position: relative; /* Align stars within the container */
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  position: relative; 
   color: #000000;
   font-family: Roboto, var(--default-font-family);
-  font-size: 18px; /* Adjust size to fit */
+  font-size: 18px; 
   font-weight: 400;
   line-height: 22px;
-  text-align: center; /* Center horizontally */
-  white-space: nowrap; /* Prevent text wrapping */
+  text-align: center; 
+  white-space: nowrap; 
   z-index: 67;
   width: 100%;
 }
-
+.feedback-page-copy .text-7{
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  position: relative; 
+  color: #000000;
+  font-family: Roboto, var(--default-font-family);
+  font-size: 18px; 
+  font-weight: 400;
+  line-height: 22px;
+  text-align: center; 
+  white-space: nowrap; 
+  z-index: 67;
+  width: 100%;
+}
 .feedback-page-copy .chip-7 {
   background-color: #0000000d;
   border-radius: 6.51px;
@@ -784,12 +813,22 @@
   position: absolute;
   top: 0;
   left: 360px;
-  width: 140px; /* Increase width to fit 5 stars */
-  display: flex; /* Enable flexbox */
-  align-items: center; /* Center stars vertically */
-  justify-content: space-around; /* Space stars evenly */
-  padding: 5px; /* Optional: Add padding for breathing room */
-  box-sizing: border-box; /* Include padding in dimensions */
+  width: 140px; 
+  display: flex; 
+  align-items: center;
+  justify-content:space-around; 
+  padding: 5px; 
+  box-sizing: border-box; 
+}
+
+.feedback-page-copy .selected {
+  background-color: #ffb900;
+  color: white;
+}
+.chip-group .selected {
+  background-color: rgba(0, 0, 0, 0.2); /* Highlight selected chip */
+  color: white;
+  border: 2px solid black; /* Optional for better visibility */
 }
 .feedback-page-copy .button-2 {
   position: relative;
@@ -799,7 +838,6 @@
   z-index: 71;
   top: 600px;
   overflow: hidden;
-  box-shadow: 0px 4px 4px #0000000d;
 }
 
 .feedback-page-copy .seconday {
@@ -814,23 +852,22 @@
   border: 1.085px solid #839cb4;
   z-index: 72;
   border-radius: 8.677px;
-  
 }
 .feedback-page-copy .clear {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
   position: absolute;
-  height: 27px;
-  top: 11.205px;
-  left: 107.915px;
-  color: #839cb4;
-  font-family: Roboto, var(--default-font-family);
-  font-size: 17.354888916015625px;
-  font-weight: 500;
-  line-height: 26.032px;
-  white-space: nowrap;
-  z-index: 73;
+  width: 260.323px;
+  height: 53.032px;
+  top: 0;
+  left: 0;  /* Adjust the position if needed */
+  cursor: pointer;
+  background: transparent;
+  border: 1.085px solid #839cb4;  /* Border color to match the previous style */
+  z-index: 72;
+  border-radius: 8.677px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);  /* Box shadow for a raised look */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .feedback-page-copy .title-5 {
   display: flex;

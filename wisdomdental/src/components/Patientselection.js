@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 
-const PatientSelection = () => {
-  const [selectedStatus, setSelectedStatus] = useState(""); // Tracks the selected status
-
+const PatientSelection = ({ selectedStatus, setSelectedStatus }) => {
   const handleSelection = (status) => {
     setSelectedStatus(status); // Updates the selected status when a chip is clicked
   };
-
   return (
     <div className="selection-wrapper">
       <div className="selection">

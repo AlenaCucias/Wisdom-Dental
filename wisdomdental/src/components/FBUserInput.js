@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const FBUserInput = ({ label, placeholder, type, onInputChange }) => {
-  const [value, setValue] = useState("");
-
+const FBUserInput = ({ label, placeholder, type, value, onInputChange }) => {
   const handleChange = (event) => {
     const newValue = event.target.value;
-    setValue(newValue);
-    if (onInputChange) {
       onInputChange(newValue); // Pass input value to parent component
-    }
   };
-
   return (
     <div className="input">
       <p className="title-3">{label}</p>
