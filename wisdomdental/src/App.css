@@ -1758,7 +1758,7 @@
   align-items: center;
   display: inline-flex;
   gap: 10px;
-  min-height: 3047px;
+  min-height: 2950px;
   min-width: 1366px;
   position: relative;
   width: 100%;
@@ -1794,7 +1794,7 @@
   gap: 40px;
   justify-content: center;
   overflow: hidden;
-  padding: 60px 170px;
+  padding: 20px 60px;
   position: relative;
   width: 100%;
 }
@@ -1809,7 +1809,7 @@
   position: relative;
 }
 
-.information-page .text-wrapper {
+.information-page .title {
   color: #000000;
   font-family: "Roboto-Bold", Helvetica;
   font-size: 64px;
@@ -1821,7 +1821,10 @@
   margin-top: -1.00px;
   position: relative;
   width: 1100px;
+  text-align: left;
 }
+
+
 
 .information-page .vector {
   height: 1px;
@@ -1878,6 +1881,7 @@
   line-height: 48px;
   margin-top: -1.00px;
   position: relative;
+  text-align: left;
 }
 
 .information-page .at-wisdom-dental {
@@ -1888,11 +1892,11 @@
   font-weight: 400;
   letter-spacing: 0;
   line-height: 26px;
-  position: relative;
+  position: relative; 
+  text-align: left;
 }
 
 .information-page .list {
-  padding: 20px 0px;
   position: relative;
   width: 100%;
 }
@@ -1905,6 +1909,8 @@
   gap: 40px;
   position: relative;
   width: 100%;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
 .information-page .article {
@@ -1948,6 +1954,7 @@
   line-height: 28px;
   margin-top: -1.00px;
   position: relative;
+  text-align: left;
 }
 
 .information-page .p {
@@ -1959,6 +1966,7 @@
   letter-spacing: 0;
   line-height: 24px;
   position: relative;
+  text-align: left;
 }
 
 .information-page .image-container {
@@ -1986,6 +1994,7 @@
   margin-right: -37.00px;
   position: relative;
   width: 1100px;
+  text-align: left; 
 }
 
 .information-page .avatar {
@@ -1995,6 +2004,7 @@
   overflow: hidden;
   position: relative;
   width: 100px;
+  align-items: center; 
 }
 
 .information-page .professional-photo {
@@ -2075,6 +2085,7 @@
   top: -11px;
   white-space: nowrap;
   width: 120px;
+  padding: 8px;
 }
 
 .information-page .description {
@@ -2107,6 +2118,7 @@
   top: -11px;
   white-space: nowrap;
   width: 120px;
+  padding: 5px;
 }
 .information-page .vector-2 {
   height: 1px;
@@ -2152,6 +2164,9 @@
   padding: 0px 91px;
   position: relative;
   width: 100%;
+}
+.information-page .fblink {
+  text-decoration: none;
 }
 .information-page .primary {
   align-items: center;
