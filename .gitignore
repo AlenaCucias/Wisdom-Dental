@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+
+backend/api/googledb.json

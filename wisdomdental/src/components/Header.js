@@ -1,10 +1,13 @@
 import React from 'react'
 import { Navbar, NavbarBrand, Container, NavItem, Nav } from 'reactstrap'
 import WisdomLogo from './logo.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 
 const Header = () => {
+  const location = useLocation();
+  const pagesWithChange = ['/patientDashboard', '/staffDashboard', '/adminDashboard'];
+  const textChange = pagesWithChange.includes(location.pathname) ? "Logout" : "Sign In";
   return (
     <div>
         <Navbar className='sticky-top navbar' dark sticky='top' expand='md' style={{color: "#7D9DB6"}}>
@@ -27,7 +30,7 @@ const Header = () => {
                         </NavItem>
                         <NavItem>
                           <NavLink className='nav-link' to='/login'>
-                            <button type="button" className='btn shadow rounded roboto-regular' >Sign In</button>
+                            <button type="button" className='btn shadow rounded roboto-regular' >{textChange}</button>
                           </NavLink>
                         </NavItem>
                     </Nav>
