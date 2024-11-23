@@ -15,6 +15,12 @@ import {
 
 export const PatientDashboard = () => {
   const [scheduleAppointmentModalOpen, setScheduleAppointmentModalOpen] = useState(false);
+  const [makePaymentModalOpen, setMakePaymentModalOpen] = useState(false);
+  const [viewTreatmentPlanModalOpen, setViewTreatmentPlanModalOpen] = useState(false);
+  const [viewXrayModalOpen, setViewXrayModalOpen] = useState(false);
+  const [viewDentalHistoryModalOpen, setViewDentalHistroyModalOpen] = useState(false);
+  const [viewDetailsModalOpen, setViewDetailsModalOpen] = useState(false);
+  const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -65,7 +71,16 @@ export const PatientDashboard = () => {
                     src={rectangle4138}
                   />*/}
 
-                  <div className="title-3">Upcoming Appointments</div>
+                  <button onClick={() => setUpcomingAppointmentsModalOpen(true)}>
+                    <div className="title-3">Upcoming Appointments</div>
+                  </button>
+
+                  <Modal isOpen={upcomingAppointemntsModalOpen}>
+                    <ModalHeader toggle ={() => setUpcomingAppointmentsModalOpen(false)}>Upcoming Appointments</ModalHeader>
+                    <ModalBody>
+                      No upcoming appointments at the moment
+                    </ModalBody>
+                  </Modal>
 
                   <div className="list">
                     <div className="row">
@@ -96,9 +111,10 @@ export const PatientDashboard = () => {
                 </div>
               </div>
 
-              <Button onClick={() => setScheduleAppointmentModalOpen(true)}>
-                <div className="title-4"> Schedule Appointment</div>
-              </Button>
+              <button className ="btn shadow rounded primary"
+                onClick={() => setScheduleAppointmentModalOpen(true)}>
+                  <div className="title-4"> Schedule Appointment</div>
+              </button>
 
               <Modal isOpen={scheduleAppointmentModalOpen}>
                 <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>Schedule Appointment</ModalHeader>
@@ -117,34 +133,79 @@ export const PatientDashboard = () => {
                 <div className="metric">
                   <div className="title-6">Total Fees</div>
 
-                  <div className="data">$75.00</div>
+                  <div className="data">$0.00</div>
                 </div>
               </div>
+                
+              
+              <button onClick={() => setViewDetailsModalOpen(true)}>
+                <div className="text-wrapper-3">View Details</div>
+              </button>
 
-              <div className="text-wrapper-3">View Details</div>
+              <Modal isOpen={viewDetailsModalOpen}>
+                <ModalHeader toggle={() => setViewDetailsModalOpen(false)}>Payment History</ModalHeader>
+                <ModalBody>
+                  No payment history at the moment
+                </ModalBody>
+              </Modal>
+
             </div>
 
-            <div className="overlap-wrapper">
-              <div className="div-wrapper">
+            <button className="btn shadow rounded overlap-wrapper"
+              onClick={() => setViewDentalHistroyModalOpen(true)}>
+              {/*<div className="div-wrapper">*/}
                 <div className="text-wrapper-4">View Dental History</div>
-              </div>
-            </div>
+              {/*</div>*/}
+            </button>
 
-            <div className="overlap-group-4">
+            <Modal isOpen={viewDentalHistoryModalOpen}>
+              <ModalHeader toggle={() => setViewDentalHistroyModalOpen(false)}>Dental History</ModalHeader>
+              <ModalBody>
+                No dental history at the moment
+              </ModalBody>
+            </Modal>
+
+            <button className="btn shadow rounded overlap-group-4"
+              onClick={() => setViewXrayModalOpen(true)}>
               <div className="text-wrapper-9">View X-Rays</div>
-            </div>
+            </button>
 
-            <div className="overlap-group-3">
-              <div className="text-wrapper-5">View Treatment Plan</div>
-            </div>
+            <Modal isOpen={viewXrayModalOpen}>
+              <ModalHeader toggle={() => setViewXrayModalOpen(false)}>X-ray</ModalHeader>
+              <ModalBody>
+                image
+              </ModalBody>
+            </Modal>
+
+            <button className="btn shadow rounded overlap-group-3"
+              onClick={() => setViewTreatmentPlanModalOpen(true)}>
+                <div className="text-wrapper-5">View Treatment Plan</div>
+            </button>
+
+            <Modal isOpen={viewTreatmentPlanModalOpen}>
+              <ModalHeader toggle={() => setViewTreatmentPlanModalOpen(false)}>Treatment Plan</ModalHeader>
+              <ModalBody>
+                No treatment plan at the moment
+              </ModalBody>
+            </Modal>
 
             {/*<img className="img" alt="Group" src={group19} />*/}
 
-            <button className="primary-wrapper">
-              <div className="title-wrapper">
-                <div className="title-4">Make Payment</div>
-              </div>
+            <button className="btn shadow rounded primary-wrapper"
+              onClick={() => setMakePaymentModalOpen(true)}>
+              {/*<div className="primary-wrapper">*/}
+                {/*<div className="title-wrapper">*/}
+                  <div className="title-4">Make Payment</div>
+                {/*</div>*/}
+              {/*</div>*/}
             </button>
+
+            <Modal isOpen={makePaymentModalOpen}>
+              <ModalHeader toggle={() => setMakePaymentModalOpen(false)}>Make Payment</ModalHeader>
+              <ModalBody>
+                test
+              </ModalBody>
+            </Modal>
           </div>
         </div>
 
