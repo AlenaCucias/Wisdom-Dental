@@ -3,7 +3,7 @@ import gspread
 from google_auth import get_client 
 from datetime import datetime
 from flask_cors import CORS
-import hashlib
+#import hashlib
 
 app = Flask (__name__)
 CORS(app, origins=["http://localhost:3000"])
