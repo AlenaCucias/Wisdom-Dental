@@ -33,7 +33,7 @@ def submit_feedback():
             return jsonify({'message': 'Comments must be a string'}), 400
     
         if not isinstance(contact_email, str):
-            return jsonify({'message': 'Contact email must be a string'}), 400
+            return jsonify({'message': 'Contact email mnust be a string'}), 400
     
         if patient_status not in ['Current Patient', 'Former Patient']:
             return jsonify({'message': 'Patient status must be "current" or "former"'}), 400
