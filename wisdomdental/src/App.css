@@ -2481,11 +2481,12 @@
 /*sidebar*/
 .patient-dashboard .overlap {
   /* background-image: url(./group-3.png); */
+  background-color: #7495af;
   background-size: 100% 100%;
   height: 1160px;
   left: 0;
   position: absolute;
-  top: -18px;
+  top: -110px;
   width: 220px;
 }
 
