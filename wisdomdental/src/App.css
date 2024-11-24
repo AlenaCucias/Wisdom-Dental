@@ -312,8 +312,8 @@
   gap: 9px;
   position: absolute;
   width: 529px;
-  height: 497.928px;
-  top: 198px;
+  height: 821px;
+  top: 36px;
   left: 800px;
   padding: 0 41px 70px 41px;
   background: #ffffff;
@@ -322,7 +322,7 @@
   overflow: hidden;
   border-radius: 44.203px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  max-height: 500px;
+  max-height: 821px;
   
 }
 .feedback-page-copy .section {
