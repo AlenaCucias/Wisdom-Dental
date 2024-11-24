@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from common import append_row
+from common import append_row, get_worksheet
 from datetime import datetime
 from flask_cors import CORS
 
@@ -72,5 +72,28 @@ def submit_feedback():
         except Exception as e:
             print(f"Error: {e}")
             return jsonify({'message': 'Failed to submit feedback', 'error': str(e)}), 500
+
+@app.route('/latest_reviews', methods=['GET'])
+def get_latest_reviews():
+    # Get the 'Feedback' worksheet
+    sheet = get_worksheet('Feedback')
+
+    # Fetch all values from the sheet (assuming reviews are in the format: ID, Name, Comment, Star Rating, Timestamp)
+    reviews = sheet.get_all_records()
+
+    # Check the keys (columns) of the first review to verify the column names
+    if reviews:
+        print("Column Names:", reviews[0].keys())  # This will print the columns from the first record
+
+    # Ensure reviews exist
+    if not reviews:
+        return jsonify({'message': 'No reviews found'}), 404
+
+    # Sort reviews by timestamp in descending order
+    sorted_reviews = sorted(reviews, key=lambda x: x['Date'], reverse=True)
+    
+    # Return the top 5 latest reviews
+    return jsonify(sorted_reviews[:2])
+
 if __name__ == '__main__':
     app.run(debug=True)

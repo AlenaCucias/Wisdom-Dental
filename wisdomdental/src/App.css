@@ -292,11 +292,12 @@
 /*end homepage*/
  /* Feedback Page*/
  .feedback-page-copy {
-  position: relative;
+  position: absolute;
   width: 1366px;
   height: 1837px;
   margin: 0 auto;
-  overflow: hidden auto;
+  overflow-x: hidden;  /* Prevent horizontal scrollbar */
+  overflow-y: auto; 
 }
 
 .feedback-page-copy .frame-2 {
@@ -315,6 +316,10 @@
   background: #ffffff;
   border: 4.42px solid #7d9db6;
   z-index: 76;
+  overflow: hidden;
+  border-radius: 44.203px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  max-height: 500px;
   
 }
 .feedback-page-copy .section {
@@ -328,13 +333,7 @@
 }
 
 .feedback-page-copy .container {
-  align-items: center;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 12px;
-  position: relative;
+  width: 100%;
 }
 .feedback-page-copy .title {
   display: flex;
@@ -426,6 +425,8 @@
   top: 0;
   left: 110px;
   z-index: 27;
+  width: 100%;
+  max-width: 1366px
 }
 .feedback-page-copy .container-2 {
   height: 106px;
@@ -942,17 +943,16 @@
 }
 */
 .feedback-page-copy .reviews {
-  align-self: stretch;
-  flex-shrink: 0;
-  position: relative;
-  min-width: 0;
-  height: 180px;
-  z-index: 77;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1; /* Allow reviews section to grow */
+  overflow-y: auto;
+  width: 100%;
 }
 
 .feedback-page-copy .container-3 {
-  position: absolute;
+  position: relative;
   width: 281.133px;
   height: 84.87px;
   margin: 47.74px 0 0 0.44px;
@@ -962,22 +962,20 @@
 }
 
 .feedback-page-copy .title-7 {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  display: block;
   position: relative;
-  height: 18px;
-  top: 5px;
-  left: 0;
-  margin-left: 40px;
+  height: 43px;
+  margin: 0 0 0 0;
   color: #000000;
   font-family: Roboto, var(--default-font-family);
-  font-size: 12.37691879272461px;
-  font-weight: 500;
-  line-height: 17.681px;
+  font-size: 35.36262512207031px;
+  font-weight: 700;
+  line-height: 42.435px;
   text-align: left;
   white-space: nowrap;
-  z-index: 87;
+  z-index: 79;
+  top:-38px;
+  left:45px;
 }
 
 .feedback-page-copy .p {
@@ -993,6 +991,7 @@
   text-align: left;
   white-space: nowrap;
   z-index: 80;
+  margin-top: 0px;
 }
 
 .feedback-page-copy .img {
@@ -1007,46 +1006,39 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  align-self: stretch;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  gap: 14px;
-  position: relative;
-  min-width: 0;
-  padding: 14px 20px 14px 20px;
+  padding: 14px 20px;
   background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  gap: 14px;
+  width: 100%;
+  max-width: 500px; /* Optional: Add max width for larger screens */
+  box-sizing: border-box;
   z-index: 82;
-  overflow: hidden;
-  border-radius: 5.304px;
+  transition: background 0.3s ease;
+  overflow: hidden; /* Prevent overflow */
+  margin: 0 auto;
 }
 
 .feedback-page-copy .user {
-  align-self: stretch;
-  flex-shrink: 0;
-  position: relative;
-  height: 28.29px;
-  z-index: 83;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%; /* Ensure it stretches the full width */
+  justify-content: flex-start;
 }
 
 .feedback-page-copy .avatar {
-  position: absolute;
-  width: 470.973px;
-  height: 28.29px;
-  top: 0;
-  left: 0;
-  z-index: 84;
+  width: 30px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
 }
 
 .feedback-page-copy .avatar-2 {
-  position: absolute;
-  width: 28.29px;
-  height: 28.29px;
-  top: 0;
-  left: 0;
+  width: 30px;
+  height: 30px;
   background: rgba(0, 0, 0, 0.1);
-  z-index: 85;
-  overflow: hidden;
-  border-radius: 28.29px
+  border-radius: 50%;
 }
 /*
 .feedback-page-copy .title-wrapper {
@@ -1058,47 +1050,50 @@
   z-index: 86;
 }
 */
+.feedback-page-copy .title-7 {
+  font-size: 16px;
+  font-weight: bold;
+}
 .feedback-page-copy .title-8 {
   align-self: stretch;
   flex-shrink: 0;
   flex-basis: auto;
   position: relative;
-  height: 22px;
   color: #000000;
   font-family: Roboto, var(--default-font-family);
-  font-size: 14.145050048828125px;
+  font-size: 12px;
   font-weight: 400;
-  line-height: 21.218px;
+  line-height: 1.2; /* Adjust line height */
   text-align: left;
-  white-space: nowrap;
+  white-space: normal; /* Allow wrapping */
   z-index: 88;
+  box-sizing: border-box;
+  min-width: 0;
+  word-wrap: break-word; /* Ensure words break */
+  overflow-wrap: break-word; /* Allow breaking long words */
+  max-height: none; /* Allow expanding vertically */
 }
-
+.feedback-page-copy .rating {
+  font-size: 16px; /* Increase font size */
+  margin-top: -10px;  /* Decrease margin-top to move it higher */
+  color: #444;
+}
 .feedback-page-copy .title-9 {
-  align-self: stretch;
-  color: #000000;
-  font-family: "Roboto-Regular", Helvetica;
-  font-size: 14.1px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 21.2px;
-  position: relative;
+  font-size: 12px;
+  color: #777;
 }
 .feedback-page-copy .title-10{
-  align-self: stretch;
-  color: #000000;
-  font-family: "Roboto-Regular", Helvetica;
-  font-size: 14.1px;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 21.2px;
-  position: relative;
+  width: 100%;
+  height: 2px;
+  background: #ddd;
+  margin-top: 12px;
 }
 
 .feedback-page-copy .frame-5 {
-  height: 8.67px;
-  position: relative;
-  width: 51.51px;
+  width: 100%;
+  height: 2px;
+  background: #ddd;
+  margin-top: 12px;
 }
 
 .feedback-page-copy .faq-section {

@@ -8,15 +8,32 @@ import RatingSelection from "../components/Ratingselection";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios'; // Import Axios
+import {useEffect} from "react";
 
 export const FeedbackPage = () => {
+  const [reviews, setReviews] = useState([]);
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [name, setName] = useState(""); // State for Name input
   const [email, setEmail] = useState(""); // State for Email input
   const [comments, setComments] = useState(""); // State for Comments input
   const [thankYouModalOpen, setThankYouModalOpen] = useState(false);
-
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/latest_reviews"); // Replace with your backend API
+      if (response.status === 200) {
+        setReviews(response.data);
+      } else {
+        console.error("Failed to fetch reviews:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+  // Fetch reviews on component mount
+    useEffect(() => {
+    fetchReviews();
+  }, []);
   // Handle input changes in FBUserInput
   const handleUserInputChange = (setter) => (value) => {
     setter(value);
@@ -149,51 +166,29 @@ export const FeedbackPage = () => {
               <div className="reviews">
                 <div className="container-3">
                   <div className="title-6">Latest Reviews</div>
-
                   <p className="p">See what others have said</p>
                 </div>
-
-                {/* <img className="img" alt="Vector" src={vector200} /> */}
-              </div>
-
-              <div className="card">
-                <div className="user">
-                  <div className="avatar">
+                {reviews.length > 0 ? (
+    reviews.map((review, index) => (
+        <div className="card" key={index}>
+            <div className="user">
+                <div className="avatar">
                     <div className="avatar-2" />
-
                     <div className="title-wrapper">
-                      <div className="title-7">John Doe</div>
+                        <div className="title-7">{review.Name || "Anonymous"}</div>
                     </div>
-                  </div>
                 </div>
-
-                <p className="title-8">
-                  Great service and friendly staff. Highly recommend!
-                </p>
-
-                {/* <img className="frame-3" alt="Frame" src={frame427318817} /> */}
-              </div>
-
-              <div className="card">
-                <div className="user">
-                  <div className="avatar">
-                    <div className="avatar-2" />
-
-                    <div className="title-wrapper">
-                      <div className="title-7">John Doe</div>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="title-8">
-                  Had a wonderful experience! Will definitely visit again.
-                </p>
-
-                {/* <img className="frame-3" alt="Frame" src={frame4273188172} /> */}
+            </div>
+            <p className="title-8">{review.Comments || "No comments"}</p>
+            <p className="rating">Rating: {review.Rating} ⭐</p>
+        </div>
+    ))
+) : (
+    <p>No reviews available.</p>
+)}
               </div>
             </div>
           </div>
-
           <div class="faq-section">
   <div class="frame-33">
     <div class="container-34">
