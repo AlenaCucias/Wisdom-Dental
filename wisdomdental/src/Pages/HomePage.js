@@ -130,7 +130,7 @@ const HomePage = () => {
       <Row className='align-items-stretch mt-5'>
         <div className="div-wrapper mt-5">
           <div className="rounded shadow">
-            <Link to="/about">
+            <Link to="/info">
               <button type='button' className='btn shadow rounded btn-lg title-wrapper title-5'>Learn More About Us!</button>
             </Link>
           </div>
