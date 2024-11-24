@@ -1,13 +1,7 @@
 import React from "react";
 import {useState} from 'react';
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  FormGroup,
-  Label,
-  Button,
-} from "reactstrap";
+import {Row, Col, FormGroup, Label, Modal, ModalHeader, ModalBody, Button} from "reactstrap";
+import { Formik, Field, Form } from "formik";
 //import { NavbarDesign } from "./NavbarDesign";
 //import group19 from "./group-19.png";
 //import rectangle4138 from "./rectangle-4138.svg";
@@ -21,6 +15,18 @@ export const PatientDashboard = () => {
   const [viewDentalHistoryModalOpen, setViewDentalHistroyModalOpen] = useState(false);
   const [viewDetailsModalOpen, setViewDetailsModalOpen] = useState(false);
   const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
+  const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
+  const handleSubmit = (values) => {
+    const paymentForm = {
+      cardNumber: values.cardNumber,
+      expirationDate: values.expirationDate,
+      cvv: values.cvv,
+      cardName: values.cardName
+    };
+    console.log(paymentForm);
+    setMakePaymentModalOpen(false);
+    setSuccessfulPaymentModalOpen(true);
+  }
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -75,7 +81,7 @@ export const PatientDashboard = () => {
                     <div className="title-3">Upcoming Appointments</div>
                   </button>
 
-                  <Modal isOpen={upcomingAppointemntsModalOpen}>
+                  <Modal isOpen={upcomingAppointemntsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
                     <ModalHeader toggle ={() => setUpcomingAppointmentsModalOpen(false)}>Upcoming Appointments</ModalHeader>
                     <ModalBody>
                       No upcoming appointments at the moment
@@ -116,7 +122,7 @@ export const PatientDashboard = () => {
                   <div className="title-4"> Schedule Appointment</div>
               </button>
 
-              <Modal isOpen={scheduleAppointmentModalOpen}>
+              <Modal isOpen={scheduleAppointmentModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
                 <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>Schedule Appointment</ModalHeader>
                 <ModalBody>
                   test
@@ -142,7 +148,7 @@ export const PatientDashboard = () => {
                 <div className="text-wrapper-3">View Details</div>
               </button>
 
-              <Modal isOpen={viewDetailsModalOpen}>
+              <Modal isOpen={viewDetailsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
                 <ModalHeader toggle={() => setViewDetailsModalOpen(false)}>Payment History</ModalHeader>
                 <ModalBody>
                   No payment history at the moment
@@ -158,10 +164,14 @@ export const PatientDashboard = () => {
               {/*</div>*/}
             </button>
 
-            <Modal isOpen={viewDentalHistoryModalOpen}>
+            <Modal isOpen={viewDentalHistoryModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
               <ModalHeader toggle={() => setViewDentalHistroyModalOpen(false)}>Dental History</ModalHeader>
               <ModalBody>
-                No dental history at the moment
+                <Row>
+                  <Col>Date</Col>
+                  <Col>Treatment</Col>
+                  <Col>Doctor</Col>
+                </Row>
               </ModalBody>
             </Modal>
 
@@ -170,7 +180,7 @@ export const PatientDashboard = () => {
               <div className="text-wrapper-9">View X-Rays</div>
             </button>
 
-            <Modal isOpen={viewXrayModalOpen}>
+            <Modal isOpen={viewXrayModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
               <ModalHeader toggle={() => setViewXrayModalOpen(false)}>X-ray</ModalHeader>
               <ModalBody>
                 image
@@ -182,7 +192,7 @@ export const PatientDashboard = () => {
                 <div className="text-wrapper-5">View Treatment Plan</div>
             </button>
 
-            <Modal isOpen={viewTreatmentPlanModalOpen}>
+            <Modal isOpen={viewTreatmentPlanModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
               <ModalHeader toggle={() => setViewTreatmentPlanModalOpen(false)}>Treatment Plan</ModalHeader>
               <ModalBody>
                 No treatment plan at the moment
@@ -200,12 +210,83 @@ export const PatientDashboard = () => {
               {/*</div>*/}
             </button>
 
-            <Modal isOpen={makePaymentModalOpen}>
+            <Modal isOpen={makePaymentModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
               <ModalHeader toggle={() => setMakePaymentModalOpen(false)}>Make Payment</ModalHeader>
               <ModalBody>
-                test
+                  <Formik 
+                    initialValues={{
+                      cardNumber: '',
+                      expirationDate: '',
+                      cvv: '',
+                      cardName: '',
+                    }}
+                    onSubmit={handleSubmit}>
+                      <Form>
+                        <Col className='mb-4'>
+                          <Row>
+                            <FormGroup>
+                              <Label htmlFor='cardNumber'>Card Number</Label>
+                              <Field
+                              id="cardNumber"
+                              name="cardNumber"
+                              placeholder="Enter card number"
+                              className="form-control"/>
+                            </FormGroup>
+                          </Row>
+                          
+                          <Row>
+                            <FormGroup>
+                              <Label htmFor='expirationDate'>Expiration Date</Label>
+                              <Field
+                              id="expirationDate"
+                              name="expirationDate"
+                              placeholder="Enter MM/YY"
+                              className="form-control"/>
+                            </FormGroup>
+                          </Row>
+
+                          <Row>
+                            <FormGroup>
+                              <Label htmFor='cvv'>CVV</Label>
+                              <Field
+                              id="cvv"
+                              name="cvv"
+                              placeholder="Enter CVV"
+                              className="form-control"/>
+                            </FormGroup>
+                          </Row>
+
+                          <Row>
+                            <FormGroup>
+                              <Label htmFor='cardName'>Name on card</Label>
+                              <Field
+                              id="cardName"
+                              name="cardName"
+                              placeholder="Enter name on card"
+                              className="form-control"/>
+                            </FormGroup>
+                          </Row>
+                        </Col>
+
+                        <Row className='col-6 mx-auto'>
+                          <Button
+                            className='btn rounded shadow'
+                            type='submit'>
+                              Pay Now
+                            </Button>
+                          </Row>
+                      </Form>
+                    </Formik>
               </ModalBody>
             </Modal>
+
+            <Modal isOpen={successfulPaymentModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
+              <ModalHeader toggle={() => setSuccessfulPaymentModalOpen(false)}>Thank you for your payment</ModalHeader>
+              <ModalBody>
+                Your transaction has been successfully processed
+              </ModalBody>
+            </Modal>
+
           </div>
         </div>
 
