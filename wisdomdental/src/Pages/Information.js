@@ -230,7 +230,7 @@ export const InformationPage = () => {
 
             <button className="primary-wrapper">
               <div className="primary">
-                <Link to='/feedback' className='fblink'> <div className="title-6">Feedback Page</div> </Link>
+                <Link to='/feedback' className='fblink' > <div className="title-6">Feedback Page</div> </Link>
               </div>
             </button>
             
