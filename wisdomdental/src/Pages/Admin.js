@@ -1,9 +1,7 @@
 import React from "react";
-// import group9 from "./group-9.png";
-// import group15 from "./group-15.png";
-// import "./style.css";
+import { useState } from "react";
+import { Modal, ModalHeader, ModalBody, FormGroup, Label, Button } from "reactstrap";
 
-// AdminPage component
 export const AdminPage = () => {
   return (
     <div className="admin-page">
@@ -11,21 +9,35 @@ export const AdminPage = () => {
         <div className="title">Admin Dashboard</div>
 
         <p className="description">
-          Welcome back, John! View and manage Patient and Staff Information
-          here.
+          Welcome back, John! View and manage Patient and Staff Information here.
         </p>
 
         <div className="rectangle" />
 
-        {/* <img className="group" alt="Group" src={group9} /> */}
-
-        {/* <img className="img" alt="Group" src={group15} /> */}
-
+        {/* Existing All Patient Records button */}
         <div className="group-wrapper">
-          <div className="overlap-group-wrapper">
-            <div className="overlap-group">
-              <div className="text-wrapper">All Patient Records</div>
+          <div className="overlap-group">
+            <div className="text-wrapper">
+              <button>All Patient Records</button>
             </div>
+          </div>
+        </div>
+
+        {/* New View Payroll Information button */}
+        <div className="group-wrapper">
+          <div className="overlap-group">
+            <div className="text-wrapper">
+              <button>View Payroll Information</button>
+              </div>
+          </div>
+        </div>
+
+        {/* New View Staff Performance button */}
+        <div className="group-wrapper">
+          <div className="overlap-group">
+            <div className="text-wrapper">
+              <button>View Staff Performance</button>
+              </div>
           </div>
         </div>
 
@@ -42,17 +54,12 @@ export const AdminPage = () => {
 
           <p className="email-johndoe-gmail">
             <span className="span">Email: </span>
-
             <span className="text-wrapper-2">
               johndoe@gmail.com
               <br />
               <br />
             </span>
-
-            <span className="span">
-              Phone Number: <br />
-            </span>
-
+            <span className="span">Phone Number: <br /></span>
             <span className="text-wrapper-2">+1(123) 456-7890</span>
           </p>
         </div>
@@ -61,7 +68,6 @@ export const AdminPage = () => {
   );
 };
 
-// Default export for Admin component
 const Admin = () => {
   return (
     <div>
