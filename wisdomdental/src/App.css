@@ -2436,15 +2436,16 @@
 .patient-dashboard .div {
   background-color: #ffffff;
   height: 1246px;
-  overflow: hidden;
-  position: relative;
+  /* overflow: hidden; */
+  /* position: relative; */
   width: 1366px;
 }
 
 .patient-dashboard .group {
   height: 1142px;
   left: 0;
-  position: absolute;
+  position: relative;
+  margin-left: -73.02px;
   top: 104px;
   width: 1440px;
 }
