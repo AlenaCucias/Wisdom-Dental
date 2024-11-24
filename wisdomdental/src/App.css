@@ -2840,9 +2840,9 @@
 
 .patient-dashboard .overlap-wrapper {
   height: 98px;
-  left: 308px;
+  left: 300px;
   position: absolute;
-  top: 819px;
+  top: 900px;
   width: 971px;
 }
 
@@ -2889,9 +2889,9 @@
   box-shadow: 0px 4px 4px #00000040;
   border-radius: 25px;
   height: 98px;
-  left: 308px;
+  left: 66px;
   position: relative;
-  top: 664px;
+  top: 735px;
   width: 969px;
 }
 .patient-dashboard .text-wrapper-9 {
@@ -2915,6 +2915,17 @@
   height: 98px;
   position: relative;
   width: 969px;
+}
+
+.patient-dashboard .overlap-group-3 {
+  background-color: #839cb4;
+  box-shadow: 0px 4px 4px #00000040;
+  border-radius: 25px;
+  height: 98px;
+  position: relative;
+  width: 969px;
+  top: 470px;
+  left: 65px;
 }
 
 .patient-dashboard .text-wrapper-5 {
