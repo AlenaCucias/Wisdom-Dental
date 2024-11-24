@@ -157,6 +157,9 @@
   line-height: 48px;
   position: relative;
 }
+.home-page .divider {
+  margin-top: -480.00px;
+}
 .home-page .list {  
   align-items: center;
   align-self: stretch;
