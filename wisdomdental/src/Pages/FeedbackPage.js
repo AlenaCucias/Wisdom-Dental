@@ -7,20 +7,9 @@ import FBUserInput from "../components/FBUserInput";
 import RatingSelection from "../components/Ratingselection";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-// import { ChevronDown } from "./ChevronDown";
-// import { ChevronUp } from "./ChevronUp";
-// import arrow2 from "./arrow-2.svg";
-// import frame4273188172 from "./frame-427318817-2.svg";
-// import frame427318817 from "./frame-427318817.svg";
-// import image from "./image.svg";
-// import "./style.css";
-// import vector200 from "./vector-200.svg";
-// import websiteIconPic1 from "./website-icon-pic-1.png";
+import axios from 'axios'; // Import Axios
+
 export const FeedbackPage = () => {
-  const handleFormSubmit = (formData) => {
-    console.log("Form Submitted:", formData);
-    // You can handle the form data here, like sending it to a server
-  };
   const [selectedRating, setSelectedRating] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [name, setName] = useState(""); // State for Name input
@@ -41,10 +30,43 @@ export const FeedbackPage = () => {
     setComments("");
   };
   // Handle form submission (just a placeholder function)
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setThankYouModalOpen(true); // Open Thank You modal
-    handleClear(); // Clear the form fields
+    console.log("Submit triggered");
+    // Validate form fields
+    if (!name || !comments || !selectedStatus || selectedRating === 0) {
+      alert("Please fill in all required fields and select a rating.");
+      return;
+    }
+
+    const formData = {
+      Name: name,
+      contact_email: email,
+      comments: comments,
+      patient_status: selectedStatus,
+      star_rating: selectedRating,
+    };
+    console.log("Submitting form data:", formData); 
+    try {
+      // Replace `http://127.0.0.1:5000/submit_feedback` with your backend API URL
+      const response = await axios.post('http://127.0.0.1:5000/submit_feedback', formData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    console.log("Response:", response); 
+    if (response.status === 201) {
+        setThankYouModalOpen(true);
+        handleClear(); 
+      } else {
+        console.error('Error:', response);
+        alert("Failed to submit feedback. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("An error occurred while submitting feedback.");
+    }
   };
   const [expandedIndex, setExpandedIndex] = useState(null); 
   const toggleAccordion = (index) => {

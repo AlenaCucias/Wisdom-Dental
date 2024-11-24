@@ -21,51 +21,7 @@ export const InformationPage = () => {
   return (
     <div className="information-page">
       <div className="page">
-        <div className="navbar-design">
-          <div className="back-button">
-            <div className="overlap-group">
-              <div className="frame">
-                <div className="ellipse" />
-              </div>
 
-              {/* <img className="arrow" alt="Arrow" src={arrow2} /> */}
-            </div>
-          </div>
-
-          <div className="navigation-pill-list">
-            <button className="button">
-              <div className="navigation-pill">
-                <div className="text-wrapper">Home</div>
-              </div>
-            </button>
-
-            <Link to="/information-page">
-              <button className="button">
-                <div className="navigation-pill">
-                  <div className="text-wrapper">About Us</div>
-                </div>
-              </button>
-            </Link>
-
-            <button className="button">
-              <div className="navigation-pill">
-                <div className="text-wrapper">Feedback/FAQs</div>
-              </div>
-            </button>
-
-            <button className="button">
-              <div className="navigation-pill">
-                <div className="text-wrapper">Sign in</div>
-              </div>
-            </button>
-          </div>
-
-          {/* <img
-            className="website-icon-pic"
-            alt="Website icon pic"
-            src={websiteIconPic1}
-          /> */}
-        </div>
 
         <div className="section">
           <div className="container">
@@ -110,13 +66,15 @@ export const InformationPage = () => {
             <div className="list">
               <div className="row">
                 <div className="article">
-                  {/* <img className="version" alt="Version" src={version1} /> */}
+                  <div className="image-container">
+                    {/* <img className="version" alt="Version" src={version1} /> */}
+                  </div>
 
                   <div className="frame-2">
                     <div className="title-3">Commitment to Excellence</div>
 
                     <p className="p">
-                      We are dedicated to delivering top-notch dental services
+                      We are dedicated to delivering top-notch dental services 
                       to our patients.
                     </p>
                   </div>
@@ -272,9 +230,10 @@ export const InformationPage = () => {
 
             <button className="primary-wrapper">
               <div className="primary">
-                <div className="title-6">Feedback Page</div>
+                <Link to='/feedback' className='fblink' > <div className="title-6">Feedback Page</div> </Link>
               </div>
             </button>
+            
           </div>
 
           {/* <img className="vector-3" alt="Vector" src={vector2003} /> */}
@@ -307,7 +266,7 @@ export const InformationPage = () => {
 
                       <div className="overlap-group-wrapper">
                         <div className="overlap-group-2">
-                          {/* <div className="title-9">Phone</div> */}
+                          { <div className="title-9">Phone</div> }
 
                           <div className="subtitle-2">+1(123) 456-7890</div>
                         </div>
