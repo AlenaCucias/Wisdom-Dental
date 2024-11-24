@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify
-import gspread
-from google_auth import get_client 
+from common import append_row
 from datetime import datetime
 from flask_cors import CORS
-#import hashlib
 
 app = Flask (__name__)
 CORS(app, origins=["http://localhost:3000"])
+
+# Handle OPTIONS preflight requests
+@app.before_request
+def handle_options():
+    if request.method == "OPTIONS":
+        return '', 200
 
 @app.route('/submit_feedback', methods=['POST'])
 #Endpoint to submit feedback
@@ -25,22 +29,22 @@ def submit_feedback():
         print(f"Star Rating Type: {type(star_rating)}, Value: {star_rating}")
         if not patient_name or not comments:
             return jsonify({'message': 'Patient name and comments are required'}), 400
-    
+
         if not isinstance(patient_name, str):
             return jsonify({'message': 'Patient name must be a string'}), 400
-    
+
         if not isinstance(comments, str):
             return jsonify({'message': 'Comments must be a string'}), 400
-    
+
         if not isinstance(contact_email, str):
             return jsonify({'message': 'Contact email must be a string'}), 400
-    
+
         if patient_status not in ['Current Patient', 'Former Patient']:
             return jsonify({'message': 'Patient status must be "current" or "former"'}), 400
 
         if not isinstance(patient_status, str):
             return jsonify({'message': 'Patient status must be a string'}), 400
-    
+
         if not isinstance(star_rating, int):
             return jsonify({'message': 'Star rating must be an integer'}), 400
 
@@ -49,16 +53,11 @@ def submit_feedback():
 
 
         try:
-            client = get_client()
-            sheet = client.open('WisdomDB').worksheet('Feedback')
-            current_date = datetime.now().strftime('%m/%d/%Y')
-
-        # Generate a unique feedback ID
-            feedback_id = hashlib.sha256((patient_name + current_date).encode()).hexdigest()[:8]
+        # Get today's date
+            current_date = datetime.now().strftime('%m-%d-%Y')
 
         # Prepare row data
             row = [
-                feedback_id,  # Feedback ID
                 patient_name,
                 contact_email,
                 comments,
@@ -67,7 +66,7 @@ def submit_feedback():
                 current_date
             ]
         # Append the row to the Google Sheet
-            sheet.append_row(row)
+            append_row("Feedback", row)
             return jsonify({'message': 'Feedback submitted successfully'}), 201
 
         except Exception as e:
