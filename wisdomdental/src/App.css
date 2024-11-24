@@ -2461,7 +2461,7 @@
   letter-spacing: 0;
   line-height: 36px;
   position: absolute;
-  top: 55px;
+  top: -50px;
   white-space: nowrap;
 }
 
@@ -2474,7 +2474,7 @@
   letter-spacing: 0;
   line-height: 24px;
   position: absolute;
-  top: 119px;
+  top: 5px;
   white-space: nowrap;
 }
 
