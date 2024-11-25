@@ -179,38 +179,42 @@ export const PatientDashboard = () => {
         className="btn shadow rounded primary"
         onClick={() => setScheduleAppointmentModalOpen(true)}
       >
-        <div className="title-4">Schedule Appointment</div>
-      </button>
+       className="btn shadow rounded primary"
+onClick={() => setScheduleAppointmentModalOpen(true)}
 
-      <Modal
-        isOpen={scheduleAppointmentModalOpen}
-        className="modal-dialog modal-dialog-centered modal-lg"
-      >
-        <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
-          Schedule Appointment
-        </ModalHeader>
-        <ModalBody>
-          {Object.keys(appointments).length > 0 ? (
-            Object.keys(appointments).map((date) => (
-              <div key={date}>
-                <p>{date}</p>
-                <ul>
-                  {appointments[date].map((time, index) => (
-                    <li key={index}>
-                      <button
-                        className="btn shadow rounded primary"
-                        onClick={() => handleTimeSlotClick(date, time)}
-                      >
-                        {time}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          ) : (
-            <p>No available appointments at the moment</p>
-          )}
+  <div className="title-4">Schedule Appointment</div>
+</button>
+
+<Modal
+  isOpen={scheduleAppointmentModalOpen}
+  className="modal-dialog modal-dialog-centered modal-lg"
+>
+  <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
+    Schedule Appointment
+  </ModalHeader>
+  <ModalBody>
+    {Object.keys(appointments).length > 0 ? (
+      Object.keys(appointments).map((date) => (
+        <div key={date}>
+          <p>{date}</p>
+          <ul>
+            {/* Filter out duplicates by converting to a Set and back to an array */}
+            {Array.from(new Set(appointments[date])).map((time, index) => (
+              <li key={index}>
+                <button
+                  className="btn shadow rounded primary"
+                  onClick={() => handleTimeSlotClick(date, time)}
+                >
+                  {time}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    ) : (
+      <p>No available appointments at the moment</p>
+    )}
 
           {/* Input for the reason */}
           <div>
