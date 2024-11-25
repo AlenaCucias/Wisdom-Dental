@@ -16,6 +16,7 @@ export const PatientDashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [user, setUser] = useState(null);
   const [reason, setReason] = useState(''); // State to capture the reason
+  const [reasonModalOpen, setReasonModalOpen] = useState(false);
 
 
   //used to fetch availabe appointments
@@ -36,6 +37,12 @@ export const PatientDashboard = () => {
   useEffect(() => {
     fetchAppointments();
   }, [])
+
+  //Closes schedule appointment modal and opens state reason modal
+  const openReason = () => {
+    setScheduleAppointmentModalOpen(false);
+    setReasonModalOpen(true);
+  }
   
   const handleSubmit = async (values) => {
     const paymentForm = {
@@ -176,54 +183,71 @@ export const PatientDashboard = () => {
                 </div>
               </div>
               <button
-        className="btn shadow rounded primary"
-        onClick={() => setScheduleAppointmentModalOpen(true)}
-      >
-        <div className="title-4">Schedule Appointment</div>
-      </button>
+                className="btn shadow rounded primary"
+                onClick={() => setScheduleAppointmentModalOpen(true)}
+              >
+                <div className="title-4">Schedule Appointment</div>
+              </button>
 
-      <Modal
-        isOpen={scheduleAppointmentModalOpen}
-        className="modal-dialog modal-dialog-centered modal-lg"
-      >
-        <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
-          Schedule Appointment
-        </ModalHeader>
-        <ModalBody>
-          {Object.keys(appointments).length > 0 ? (
-            Object.keys(appointments).map((date) => (
-              <div key={date}>
-                <p>{date}</p>
-                <ul>
-                  {appointments[date].map((time, index) => (
-                    <li key={index}>
-                      <button
-                        className="btn shadow rounded primary"
-                        onClick={() => handleTimeSlotClick(date, time)}
-                      >
-                        {time}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          ) : (
-            <p>No available appointments at the moment</p>
-          )}
+              <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-md">
+                <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
+                  Schedule Appointment
+                </ModalHeader>
+                <ModalBody>
+                  {Object.keys(appointments).length > 0 ? (
+                  Object.keys(appointments).map((date) => (
+                  <div key={date}>
+                    <p>{date}</p>
+                      <ul style={{ listStyleType: 'none', padding: 0 }}>
+                        {appointments[date].map((time, index) => (
+                        <li key={index} style={{ marginBottom: '10px'}}>
+                          <button
+                            className="btn shadow rounded primary"
+                            onClick={() => handleTimeSlotClick(date, time)}>
+                              {time}
+                          </button>
+                        </li>
+                        ))}
+                      </ul>
+                  </div>
+                  ))
+                  ) : (
+                    <p>No available appointments at the moment</p>
+                  )}
 
-          {/* Input for the reason */}
-          <div>
-            <label htmlFor="reason">Reason for Appointment:</label>
-            <textarea
-              id="reason"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Enter reason for visit"
-            />
-          </div>
-        </ModalBody>
-      </Modal>
+                  <Row className='col-6 mx-auto'>
+                    <Button className='btn rounded shadow' onClick={openReason}
+                      type='submit'>
+                      Next
+                    </Button>
+                  </Row>
+                </ModalBody>
+              </Modal>
+
+              <Modal isOpen={reasonModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
+                <ModalHeader toggle={() => setReasonModalOpen(false)}>Schedule Appointment</ModalHeader>
+                <ModalBody>
+                   {/* Input for the reason */}
+                  <Row>
+                    <Label htmlFor="reason" style={{ display: 'block', textAlign: 'center', width: '100%' }}> 
+                    Provide a brief description to help the medical staff prepare for your appointment</Label>
+                    <textarea
+                      id="reason"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      placeholder="Enter reason for visit" 
+                      style={{ width: '80%', height: '150px', margin: '0 auto'}}
+                      />
+                  </Row>
+                  <Row className='col-6 mx-auto'>
+                    <Button onClick={() => setReasonModalOpen(false)}
+                      className='btn rounded shadow'
+                      type='submit'>
+                      Confirm Appointment
+                    </Button>
+                  </Row>
+                </ModalBody>
+              </Modal>
 
               <div className="group-3" />
             </div>
@@ -239,15 +263,9 @@ export const PatientDashboard = () => {
                 </div>
               </div>
                 
-              
               <button onClick={() => setViewDetailsModalOpen(true)}>
                 <div className="text-wrapper-3">View Details</div>
               </button>
-             
-                    
-
-                  
-  
             </div>
 
             <button className="btn shadow rounded overlap-wrapper"
