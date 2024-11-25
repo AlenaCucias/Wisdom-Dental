@@ -178,7 +178,7 @@ def update_payments(user):
     return f"Payments updated"
 
 # ADDED
-@app.route('/api/appointments', methods=['GET'])
+@app.route('/appointments', methods=['GET'])
 def get_available_appointments():
     """
     Get available appointments for a user to view.
