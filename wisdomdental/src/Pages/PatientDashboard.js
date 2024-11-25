@@ -18,7 +18,7 @@ export const PatientDashboard = () => {
   //used to fetch availabe appointments
   const fetchAppointments = async () => {
     try{
-      const response = await axios.get('http://localhost:3000/api/appointments');
+      const response = await axios.get('http://127.0.0.1:5000/appointments');
       if (response.status === 200) {
         console.log(response.data);
         setAppointments(response.data);

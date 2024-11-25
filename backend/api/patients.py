@@ -1,6 +1,6 @@
 # patients.py
 from flask import Flask, request, jsonify
-from common import get_worksheet, hash_password, append_row, extract
+from backend.api.common import get_worksheet, hash_password, append_row, extract
 from datetime import datetime
 from collections import defaultdict
 from flask_cors import CORS
@@ -178,7 +178,7 @@ def update_payments(user):
     return f"Payments updated"
 
 # ADDED
-@app.route('/api/appointments', methods=['GET'])
+@app.route('/appointments', methods=['GET'])
 def get_available_appointments():
     """
     Get available appointments for a user to view.
@@ -316,5 +316,3 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
 
     # If no available slots were found
     return "Not able to reschedule your appointment."
-
-
