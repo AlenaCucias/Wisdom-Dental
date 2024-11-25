@@ -1656,6 +1656,17 @@
   display: inline-block;
 }
 
+button {
+  background-color: #839cb4;
+  color: white;
+  border: none;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 15px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
 button:hover {
   background-color: #607d8b;
 }
