@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"])
-@app.route('/get_all_patients', methods=['POST'])
+
 def get_all_patients():
     """
     Retrieves all records from the 'Patient' sheet.
@@ -18,7 +18,6 @@ def get_all_patients():
     """
     sheet = get_worksheet("Patient")
     return sheet.get_all_records()
-@app.route('/add_patient', methods=['POST'])
 
 def add_patient(patient_data):
     """
@@ -29,47 +28,26 @@ def add_patient(patient_data):
     """
     append_row("Patient", patient_data)
 
-
-@app.route('/authenticate_patient', methods=['POST'])
-def authenticate_patient():
+def authenticate_patient(email, password):
     """
     Authenticates a patient by checking their email and password against the stored records.
 
     Args:
-        None (request JSON is expected)
+        email (str): The email address of the patient to be authenticated.
+        password (str): The password provided by the patient to be verified.
 
     Returns:
-        JSON: A response indicating whether authentication was successful or not, with an optional user record.
+        tuple: A tuple containing:
+            - bool: True if the email and password match a patient record, False otherwise.
+            - dict or None: The patient's record if authentication is successful, None if authentication fails.
     """
-    try:
-        data = request.json  # Get the incoming JSON data
-        email = data.get('email')
-        password = data.get('password')
+    sheet = get_worksheet("Patient")
+    data = sheet.get_all_records()
+    hashed_password = hash_password(password)
 
-        if not email or not password:
-            return jsonify({"error": "Email and password are required"}), 400
+    user = next((row for row in data if row["Email"] == email and row["Password"] == hashed_password), None)
 
-        sheet = get_worksheet("Patient")
-        patient_data = sheet.get_all_records()
-
-        # Hash the password to compare with the stored hash
-        hashed_password = hash_password(password)
-
-        # Check if a matching record exists
-        user = next(
-            (row for row in patient_data if row["Email"] == email and row["Password"] == hashed_password),
-            None
-        )
-
-        if user:
-            # Return success with user data
-            return jsonify({"success": True, "user": user}), 200
-        else:
-            # Return failure message
-            return jsonify({"success": False, "error": "Invalid email or password"}), 401
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return bool(user), user
 
 def get_treatment_plan(user):
     """
