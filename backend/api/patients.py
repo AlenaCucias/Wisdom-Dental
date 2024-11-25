@@ -1,6 +1,7 @@
 # patients.py
 from flask import Flask, request, jsonify
 from common import get_worksheet, hash_password, append_row, extract
+from feedback import submit_feedback, get_latest_reviews
 from datetime import datetime
 from collections import defaultdict
 from flask_cors import CORS
@@ -82,8 +83,6 @@ def get_treatment_plan(user):
     """
     treatment_plan = user["Treatment Plan"]
     return treatment_plan
-
-
 
 def dental_history(user):
     """
@@ -202,71 +201,70 @@ def update_payments(user):
 @app.route('/get_available_appointments', methods=['GET'])
 def get_available_appointments():
     """
-    Get available appointments for a user to view.
-
-    This function retrieves all available appointments that are not booked, grouped by date,
-    with times sorted in ascending order and duplicates removed.
+    Get all available appointment slots with corresponding dates and times.
 
     Returns:
-        list of tuples: Each tuple contains:
-            - str: The date in "MM-DD-YYYY" format.
-            - list of str: A list of unique, sorted times (in "HH:MM:SS AM/PM" format) available on that date.
+        JSON response: A list of dates and their available time slots.
     """
-    # Filter Appointments table to only those that are not booked
-    sheet = get_worksheet("Appointments")
-    data = sheet.get_all_records()
-    today = datetime.today().date()
+    try:
+        sheet = get_worksheet("Appointments")
+        data = sheet.get_all_records()
+    except Exception as e:
+        return jsonify({"error": f"Error accessing appointment records: {str(e)}"}), 500
 
-    # Group available times by date, ensuring the date is in the future
-    grouped_appointments = defaultdict(list)
+    available_slots = {}
+
+    # Loop through all rows to find available time slots
     for row in data:
-        if not row["Patient ID"] and not row["Treatment ID"]:
-            appointment_date = datetime.strptime(row["Date"], "%m-%d-%Y").date()
-            if appointment_date > today:
-                grouped_appointments[row["Date"]].append(row["Time"])
+        if not row["Patient ID"] and not row["Treatment ID"]:  # Available if no patient or treatment is assigned
+            date = row["Date"]
+            time = row["Time"]
+            if date not in available_slots:
+                available_slots[date] = []  # Initialize list for a new date
+            available_slots[date].append(time)
 
-    # Process each date's times to remove duplicates and sort them
-    sorted_appointments = [
-        (date, sorted(set(times), key=lambda t: datetime.strptime(t, "%I:%M:%S %p")))
-        for date, times in grouped_appointments.items()
-    ]
+    if available_slots:
+        # Sort the available time slots for each date
+        for date in available_slots:
+            available_slots[date].sort()  # Sorting times to display in order
 
-    # ADDED the jsonify
-    return jsonify(sorted_appointments)
+        return jsonify({"available_slots": available_slots}), 200
+    else:
+        return jsonify({"message": "No available appointment slots at the moment."}), 404
 
-# ADDED
-if __name__ == '__main__':
-    app.run(debug=True)
-
+@app.route('/book_appointment', methods=['POST'])
 def book_appointment(user, date, time, notes):
     """
     Book an appointment for a user.
 
     Parameters:
-        user (str): A dictionary containing user information, including the "Patient ID".
-        date (str): The date of the appointment (format: "MM-DD-YYYY").
-        time (str): The time of the appointment (format: "HH:MM:SS AM/PM").
-        notes (str): Any comments the user would like to add to the appointment.
+        - user (dict): The dictionary containing user information, including the "Patient ID".
+        - date (str): The date of the appointment (format: "MM-DD-YYYY").
+        - time (str): The time of the appointment (format: "HH:MM:SS AM/PM").
+        - notes (str): Any comments the user would like to add to the appointment.
 
     Returns:
         str: A success message or an error message if the appointment could not be booked.
     """
-    # Get the worksheet and all records
-    sheet = get_worksheet("Appointments")
-    data = sheet.get_all_records()
+    # Get the incoming JSON request
+    data = request.json
+    
+    # Extract values from the request
+    patient_id = data.get("Patient_id")
+    treatment_id = data.get("treatment_id")
+    doctor_id = data.get("doctor_id")
+    date = data.get("date")
+    time = data.get("time")
+    notes = data.get("notes", "")
 
-    # Loop through all rows to find an available slot for the specified date and time
-    for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Date"] == date and row["Time"] == time:
-            if not row["Patient ID"] and not row["Treatment ID"]:  # Check if slot is unbooked
-                # Book the appointment
-                sheet.update(f"B{i}", [[user["Patient ID"]]])  # Patient ID is in column B
-                sheet.update(f"G{i}", [[notes]])  # Notes are in column G
-                return f"Appointment booked successfully for {date} at {time}."
+    if not all([patient_id, treatment_id, doctor_id, date, time]):
+        return jsonify({"error": "Missing required fields"}), 400
 
-    # If no available slots were found
-    return "No available appointment slots for the specified date and time."
-
+    result = add_appointment_to_sheet(patient_id, treatment_id, doctor_id, date, time, notes)
+    if result:
+        return jsonify({"message": "Appointment booked successfully"}), 200
+    else:
+        return jsonify({"error": "Failed to book appointment"}), 500
 
 def cancel_appointment(user, date, time):
     """
@@ -337,3 +335,6 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
 
     # If no available slots were found
     return "Not able to reschedule your appointment."
+
+if __name__ == '__main__':
+    app.run(debug=True)

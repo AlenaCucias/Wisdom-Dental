@@ -15,18 +15,20 @@ export const PatientDashboard = () => {
   const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [user, setUser] = useState(null);
+  const [reason, setReason] = useState(''); // State to capture the reason
+
 
   //used to fetch availabe appointments
   const fetchAppointments = async () => {
-    try{
+    try {
       const response = await axios.get('http://127.0.0.1:5000/get_available_appointments');
       if (response.status === 200) {
         console.log(response.data);
-        setAppointments(response.data);
+        setAppointments(response.data.available_slots); // Assuming the response is in { available_slots: {...} } format
       } else {
-        console.error("Failed to fetch reviews:", response);
+        console.error("Failed to fetch appointments:", response);
       }
-    }catch(error) {
+    } catch (error) {
       console.error("Error fetching appointments:", error);
     }
   };
@@ -47,9 +49,48 @@ export const PatientDashboard = () => {
       setMakePaymentModalOpen(false);
       setSuccessfulPaymentModalOpen(true);
   };
-
+  const handleTimeSlotClick = (date, time) => {
+    const userConfirmed = window.confirm(`Are you sure you want to book the appointment for ${date} at ${time}?`);
   
-
+    if (userConfirmed) {
+      // Proceed to send the reason and book the appointment
+      bookAppointment(date, time, reason)
+        .then(response => {
+          alert(`Appointment booked successfully for ${date} at ${time}.`);
+          setScheduleAppointmentModalOpen(false); // Close the modal after booking
+          setReason(''); // Reset the reason input field
+        })
+        .catch(error => {
+          alert('Error booking the appointment. Please try again later.');
+        });
+    }
+  };
+  const bookAppointment = (date, time, reason) => {
+  return fetch('/book_appointment', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      user:  // Add patient info here
+      date,
+      time,
+      notes: reason,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Appointment booked for ${date} at ${time}`);
+      return `Appointment booked successfully`;
+    } else {
+      throw new Error(data.message || 'Booking failed');
+    }
+  })
+  .catch(error => {
+    alert(`Error booking appointment: ${error.message}`);
+  });
+};
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -118,6 +159,7 @@ export const PatientDashboard = () => {
                           <div className="subtitle">Dental Cleaning</div>
                         </div>
                       </div>
+
                       <div className="item">
                         <div className="frame-2">
                           <p className="p">
@@ -125,6 +167,7 @@ export const PatientDashboard = () => {
                             October 18
                             <br /> 2 PM
                           </p>
+
                           <div className="subtitle">Consultation</div>
                         </div>
                       </div>
@@ -132,25 +175,55 @@ export const PatientDashboard = () => {
                   </div>
                 </div>
               </div>
+              <button
+        className="btn shadow rounded primary"
+        onClick={() => setScheduleAppointmentModalOpen(true)}
+      >
+        <div className="title-4">Schedule Appointment</div>
+      </button>
 
-              <button className ="btn shadow rounded primary"
-                onClick={() => setScheduleAppointmentModalOpen(true)}>
-                  <div className="title-4"> Schedule Appointment</div>
-              </button>
+      <Modal
+        isOpen={scheduleAppointmentModalOpen}
+        className="modal-dialog modal-dialog-centered modal-lg"
+      >
+        <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
+          Schedule Appointment
+        </ModalHeader>
+        <ModalBody>
+          {Object.keys(appointments).length > 0 ? (
+            Object.keys(appointments).map((date) => (
+              <div key={date}>
+                <p>{date}</p>
+                <ul>
+                  {appointments[date].map((time, index) => (
+                    <li key={index}>
+                      <button
+                        className="btn shadow rounded primary"
+                        onClick={() => handleTimeSlotClick(date, time)}
+                      >
+                        {time}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <p>No available appointments at the moment</p>
+          )}
 
-              <Modal isOpen={scheduleAppointmentModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
-                <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>Schedule Appointment</ModalHeader>
-                <ModalBody>
-                  {appointments.length > 0 ? appointments.map((appointment,index) => (
-                    <div key={index}>
-                      <p>{appointment[0]}</p>
-                      <ul>
-                        {appointment[1].map(time => <li key={time}>{time}</li>)}
-                      </ul>
-                    </div>
-                  )) : 'No availabe appointments at the moment'}
-                </ModalBody>
-              </Modal>
+          {/* Input for the reason */}
+          <div>
+            <label htmlFor="reason">Reason for Appointment:</label>
+            <textarea
+              id="reason"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Enter reason for visit"
+            />
+          </div>
+        </ModalBody>
+      </Modal>
 
               <div className="group-3" />
             </div>
@@ -170,14 +243,11 @@ export const PatientDashboard = () => {
               <button onClick={() => setViewDetailsModalOpen(true)}>
                 <div className="text-wrapper-3">View Details</div>
               </button>
+             
+                    
 
-              <Modal isOpen={viewDetailsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
-                <ModalHeader toggle={() => setViewDetailsModalOpen(false)}>Payment History</ModalHeader>
-                <ModalBody>
-                  No payment history at the moment
-                </ModalBody>
-              </Modal>
-
+                  
+  
             </div>
 
             <button className="btn shadow rounded overlap-wrapper"
@@ -253,7 +323,7 @@ export const PatientDashboard = () => {
                           
                           <Row>
                             <FormGroup>
-                              <Label htmlFor='expirationDate'>Expiration Date</Label>
+                              <Label htmFor='expirationDate'>Expiration Date</Label>
                               <Field
                               id="expirationDate"
                               name="expirationDate"
@@ -264,7 +334,7 @@ export const PatientDashboard = () => {
 
                           <Row>
                             <FormGroup>
-                              <Label htmlFor='cvv'>CVV</Label>
+                              <Label htmFor='cvv'>CVV</Label>
                               <Field
                               id="cvv"
                               name="cvv"
@@ -275,7 +345,7 @@ export const PatientDashboard = () => {
 
                           <Row>
                             <FormGroup>
-                              <Label htmlFor='cardName'>Name on card</Label>
+                              <Label htmFor='cardName'>Name on card</Label>
                               <Field
                               id="cardName"
                               name="cardName"

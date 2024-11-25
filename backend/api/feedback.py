@@ -73,7 +73,7 @@ def submit_feedback():
             print(f"Error: {e}")
             return jsonify({'message': 'Failed to submit feedback', 'error': str(e)}), 500
 
-@app.route('/latest_reviews', methods=['GET'])
+@app.route('/get_latest_reviews', methods=['GET'])
 def get_latest_reviews():
     # Get the 'Feedback' worksheet
     sheet = get_worksheet('Feedback')

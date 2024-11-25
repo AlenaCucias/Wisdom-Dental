@@ -20,7 +20,7 @@ export const FeedbackPage = () => {
   const [thankYouModalOpen, setThankYouModalOpen] = useState(false);
   const fetchReviews = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/latest_reviews"); // Replace with your backend API
+      const response = await axios.get("http://127.0.0.1:5000/get_latest_reviews"); // Replace with your backend API
       if (response.status === 200) {
         setReviews(response.data);
       } else {
