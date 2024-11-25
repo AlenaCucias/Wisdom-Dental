@@ -1,7 +1,12 @@
 # patients.py
-from backend.api.common import get_worksheet, hash_password, append_row, extract
+from flask import Flask, request, jsonify
+from common import get_worksheet, hash_password, append_row, extract
 from datetime import datetime
 from collections import defaultdict
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app, origins=["http://localhost:3000"])
 
 def get_all_patients():
     """
@@ -144,7 +149,6 @@ def get_total_cost(user):
     total_cost = sum(row[2] for row in data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
     return total_cost
 
-
 def update_payments(user):
     """
     Updates payment status for a user and appends the payment details to the Payments sheet.
@@ -173,6 +177,8 @@ def update_payments(user):
     append_row("Payments", payment_data)
     return f"Payments updated"
 
+# ADDED
+@app.route('/api/appointments', methods=['GET'])
 def get_available_appointments():
     """
     Get available appointments for a user to view.
@@ -204,7 +210,12 @@ def get_available_appointments():
         for date, times in grouped_appointments.items()
     ]
 
-    return sorted_appointments
+    # ADDED the jsonify
+    return jsonify(sorted_appointments)
+
+# ADDED
+if __name__ == '__main__':
+    app.run(debug=True)
 
 def book_appointment(user, date, time, notes):
     """
@@ -305,3 +316,5 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
 
     # If no available slots were found
     return "Not able to reschedule your appointment."
+
+

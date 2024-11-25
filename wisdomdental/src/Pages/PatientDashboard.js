@@ -1,11 +1,8 @@
 import React from "react";
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Row, Col, FormGroup, Label, Modal, ModalHeader, ModalBody, Button} from "reactstrap";
 import { Formik, Field, Form } from "formik";
-//import { NavbarDesign } from "./NavbarDesign";
-//import group19 from "./group-19.png";
-//import rectangle4138 from "./rectangle-4138.svg";
-//import "./style.css";
+import axios from 'axios';
 
 export const PatientDashboard = () => {
   const [scheduleAppointmentModalOpen, setScheduleAppointmentModalOpen] = useState(false);
@@ -16,17 +13,40 @@ export const PatientDashboard = () => {
   const [viewDetailsModalOpen, setViewDetailsModalOpen] = useState(false);
   const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
-  const handleSubmit = (values) => {
+  const [appointments, setAppointments] = useState([]);
+
+  //used to fetch availabe appointments
+  const fetchAppointments = async () => {
+    try{
+      const response = await axios.get('http://localhost:3000/api/appointments');
+      if (response.status === 200) {
+        console.log(response.data);
+        setAppointments(response.data);
+      } else {
+        console.error("Failed to fetch reviews:", response);
+      }
+    }catch(error) {
+      console.error("Error fetching appointments:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [])
+  
+  const handleSubmit = async (values) => {
     const paymentForm = {
       cardNumber: values.cardNumber,
       expirationDate: values.expirationDate,
       cvv: values.cvv,
       cardName: values.cardName
-    };
-    console.log(paymentForm);
-    setMakePaymentModalOpen(false);
-    setSuccessfulPaymentModalOpen(true);
-  }
+    }
+      console.log(paymentForm);
+      //Close the payment modal and open the success modal
+      setMakePaymentModalOpen(false);
+      setSuccessfulPaymentModalOpen(true);
+  };
+
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -71,11 +91,6 @@ export const PatientDashboard = () => {
             <div className="overlap-2">
               <div className="overlap-group-wrapper">
                 <div className="overlap-group-2">
-                  {/*<img
-                    className="rectangle"
-                    alt="Rectangle"
-                    src={rectangle4138}
-                  />*/}
 
                   <button onClick={() => setUpcomingAppointmentsModalOpen(true)}>
                     <div className="title-3">Upcoming Appointments</div>
@@ -125,7 +140,14 @@ export const PatientDashboard = () => {
               <Modal isOpen={scheduleAppointmentModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
                 <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>Schedule Appointment</ModalHeader>
                 <ModalBody>
-                  test
+                  {appointments.length > 0 ? appointments.map((appointment,index) => (
+                    <div key={index}>
+                      <p>{appointment[0]}</p>
+                      <ul>
+                        {appointment[1].map(time => <li key={time}>{time}</li>)}
+                      </ul>
+                    </div>
+                  )) : 'No availabe appointments at the moment'}
                 </ModalBody>
               </Modal>
 
@@ -159,9 +181,7 @@ export const PatientDashboard = () => {
 
             <button className="btn shadow rounded overlap-wrapper"
               onClick={() => setViewDentalHistroyModalOpen(true)}>
-              {/*<div className="div-wrapper">*/}
                 <div className="text-wrapper-4">View Dental History</div>
-              {/*</div>*/}
             </button>
 
             <Modal isOpen={viewDentalHistoryModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
@@ -203,11 +223,7 @@ export const PatientDashboard = () => {
 
             <button className="btn shadow rounded primary-wrapper"
               onClick={() => setMakePaymentModalOpen(true)}>
-              {/*<div className="primary-wrapper">*/}
-                {/*<div className="title-wrapper">*/}
-                  <div className="title-4">Make Payment</div>
-                {/*</div>*/}
-              {/*</div>*/}
+                <div className="title-4">Make Payment</div>
             </button>
 
             <Modal isOpen={makePaymentModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
@@ -289,13 +305,6 @@ export const PatientDashboard = () => {
 
           </div>
         </div>
-
-        {/*<NavbarDesign
-          arrow="image.svg"
-          buttonNavigationPillLabel="Logout"
-          className="navbar-design-2-final-for-now"
-          websiteIconPic="image.png"
-        />*/}
       </div>
     </div>
   );
