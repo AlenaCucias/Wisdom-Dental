@@ -1656,6 +1656,25 @@
   display: inline-block;
 }
 
+button:hover {
+  background-color: #607d8b;
+}
+
+.modal-content {
+  background-color: #f0f4f7;
+}
+
+.modal-header {
+  background-color: #839cb4;
+  color: white;
+  font-weight: bold;
+}
+
+.modal-body {
+  background-color: #ffffff;
+  padding: 20px;
+}
+
 
 /* This is the END of the ADMIN PAGE (CSS) */
 
