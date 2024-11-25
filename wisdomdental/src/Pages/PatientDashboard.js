@@ -183,11 +183,11 @@ export const PatientDashboard = () => {
                 </div>
               </div>
               <button
-                className="btn shadow rounded primary"
-                onClick={() => setScheduleAppointmentModalOpen(true)}
-              >
-                <div className="title-4">Schedule Appointment</div>
-              </button>
+        className="btn shadow rounded primary"
+        onClick={() => setScheduleAppointmentModalOpen(true)}
+      >
+        <div className="title-4">Schedule Appointment</div>
+      </button>
 
               <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-md">
                 <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
