@@ -18,7 +18,7 @@ export const PatientDashboard = () => {
   //used to fetch availabe appointments
   const fetchAppointments = async () => {
     try{
-      const response = await axios.get('http://127.0.0.1:5000/appointments');
+      const response = await axios.get('http://127.0.0.1:5000/get_available_appointments');
       if (response.status === 200) {
         console.log(response.data);
         setAppointments(response.data);
@@ -252,7 +252,7 @@ export const PatientDashboard = () => {
                           
                           <Row>
                             <FormGroup>
-                              <Label htmFor='expirationDate'>Expiration Date</Label>
+                              <Label htmlFor='expirationDate'>Expiration Date</Label>
                               <Field
                               id="expirationDate"
                               name="expirationDate"
@@ -263,7 +263,7 @@ export const PatientDashboard = () => {
 
                           <Row>
                             <FormGroup>
-                              <Label htmFor='cvv'>CVV</Label>
+                              <Label htmlFor='cvv'>CVV</Label>
                               <Field
                               id="cvv"
                               name="cvv"
@@ -274,7 +274,7 @@ export const PatientDashboard = () => {
 
                           <Row>
                             <FormGroup>
-                              <Label htmFor='cardName'>Name on card</Label>
+                              <Label htmlFor='cardName'>Name on card</Label>
                               <Field
                               id="cardName"
                               name="cardName"
