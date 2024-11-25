@@ -1,5 +1,5 @@
 # common.py
-from google_auth import get_client
+from .google_auth import get_client
 import hashlib
 
 def get_worksheet(sheet_name):
@@ -93,7 +93,7 @@ def authenticate_user(email, password):
     # Return failure if no match is found
     return False, None, None, None
 
-def extract(sheet_name, filtered_rows, data_to_compare, filter, data_to_extract):
+def extract(unfiltered_data, filtered_rows, data_to_compare, filter, data_to_extract):
     """
     Extract specific data from a given sheet based on filtered rows.
 
@@ -102,7 +102,7 @@ def extract(sheet_name, filtered_rows, data_to_compare, filter, data_to_extract)
     key and extracts desired information.
 
     Args:
-        sheet_name (str): The name of the sheet to extract data from.
+        unfiltered data (list of dict): The name of the sheet to extract data from.
         filtered_rows (list of dict): Rows filtered from the original dataset.
         data_to_compare (str): The key in `filtered_rows` whose values will be used for matching.
         filter (str): The key in the target sheet for filtering rows based on matching IDs.
@@ -115,8 +115,6 @@ def extract(sheet_name, filtered_rows, data_to_compare, filter, data_to_extract)
     Note: The order of `filtered_rows` is preserved in the returned list of extracted values.
     """
     data = [row[data_to_compare] for row in filtered_rows]
-    sheet = get_worksheet(sheet_name)
-    unfiltered_data = sheet.get_all_records()
 
     # Filter rows where the row[filter] matches any ID in data
     new_rows = [row for row in unfiltered_data if row[filter] in data]

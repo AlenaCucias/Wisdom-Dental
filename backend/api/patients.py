@@ -103,13 +103,15 @@ def dental_history(user):
 
     Note: Only past appointments (with dates before today's date) are included.
     """
+    # Get all relevant sheets
+    appt_data = get_worksheet("Appointments").get_all_records()
+    staff_data = get_worksheet("Staff").get_all_records()
+    treatment_data = get_worksheet("Treatment").get_all_records()
     # Filter Appointments table to only those that match with the current user
-    appts = get_worksheet("Appointments")
-    appt_data = appts.get_all_records()
     filtered_rows = [ row for row in appt_data if row["Patient ID"] == user['Patient ID']]
 
-    doctor_names = extract("Staff", filtered_rows, "Doctor ID", "Staff ID", "Last Name")
-    treatment_names = extract("Treatment", filtered_rows, "Treatment ID", "Treatment ID", "Name")
+    doctor_names = extract(staff_data, filtered_rows, "Doctor ID", "Staff ID", "Last Name")
+    treatment_names = extract(treatment_data, filtered_rows, "Treatment ID", "Treatment ID", "Name")
 
     # Use the current date to show all past visits
     today = datetime.today().date()
@@ -141,12 +143,13 @@ def payment_history(user):
             - str or float: The cost of the treatment.
             - str or bool: The payment status of the appointment (e.g., "TRUE" for paid or "FALSE" for not paid).
     """
+    # Get all relevant sheets
+    appt_data = get_worksheet("Appointments").get_all_records()
+    treatment_data = get_worksheet("Treatment").get_all_records()
     # Filter Appointments table to only those that match with the current user
-    sheet = get_worksheet("Appointments")
-    data = sheet.get_all_records()
-    filtered_rows = [ row for row in data if row["Patient ID"] == user['Patient ID']]
-    treatment_names = extract("Treatment", filtered_rows, "Treatment ID", "Treatment ID", "Name")
-    cost = extract("Treatment", filtered_rows, "Treatment ID", "Treatment ID", "Cost")
+    filtered_rows = [ row for row in appt_data if row["Patient ID"] == user['Patient ID']]
+    treatment_names = extract(treatment_data, filtered_rows, "Treatment ID", "Treatment ID", "Name")
+    cost = extract(treatment_data, filtered_rows, "Treatment ID", "Treatment ID", "Cost")
 
     # Format data in a list of tuples
     total_data = [[date, treatment, cost, status]
@@ -253,20 +256,29 @@ def book_appointment(user, date, time, notes):
         date = data.get("date")
         time = data.get("time")
         notes = data.get("notes")
+    data = request.json
 
-        if not all([patient_id, date, time]):
+    # Extract values from the request
+    patient_id = data.get("Patient_id")
+    treatment_id = data.get("treatment_id")
+    doctor_id = data.get("doctor_id")
+    date = data.get("date")
+    time = data.get("time")
+    notes = data.get("notes", "")
+
+    if not all([patient_id, date, time]):
             return jsonify({"success": False, "error": "Missing required fields"}), 400
 
-        sheet = get_worksheet("Appointments")
-        data = sheet.get_all_records()
+    sheet = get_worksheet("Appointments")
+    data = sheet.get_all_records()
 
-        for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
+    for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
             if row["Date"] == date and row["Time"] == time and not row["Patient ID"]:
                 sheet.update(f"B{i}", [[patient_id]])  # Update Patient ID
                 sheet.update(f"G{i}", [[notes]])  # Update Notes
                 return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
 
-        return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
+    return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
