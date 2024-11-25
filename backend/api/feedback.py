@@ -93,7 +93,7 @@ def get_latest_reviews():
     sorted_reviews = sorted(reviews, key=lambda x: x['Date'], reverse=True)
     
     # Return the top 5 latest reviews
-    return jsonify(sorted_reviews[:2])
+    return jsonify(sorted_reviews[:4])
 
 if __name__ == '__main__':
     app.run(debug=True)
