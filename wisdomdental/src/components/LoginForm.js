@@ -20,6 +20,24 @@ import { useNavigate } from 'react-router-dom';
             console.log('Validation failed:', validationErrors);
         }
     };
+    const handleLogin = async (email, password) => {
+        try {
+          const response = await fetch('http://127.0.0.1:5000/authenticate_patient', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await response.json();
+          if (data.success) {
+            localStorage.setItem('user', JSON.stringify(data.user));
+            window.location.href = '/dashboard'; // Redirect to the dashboard
+          } else {
+            alert(data.error || 'Login failed');
+          }
+        } catch (error) {
+          console.error('Error logging in:', error);
+        }
+      };
    return (
      <div>
         <Formik

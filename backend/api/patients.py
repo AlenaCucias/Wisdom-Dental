@@ -208,7 +208,7 @@ def get_available_appointments():
     """
     try:
         sheet = get_worksheet("Appointments")
-        data = sheet.get_all_records()
+        data = sheet.get_all_records()  # Get all records from the 'Appointments' sheet
     except Exception as e:
         return jsonify({"error": f"Error accessing appointment records: {str(e)}"}), 500
 
@@ -216,18 +216,18 @@ def get_available_appointments():
 
     # Loop through all rows to find available time slots
     for row in data:
-        if not row["Patient ID"] and not row["Treatment ID"]:  # Available if no patient or treatment is assigned
+        # If both Patient ID and Treatment ID are empty, the appointment slot is available
+        if not row["Patient ID"] and not row["Treatment ID"]:
             date = row["Date"]
             time = row["Time"]
             if date not in available_slots:
-                available_slots[date] = []  # Initialize list for a new date
-            available_slots[date].append(time)
+                available_slots[date] = set()  # Initialize a set for unique times
+            available_slots[date].add(time)
+
+    # Convert sets back to sorted lists
+    available_slots = {date: sorted(times) for date, times in available_slots.items()}
 
     if available_slots:
-        # Sort the available time slots for each date
-        for date in available_slots:
-            available_slots[date].sort()  # Sorting times to display in order
-
         return jsonify({"available_slots": available_slots}), 200
     else:
         return jsonify({"message": "No available appointment slots at the moment."}), 404
@@ -247,24 +247,29 @@ def book_appointment(user, date, time, notes):
         str: A success message or an error message if the appointment could not be booked.
     """
     # Get the incoming JSON request
-    data = request.json
-    
-    # Extract values from the request
-    patient_id = data.get("Patient_id")
-    treatment_id = data.get("treatment_id")
-    doctor_id = data.get("doctor_id")
-    date = data.get("date")
-    time = data.get("time")
-    notes = data.get("notes", "")
+    try:
+        data = request.json
+        patient_id = data.get("patient_id")
+        date = data.get("date")
+        time = data.get("time")
+        notes = data.get("notes")
 
-    if not all([patient_id, treatment_id, doctor_id, date, time]):
-        return jsonify({"error": "Missing required fields"}), 400
+        if not all([patient_id, date, time]):
+            return jsonify({"success": False, "error": "Missing required fields"}), 400
 
-    result = add_appointment_to_sheet(patient_id, treatment_id, doctor_id, date, time, notes)
-    if result:
-        return jsonify({"message": "Appointment booked successfully"}), 200
-    else:
-        return jsonify({"error": "Failed to book appointment"}), 500
+        sheet = get_worksheet("Appointments")
+        data = sheet.get_all_records()
+
+        for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
+            if row["Date"] == date and row["Time"] == time and not row["Patient ID"]:
+                sheet.update(f"B{i}", [[patient_id]])  # Update Patient ID
+                sheet.update(f"G{i}", [[notes]])  # Update Notes
+                return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
+
+        return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 def cancel_appointment(user, date, time):
     """

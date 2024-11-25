@@ -14,9 +14,11 @@ export const PatientDashboard = () => {
   const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
-  const [user, setUser] = useState(null);
   const [reason, setReason] = useState(''); // State to capture the reason
   const [reasonModalOpen, setReasonModalOpen] = useState(false);
+  const [user, setUser] = useState(() => {
+    return JSON.parse(localStorage.getItem('user')) || null;
+  });
 
 
   //used to fetch availabe appointments
@@ -24,15 +26,15 @@ export const PatientDashboard = () => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/get_available_appointments');
       if (response.status === 200) {
-        console.log(response.data);
-        setAppointments(response.data.available_slots); // Assuming the response is in { available_slots: {...} } format
+        setAppointments(response.data.available_slots); // Assuming the response is { available_slots: {...} }
       } else {
-        console.error("Failed to fetch appointments:", response);
+        console.error("Failed to fetch available appointments:", response);
       }
     } catch (error) {
-      console.error("Error fetching appointments:", error);
+      console.error("Error fetching available appointments:", error);
     }
   };
+
 
   useEffect(() => {
     fetchAppointments();
@@ -57,20 +59,29 @@ export const PatientDashboard = () => {
       setSuccessfulPaymentModalOpen(true);
   };
   const handleTimeSlotClick = (date, time) => {
-    const userConfirmed = window.confirm(`Are you sure you want to book the appointment for ${date} at ${time}?`);
+    const reason = prompt("Enter a reason for the appointment:");
+    if (!reason) return;
   
-    if (userConfirmed) {
-      // Proceed to send the reason and book the appointment
-      bookAppointment(date, time, reason)
-        .then(response => {
-          alert(`Appointment booked successfully for ${date} at ${time}.`);
-          setScheduleAppointmentModalOpen(false); // Close the modal after booking
-          setReason(''); // Reset the reason input field
-        })
-        .catch(error => {
-          alert('Error booking the appointment. Please try again later.');
-        });
-    }
+    fetch('http://127.0.0.1:5000/book_appointment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        patient_id: user['Patient ID'], // Include the user's ID
+        date,
+        time,
+        notes: reason,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
+          fetchAppointments(); // Refresh available slots
+        } else {
+          alert(data.error || 'Failed to book the appointment');
+        }
+      })
+      .catch((error) => console.error('Error booking appointment:', error));
   };
   const bookAppointment = (date, time, reason) => {
   return fetch('/book_appointment', {
@@ -189,40 +200,34 @@ export const PatientDashboard = () => {
         <div className="title-4">Schedule Appointment</div>
       </button>
 
-              <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-md">
-                <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
-                  Schedule Appointment
-                </ModalHeader>
-                <ModalBody>
-                  {Object.keys(appointments).length > 0 ? (
-                  Object.keys(appointments).map((date) => (
-                  <div key={date}>
-                    <p>{date}</p>
-                      <ul style={{ listStyleType: 'none', padding: 0 }}>
-                        {appointments[date].map((time, index) => (
-                        <li key={index} style={{ marginBottom: '10px'}}>
-                          <button
-                            className="btn shadow rounded primary"
-                            onClick={() => handleTimeSlotClick(date, time)}>
-                              {time}
-                          </button>
-                        </li>
-                        ))}
-                      </ul>
-                  </div>
-                  ))
-                  ) : (
-                    <p>No available appointments at the moment</p>
-                  )}
-
-                  <Row className='col-6 mx-auto'>
-                    <Button className='btn rounded shadow' onClick={openReason}
-                      type='submit'>
-                      Next
-                    </Button>
-                  </Row>
-                </ModalBody>
-              </Modal>
+      <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-md">
+        <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
+          Schedule Appointment
+        </ModalHeader>
+        <ModalBody>
+          {Object.keys(appointments).length > 0 ? (
+            Object.keys(appointments).map((date) => (
+              <div key={date}>
+                <p>{date}</p>
+                <ul style={{ listStyleType: 'none', padding: 0 }}>
+                  {appointments[date].map((time, index) => (
+                    <li key={index} style={{ marginBottom: '10px' }}>
+                      <button
+                        className="btn shadow rounded primary"
+                        onClick={() => handleTimeSlotClick(date, time)}
+                      >
+                        {time}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <p>No available appointments at the moment</p>
+          )}
+        </ModalBody>
+      </Modal>
 
               <Modal isOpen={reasonModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
                 <ModalHeader toggle={() => setReasonModalOpen(false)}>Schedule Appointment</ModalHeader>
