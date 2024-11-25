@@ -1,8 +1,22 @@
-import React from "react";
-import { useState } from "react";
-import { Modal, ModalHeader, ModalBody, FormGroup, Label, Button } from "reactstrap";
+import React, { useState } from "react";
+import { Modal, ModalHeader, ModalBody, Button } from "reactstrap";
 
 export const AdminPage = () => {
+  // State to manage visibility of modals
+  const [modal, setModal] = useState({
+    patientRecords: false,
+    payrollInfo: false,
+    staffPerformance: false,
+  });
+
+  // Toggle the visibility of modals
+  const toggleModal = (modalName) => {
+    setModal((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
+  };
+
   return (
     <div className="admin-page">
       <div className="div">
@@ -14,33 +28,40 @@ export const AdminPage = () => {
 
         <div className="rectangle" />
 
-        {/* Existing All Patient Records button */}
+        {/* All Patient Records Button */}
         <div className="group-wrapper">
           <div className="overlap-group">
             <div className="text-wrapper">
-              <button>All Patient Records</button>
+              <button onClick={() => toggleModal("patientRecords")}>
+                All Patient Records
+              </button>
             </div>
           </div>
         </div>
 
-        {/* New View Payroll Information button */}
+        {/* View Payroll Information Button */}
         <div className="group-wrapper">
           <div className="overlap-group">
             <div className="text-wrapper">
-              <button>View Payroll Information</button>
-              </div>
+              <button onClick={() => toggleModal("payrollInfo")}>
+                View Payroll Information
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* New View Staff Performance button */}
+        {/* View Staff Performance Button */}
         <div className="group-wrapper">
           <div className="overlap-group">
             <div className="text-wrapper">
-              <button>View Staff Performance</button>
-              </div>
+              <button onClick={() => toggleModal("staffPerformance")}>
+                View Staff Performance
+              </button>
+            </div>
           </div>
         </div>
 
+        {/* Admin Profile Section */}
         <div className="overlap">
           <div className="group-2">
             <div className="label-normal">
@@ -63,6 +84,35 @@ export const AdminPage = () => {
             <span className="text-wrapper-2">+1(123) 456-7890</span>
           </p>
         </div>
+
+        {/* Modals for each button */}
+
+        {/* Modal for All Patient Records */}
+        <Modal isOpen={modal.patientRecords} toggle={() => toggleModal("patientRecords")}>
+          <ModalHeader toggle={() => toggleModal("patientRecords")}>All Patient Records</ModalHeader>
+          <ModalBody>
+            {/* Content related to patient records */}
+            <p>Display Patient Records here...</p>
+          </ModalBody>
+        </Modal>
+
+        {/* Modal for View Payroll Information */}
+        <Modal isOpen={modal.payrollInfo} toggle={() => toggleModal("payrollInfo")}>
+          <ModalHeader toggle={() => toggleModal("payrollInfo")}>View Payroll Information</ModalHeader>
+          <ModalBody>
+            {/* Content related to payroll information */}
+            <p>Display Payroll Information here...</p>
+          </ModalBody>
+        </Modal>
+
+        {/* Modal for View Staff Performance */}
+        <Modal isOpen={modal.staffPerformance} toggle={() => toggleModal("staffPerformance")}>
+          <ModalHeader toggle={() => toggleModal("staffPerformance")}>View Staff Performance</ModalHeader>
+          <ModalBody>
+            {/* Content related to staff performance */}
+            <p>Display Staff Performance here...</p>
+          </ModalBody>
+        </Modal>
       </div>
     </div>
   );
