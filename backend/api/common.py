@@ -1,5 +1,5 @@
 # common.py
-from backend.api.google_auth import get_client
+from google_auth import get_client
 import hashlib
 
 def get_worksheet(sheet_name):

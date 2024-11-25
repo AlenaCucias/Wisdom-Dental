@@ -14,11 +14,12 @@ export const PatientDashboard = () => {
   const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [user, setUser] = useState(null);
 
   //used to fetch availabe appointments
   const fetchAppointments = async () => {
     try{
-      const response = await axios.get('http://127.0.0.1:5000/appointments');
+      const response = await axios.get('http://127.0.0.1:5000/get_available_appointments');
       if (response.status === 200) {
         console.log(response.data);
         setAppointments(response.data);
@@ -46,6 +47,8 @@ export const PatientDashboard = () => {
       setMakePaymentModalOpen(false);
       setSuccessfulPaymentModalOpen(true);
   };
+
+  
 
   return (
     <div className="patient-dashboard">
@@ -115,7 +118,6 @@ export const PatientDashboard = () => {
                           <div className="subtitle">Dental Cleaning</div>
                         </div>
                       </div>
-
                       <div className="item">
                         <div className="frame-2">
                           <p className="p">
@@ -123,7 +125,6 @@ export const PatientDashboard = () => {
                             October 18
                             <br /> 2 PM
                           </p>
-
                           <div className="subtitle">Consultation</div>
                         </div>
                       </div>
