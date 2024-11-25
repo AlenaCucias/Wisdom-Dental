@@ -253,7 +253,7 @@ export const PatientDashboard = () => {
                           
                           <Row>
                             <FormGroup>
-                              <Label htmFor='expirationDate'>Expiration Date</Label>
+                              <Label htmlFor='expirationDate'>Expiration Date</Label>
                               <Field
                               id="expirationDate"
                               name="expirationDate"
@@ -264,7 +264,7 @@ export const PatientDashboard = () => {
 
                           <Row>
                             <FormGroup>
-                              <Label htmFor='cvv'>CVV</Label>
+                              <Label htmlFor='cvv'>CVV</Label>
                               <Field
                               id="cvv"
                               name="cvv"
@@ -275,7 +275,7 @@ export const PatientDashboard = () => {
 
                           <Row>
                             <FormGroup>
-                              <Label htmFor='cardName'>Name on card</Label>
+                              <Label htmlFor='cardName'>Name on card</Label>
                               <Field
                               id="cardName"
                               name="cardName"
