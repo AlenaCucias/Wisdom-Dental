@@ -3939,3 +3939,293 @@ position: relative;
   width: 83px;
 }
 /*staff dashboard*/
+/*Createaccountpage*/
+.create-account {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;  /* Arrange children vertically */
+  justify-content: flex-start;
+  align-items: center;  /* Center items horizontally */
+  width: 100%;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.create-account .div {
+  background-color: #ffffff;
+  height: 1024px;
+  position: relative;
+  width: 1366px;
+}
+
+.create-account .overlap {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #727272;
+  border-radius: 5px;
+  height: 44px;
+  left: 197px;
+  position: absolute;
+  top: 318px;
+  width: 450px;
+}
+
+.create-account .text-wrapper {
+  color: #727272;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 9px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 11px;
+  white-space: nowrap;
+}
+
+.create-account .div-wrapper {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #727272;
+  border-radius: 5px;
+  height: 44px;
+  left: 766px;
+  position: absolute;
+  top: 525px;
+  width: 450px;
+}
+
+.create-account .text-wrapper-2 {
+  color: #727272;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 7px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 11px;
+  white-space: nowrap;
+}
+
+.create-account .overlap-2 {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #727272;
+  border-radius: 5px;
+  height: 44px;
+  left: 766px;
+  position: absolute;
+  top: 415px;
+  width: 450px;
+}
+
+.create-account .overlap-3 {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #727272;
+  border-radius: 5px;
+  height: 44px;
+  left: 766px;
+  position: absolute;
+  top: 318px;
+  width: 450px;
+}
+
+.create-account .overlap-4 {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #727272;
+  border-radius: 5px;
+  height: 44px;
+  left: 197px;
+  position: absolute;
+  top: 415px;
+  width: 450px;
+}
+
+.create-account .overlap-5 {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #727272;
+  border-radius: 5px;
+  height: 44px;
+  left: 197px;
+  position: absolute;
+  top: 526px;
+  width: 450px;
+}
+
+.create-account .text-wrapper-3 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 197px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 288px;
+  white-space: nowrap;
+}
+
+.create-account .text-wrapper-4 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 768px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 288px;
+  white-space: nowrap;
+}
+
+.create-account .text-wrapper-5 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 766px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 502px;
+  white-space: nowrap;
+}
+
+.create-account .text-wrapper-6 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 768px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 390px;
+  white-space: nowrap;
+}
+
+.create-account .text-wrapper-7 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 197px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 497px;
+  white-space: nowrap;
+}
+
+.create-account .text-wrapper-8 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 15px;
+  font-weight: 500;
+  left: 197px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  top: 390px;
+  white-space: nowrap;
+}
+
+.create-account .overlap-6 {
+  border-radius: 5px;
+  height: 48px;
+  left: 871px;
+  position: absolute;
+  top: 712px;
+  width: 240px;
+}
+
+.create-account .rectangle {
+  background-color: #839cb4;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 48px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 240px;
+}
+
+.create-account .text-wrapper-9 {
+  color: #ffffff;
+  font-family: "Roboto", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  left: 96px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 11px;
+  white-space: nowrap;
+}
+
+.create-account .overlap-7 {
+  height: 56px;
+  left: 298px;
+  position: absolute;
+  top: 712px;
+  width: 248px;
+}
+
+.create-account .group {
+  height: 56px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 248px;
+}
+
+.create-account .text-wrapper-10 {
+  color: #ffffff;
+  font-family: "Roboto", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  left: 69px;
+  letter-spacing: 0;
+  line-height: 24px;
+  position: absolute;
+  top: 11px;
+  white-space: nowrap;
+}
+
+.create-account .p {
+  color: #727272;
+  font-family: "Roboto", Helvetica;
+  font-size: 24px;
+  font-weight: 400;
+  left: 83px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 190px;
+  white-space: nowrap;
+}
+
+.create-account .title-2 {
+  color: #000000;
+  font-family: "Roboto", Helvetica;
+  font-size: 28px;
+  font-weight: 500;
+  left: 80px;
+  letter-spacing: 0;
+  line-height: 36px;
+  position: absolute;
+  top: 128px;
+  white-space: nowrap;
+}
+
+.create-account .navbar-design-2-final-for-now {
+  left: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+}
+/*end createaccountpage*/

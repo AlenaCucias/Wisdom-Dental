@@ -1,74 +1,134 @@
 import React from "react";
-// import { NavbarDesign } from "./NavbarDesign";
-// import group19 from "./group-19.png";
-// import "./style.css";
+import { useState } from "react";
 
-export const CreateAccountPage = () => {
+
+const CreateAccountPage = () => {
+  // State to store form input data
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { password, confirmPassword } = formData;
+
+    if (password !== confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+
+    alert("Account created successfully!");
+    console.log("Form Data:", formData); // Log form data for debugging
+  };
+
   return (
-    <div className="create-account">
-      <div className="div">
-        <div className="overlap">
-          <div className="text-wrapper">First Name</div>
+    <div className="create-account-container">
+      <h1>Create Account</h1>
+      <form onSubmit={handleSubmit}>
+        {/* First Name */}
+        <div className="form-group">
+          <label htmlFor="firstName">First Name:</label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter your first name"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="div-wrapper">
-          <div className="text-wrapper-2">Confirm the Password</div>
+        {/* Last Name */}
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name:</label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            placeholder="Enter your last name"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="overlap-2">
-          <div className="text-wrapper-2">someone@example.com</div>
+        {/* Phone Number */}
+        <div className="form-group">
+          <label htmlFor="phoneNumber">Phone Number:</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            placeholder="Enter your phone number"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="overlap-3">
-          <div className="text-wrapper-2">Last Name</div>
+        {/* Email */}
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="overlap-4">
-          <div className="text-wrapper">Your Phone Number</div>
+        {/* Password */}
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="overlap-5">
-          <div className="text-wrapper">Create a Password</div>
+        {/* Confirm Password */}
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Re-enter your password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="text-wrapper-3">First Name</div>
-
-        <div className="text-wrapper-4">Last Name</div>
-
-        <div className="text-wrapper-5">Confirm Password</div>
-
-        <div className="text-wrapper-6">Email</div>
-
-        <div className="text-wrapper-7">Create Password</div>
-
-        <div className="text-wrapper-8">Phone Number</div>
-
-        <div className="overlap-6">
-          <div className="rectangle" />
-
-          <div className="text-wrapper-9">Cancel</div>
+        {/* Submit Button */}
+        <div className="form-actions">
+          <button type="submit" className="btn-primary">
+            Create Account
+          </button>
         </div>
-
-        <div className="overlap-7">
-          {/* <img className="group" alt="Group" src={group19} /> */}
-
-          <div className="text-wrapper-10">Create Account</div>
-        </div>
-
-        <p className="p">
-          Create your profile by filling in this account creation form
-        </p>
-
-        <div className="title-2">Create Account Form</div>
-
-        {/* <NavbarDesign
-          arrow="image.svg"
-          buttonHover
-          className="navbar-design-2-final-for-now"
-          websiteIconPic="image.png"
-        /> */}
-      </div>
+      </form>
     </div>
   );
 };
- export default CreateAccountPage;
+export default CreateAccountPage;
