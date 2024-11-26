@@ -4369,4 +4369,17 @@ input {
   white-space: nowrap;
   z-index: 15;
 }
-/*end createaccountpage*/
+.create-account .error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.create-account .input-field {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  background-color: #fafafa;
+  height: 40px;
+}

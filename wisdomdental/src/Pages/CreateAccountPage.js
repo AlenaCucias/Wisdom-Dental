@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+
 
 const CreateAccountPage = () => {
   // State to store form input data
@@ -24,26 +26,46 @@ const CreateAccountPage = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { password, confirmPassword } = formData;
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-
-    // Success message
+  const handleSubmit = (values, { resetForm }) => {
+    // Submit logic here
     alert("Account created successfully!");
-
-    // Log form data for debugging
-    console.log("Form Data:", formData);
-
-    // Reset form fields
-    setFormData(initialFormData);
+    console.log("Form Data:", values);
+    resetForm(); // Reset form fields after successful submission
   };
-
+  const validate = (values) => {
+    const errors = {};
+  
+    if (!values.firstName) {
+      errors.firstName = "First Name is required";
+    }
+  
+    if (!values.lastName) {
+      errors.lastName = "Last Name is required";
+    }
+  
+    if (!values.phoneNumber) {
+      errors.phoneNumber = "Phone Number is required";
+    }
+  
+    if (!values.email) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+      errors.email = "Email is invalid";
+    }
+  
+    if (!values.password) {
+      errors.password = "Password is required";
+    }
+  
+    if (!values.confirmPassword) {
+      errors.confirmPassword = "Confirm Password is required";
+    } else if (values.password !== values.confirmPassword) {
+      errors.confirmPassword = "Passwords must match";
+    }
+  
+    return errors;
+  };
+  
   const handleCancel = () => {
     // Navigate to login page
     navigate("/login");
@@ -56,115 +78,136 @@ const CreateAccountPage = () => {
         Create your profile by filling in this account creation form
       </span>
 
-      <form onSubmit={handleSubmit}>
-        {/* First Name and Last Name */}
-        <div className="wrapper-4">
-          <span className="text-7">First Name</span>
-          <span className="text-8">Last Name</span>
-        </div>
-
-        <div className="group-3">
-          <div className="group-4">
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="Enter your first name"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
+      <Formik
+        initialValues={initialFormData} // Initial form data
+        validate={validate} // Validation function
+        onSubmit={handleSubmit} // Handle form submission
+      >
+        <Form>
+          {/* First Name and Last Name */}
+          <div className="wrapper-4">
+            <span className="text-7">First Name</span>
+            <span className="text-8">Last Name</span>
           </div>
 
-          <div className="section-2">
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Enter your last name"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
+          <div className="group-3">
+            <div className="group-4">
+              <Field
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="Enter your first name"
+                className="input-field"
+              />
+              <ErrorMessage
+                name="firstName"
+                component="div"
+                className="error-message"
+              />
+            </div>
 
-        {/* Phone Number and Email */}
-        <div className="wrapper-5">
-          <span className="text-b">Phone Number</span>
-          <span className="text-c">Email</span>
-        </div>
-
-        <div className="section-3">
-          <div className="group-5">
-            <input
-              type="tel"
-              id="phoneNumber"
-              name="phoneNumber"
-              placeholder="Enter your phone number"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="group-6">
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-
-        {/* Create Password and Confirm Password */}
-        <div className="section-4">
-          <span className="text-f">Create Password</span>
-          <span className="text-10">Confirm Password</span>
-        </div>
-
-        <div className="box-3">
-          <div className="box-4">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Create a password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="section-2">
+              <Field
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Enter your last name"
+                className="input-field"
+              />
+              <ErrorMessage
+                name="lastName"
+                component="div"
+                className="error-message"
+              />
+            </div>
           </div>
 
-          <div className="group-7">
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Confirm the password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
+          {/* Phone Number and Email */}
+          <div className="wrapper-5">
+            <span className="text-b">Phone Number</span>
+            <span className="text-c">Email</span>
           </div>
-        </div>
 
-        {/* Submit Button */}
-        <div className="group-8">
-          <div className="group-9">
-            <button type="submit" className="Button-5">
-              <span className="text-13">Create Account</span>
+          <div className="section-3">
+            <div className="group-5">
+              <Field
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                placeholder="Enter your phone number"
+                className="input-field"
+              />
+              <ErrorMessage
+                name="phoneNumber"
+                component="div"
+                className="error-message"
+              />
+            </div>
+
+            <div className="group-6">
+              <Field
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                className="input-field"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="error-message"
+              />
+            </div>
+          </div>
+          {/* Create Password and Confirm Password */}
+          <div className="section-4">
+            <span className="text-f">Create Password</span>
+            <span className="text-10">Confirm Password</span>
+          </div>
+          <div className="box-3">
+            <div className="box-4">
+              <Field
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                className="input-field"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="error-message"
+              />
+            </div>
+
+            <div className="group-7">
+              <Field
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm the password"
+                className="input-field"
+              />
+              <ErrorMessage
+                name="confirmPassword"
+                component="div"
+                className="error-message"
+              />
+            </div>
+          </div>
+          {/* Submit and Cancel Buttons */}
+          <div className="group-8">
+            <div className="group-9">
+              <button type="submit" className="Button-5">
+                <span className="text-13">Create Account</span>
+              </button>
+            </div>
+            <button type="button" className="Button-5" onClick={handleCancel}>
+              <span className="text-14">Cancel</span>
             </button>
           </div>
-          <button type="button" className="Button-5" onClick={handleCancel}>
-            <span className="text-14">Cancel</span>
-          </button>
-        </div>
-      </form>
+        </Form>
+      </Formik>
     </div>
   );
 };
