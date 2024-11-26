@@ -216,6 +216,7 @@ def get_available_appointments():
         return jsonify({"error": f"Error accessing appointment records: {str(e)}"}), 500
 
     available_slots = {}
+    today = datetime.today().date().strftime("%m-%d-%Y")
 
     # Loop through all rows to find available time slots
     for row in data:
@@ -227,8 +228,8 @@ def get_available_appointments():
                 available_slots[date] = set()  # Initialize a set for unique times
             available_slots[date].add(time)
 
-    # Convert sets back to sorted lists
-    available_slots = {date: sorted(times) for date, times in available_slots.items()}
+    # Convert sets back to sorted lists, only showing future appointments
+    available_slots = {date: sorted(times) for date, times in available_slots.items() if date > today}
 
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
