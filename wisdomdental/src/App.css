@@ -1693,21 +1693,23 @@ button:hover {
 
 .information-page {
   align-items: center;
+  justify-content: center;
   display: inline-flex;
   gap: 10px;
   min-height: 2950px;
-  min-width: 1366px;
+  min-width: 100%;
   position: relative;
   width: 100%;
 }
 
 .information-page .page {
   align-items: center;
+  justify-content: center;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 1366px;
+  width: 100%;
 }
 
 .information-page .navbar-design-2-final-for-now {
