@@ -1,5 +1,5 @@
 # staff.py
-from backend.api.common import get_worksheet, extract
+from backend.api.common import get_worksheet, extract, append_row
 from datetime import datetime
 from collections import defaultdict
 
@@ -51,18 +51,21 @@ def upcoming_appointments(user):
     return total_data
 
 
-def add_hours(user, hours):
+def update_timesheet(user, hours, procedure, performance):
     """
-    Add hours to the current timesheet for a staff member.
+    Add hours to the current timesheet for a staff member and record the performance.
 
-    This function updates the "Hours Worked" for a specific staff member
-    in the "Staff" worksheet by adding the specified number of hours.
-    It identifies the correct row based on the staff member's ID.
+    This function updates the "Hours Worked" for a specific staff member in the
+    "Staff" worksheet by adding the specified number of hours. It also logs the
+    performance data in the "Staff Performance" sheet. The function identifies
+    the correct row based on the staff member's ID.
 
     Args:
         user (dict): A dictionary containing the staff member's information,
                      including the "Staff ID" and current "Hours Worked".
-        hours (int or float): The number of hours to be added to the current total.
+        hours (str): The number of hours worked, given in the format "HH:MM" (e.g., "2:30").
+        procedure (str): The name or description of the procedure performed.
+        performance (int): A performance rating for the procedure between 1-5 inclusive.
 
     Returns:
         str: A confirmation message indicating that the timesheet was updated.
@@ -70,11 +73,25 @@ def add_hours(user, hours):
     Note:
         - Assumes "Hours Worked" is stored in column H of the "Staff" worksheet.
         - The function starts searching from the second row, skipping headers.
+        - The `hours` argument is a string in "HH:MM" format and is converted into a float
+          (e.g., "2:30" becomes 2.5).
     """
+    # Add performance data to performance sheet
+    today = datetime.today().date().strftime("%m-%d-%Y")
+    performance_data = [user["Staff ID"], hours, procedure, today, performance]
+    append_row("Staff Performance", performance_data)
+
+    # Gather necesary data
     sheet = get_worksheet("Staff")
     data = sheet.get_all_records()
     current_hours = user["Hours Worked"]
-    new_hours = current_hours + hours
+
+    # Convert hours to float to add to the total
+    hours, minutes = map(int, hours.split(":"))
+    hours_float = hours + minutes / 60.0
+
+    # Add hours to total_hours in staff sheet
+    new_hours = current_hours + hours_float
     for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
         if row["Staff ID"] == user["Staff ID"]:
             # Add new hours
