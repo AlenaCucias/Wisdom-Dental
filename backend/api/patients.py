@@ -359,7 +359,8 @@ def create_account():
     last_name = data.get('lastName')    # added 'lastName'
     contact_email = data.get('contact_email')
     phone_number = data.get('phone_number')
-    password = data.get('password')  # You can hash the password before saving it
+    password = data.get('password')
+    hashed_password = hash_password(password)  # You can hash the password before saving it
     
     # Validate required fields
     if not first_name or not last_name or not contact_email or not phone_number or not password:
@@ -391,7 +392,7 @@ def create_account():
             last_name,       # lastName
             phone_number,
             contact_email,
-            password,  # It's assumed that the password is already hashed
+            hashed_password,  # It's assumed that the password is already hashed
         ]
 
         # Assuming 'append_row' is a function that appends data to your Google Sheet
@@ -407,7 +408,7 @@ def get_last_patient_id():
     """Fetch the last patient ID from the Google Sheet and return it"""
     try:
         # Access Google Sheet
-        sheet = open_google_sheet("Patients")  # Make sure "Patients" sheet exists
+        sheet = get_worksheet("Patient")  # Make sure "Patients" sheet exists
         rows = sheet.get_all_records()  # Get all the records
         if not rows:
             return 1000  # If no rows, start from Patient ID 1000
