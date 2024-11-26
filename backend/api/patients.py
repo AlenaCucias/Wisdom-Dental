@@ -222,11 +222,15 @@ def get_available_appointments():
         if not row["Patient ID"] and not row["Treatment ID"]:  # Check availability
             date, time = row["Date"], row["Time"]
             if date > today:  # Only future dates
-                available_slots.setdefault(date, set()).add(time)  # Use set to avoid duplicates
+                # Reformat time to "HH:MM AM/PM" and strip leading zeros
+                # Reformat time to "H:MM AM/PM" (removes leading zero in hour)
+                time_obj = datetime.strptime(time, "%I:%M:%S %p")
+                formatted_time = time_obj.strftime("%I:%M %p").lstrip('0')  # Strip leading zero
+                available_slots.setdefault(date, set()).add(formatted_time)  # Use set to avoid duplicates
 
     # Sort times for each date and convert back to lists
     for date in available_slots:
-        available_slots[date] = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M:%S %p"))
+        available_slots[date] = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M %p")).lstrip("0")
 
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
@@ -360,7 +364,7 @@ def create_account():
     phone_number = data.get('phone_number')
     password = data.get('password')
     hashed_password = hash_password(password)  # You can hash the password before saving it
-    
+
     # Validate required fields
     if not first_name or not last_name or not contact_email or not phone_number or not password:
         return jsonify({'message': 'First name, last name, contact email, phone number, and password are required'}), 400
