@@ -256,29 +256,29 @@ def book_appointment(user, date, time, notes):
         date = data.get("date")
         time = data.get("time")
         notes = data.get("notes")
-    data = request.json
+        data = request.json
 
-    # Extract values from the request
-    patient_id = data.get("Patient_id")
-    treatment_id = data.get("treatment_id")
-    doctor_id = data.get("doctor_id")
-    date = data.get("date")
-    time = data.get("time")
-    notes = data.get("notes", "")
+        # Extract values from the request
+        patient_id = data.get("Patient_id")
+        treatment_id = data.get("treatment_id")
+        doctor_id = data.get("doctor_id")
+        date = data.get("date")
+        time = data.get("time")
+        notes = data.get("notes", "")
 
-    if not all([patient_id, date, time]):
-            return jsonify({"success": False, "error": "Missing required fields"}), 400
+        if not all([patient_id, date, time]):
+                return jsonify({"success": False, "error": "Missing required fields"}), 400
 
-    sheet = get_worksheet("Appointments")
-    data = sheet.get_all_records()
+        sheet = get_worksheet("Appointments")
+        data = sheet.get_all_records()
 
-    for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
+        for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
             if row["Date"] == date and row["Time"] == time and not row["Patient ID"]:
                 sheet.update(f"B{i}", [[patient_id]])  # Update Patient ID
                 sheet.update(f"G{i}", [[notes]])  # Update Notes
                 return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
 
-    return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
+        return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
