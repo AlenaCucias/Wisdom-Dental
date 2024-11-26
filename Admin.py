@@ -1,5 +1,7 @@
 from user import User
 from typing import List
+from backend.api.admin import get_full_names, view_patient_records, view_payroll_data, view_feedback
+
 
 class AdminDashboard:
     def __init__(self):
@@ -28,3 +30,9 @@ class AdminDashboard:
         for patient in self.__patientList:
             billings.extend(patient.billings)  # check if appt.py set
         return billings
+
+    #print(get_full_names("Patient", "Patient ID"))
+    #print(get_full_names("Staff", "Staff ID"))
+    #print(view_patient_records(1001))
+    #print(view_payroll_data(2001))
+    #print(view_feedback())
