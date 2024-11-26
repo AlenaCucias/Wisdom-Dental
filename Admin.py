@@ -1,6 +1,6 @@
 from user import User
 from typing import List
-from backend.api.admin import get_full_names, view_patient_records, view_payroll_data, view_feedback
+from backend.api.admin import get_full_names, view_patient_records, view_payroll_data, view_feedback, view_staff_performance
 
 
 class AdminDashboard:
@@ -36,3 +36,4 @@ class AdminDashboard:
     #print(view_patient_records(1001))
     #print(view_payroll_data(2001))
     #print(view_feedback())
+    #print(view_staff_performance(2001))

@@ -57,6 +57,27 @@ def view_payroll_data(user_id):
     total_data = [[row["Payment Date"], row["Amount Paid"]] for row in filtered_rows]
     return total_data
 
+def view_staff_performance(user_id):
+    """
+    Retrieves performance data for a specific staff member.
+
+    Args:
+        user_id (str or int): The ID of the staff member whose performance data is to be retrieved.
+
+    Returns:
+        list: A list of performance history, each containing:
+              - Date
+              - Procedure
+              - Time spent on the procedure
+              - Performance (1-5 inclusive)
+    """
+    performance_data = get_worksheet("Staff Performance").get_all_records()
+    # Get only records that are associated with user
+    filtered_rows = [ row for row in performance_data if row["Staff ID"] == user_id]
+    total_data = [[row["Date"], row["Procedure"], row["Time"], row["Performance"]] for row in filtered_rows]
+    return total_data
+
+
 def view_feedback():
     """
     Retrieves and formats all feedback, sorted by the most recent entries first.

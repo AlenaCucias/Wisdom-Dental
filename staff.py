@@ -1,6 +1,6 @@
 from user import User
-from backend.api.staff import add_hours, upcoming_appointments
-from backend.api.common import authenticate_user
+from backend.api.staff import update_timesheet, upcoming_appointments
+from backend.api.common import authenticate_user, hash_password
 
 class Staff(User):
     def __init__(self, name, email, phone_number, salary, hours_worked):
@@ -15,7 +15,7 @@ class Staff(User):
             return self.hours_worked
 
     email = "jbunt@gmail.com"
-    password = "234"
+    password = "James Bunt"
 
     is_authenticated, user_info, sheet, role = authenticate_user(email, password)
 
@@ -25,5 +25,5 @@ class Staff(User):
     else:
         print("Authentication failed. Please check your credentials.")
 
-    #print(add_hours(user_info, 10))
+    #print(update_timesheet(user_info, "2:00", "Teeth Cleaning", 5))
     #print(upcoming_appointments(user_info))

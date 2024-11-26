@@ -417,7 +417,7 @@ def get_last_patient_id():
         return last_patient_id
     except Exception as e:
         print(f"Error getting last Patient ID: {e}")
-        return 1000 
-    
+        return 1000
+
 if __name__ == '__main__':
     app.run(debug=True)

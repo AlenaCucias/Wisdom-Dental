@@ -173,9 +173,7 @@ export const PatientDashboard = () => {
               <div className="overlap-group-wrapper">
                 <div className="overlap-group-2">
 
-                  <button onClick={() => setUpcomingAppointmentsModalOpen(true)}>
-                    <div className="title-3">Upcoming Appointments</div>
-                  </button>
+                    <div className="title-3" onClick={() => setUpcomingAppointmentsModalOpen(true)}>Upcoming Appointments</div>
 
                   <Modal isOpen={upcomingAppointemntsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
                     <ModalHeader toggle ={() => setUpcomingAppointmentsModalOpen(false)}>Upcoming Appointments</ModalHeader>
@@ -295,9 +293,7 @@ export const PatientDashboard = () => {
                 </div>
               </div>
                 
-              <button onClick={() => setViewDetailsModalOpen(true)}>
-                <div className="text-wrapper-3">View Details</div>
-              </button>
+                <div className="text-wrapper-3" onClick={() => setViewDetailsModalOpen(true)}>View Details</div>
             </div>
             
             <Modal isOpen={viewDetailsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
