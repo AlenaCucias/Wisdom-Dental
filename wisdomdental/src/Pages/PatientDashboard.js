@@ -13,6 +13,7 @@ export const PatientDashboard = () => {
   const [viewDetailsModalOpen, setViewDetailsModalOpen] = useState(false);
   const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
+  const [appointmentConfirmationModalOpen, setAppointmentConfirmationModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [reason, setReason] = useState(''); // State to capture the reason
   const [reasonModalOpen, setReasonModalOpen] = useState(false);
@@ -20,6 +21,20 @@ export const PatientDashboard = () => {
     return JSON.parse(localStorage.getItem('user')) || null;
   });
 
+  const formatDate = (dataString) => {
+    const [month, day, year] = dataString.split('-');
+    const date = new Date(year, month-1, day);
+    const options = {year: 'numeric', month:'long', day: 'numeric'};
+    return date.toLocaleDateString('en-US', options);
+  }
+
+  //there is a mistake causing AM and PM to mess up
+  /*const formatTime = (timeString) => { 
+    let [hours, minutes] = timeString.split(':').map(Number); 
+    const suffix = hours >= 12 ? 'PM' : 'AM'; 
+    hours = hours % 12 || 12; 
+    return `${hours}:${minutes.toString().padStart(2, '0')} ${suffix}`;
+  }*/
 
   //used to fetch availabe appointments
   const fetchAppointments = async () => {
@@ -40,10 +55,14 @@ export const PatientDashboard = () => {
     fetchAppointments();
   }, [])
 
-  //Closes schedule appointment modal and opens state reason modal
-  const openReason = () => {
+  const switchToReason = () => {
     setScheduleAppointmentModalOpen(false);
     setReasonModalOpen(true);
+  }
+
+  const switchToAppointmentConfirmation = () => {
+    setReasonModalOpen(false);
+    setAppointmentConfirmationModalOpen(true);
   }
   
   const handleSubmit = async (values) => {
@@ -59,7 +78,7 @@ export const PatientDashboard = () => {
       setSuccessfulPaymentModalOpen(true);
   };
   const handleTimeSlotClick = (date, time) => {
-    const reason = prompt("Enter a reason for the appointment:");
+    /*const reason = prompt("Enter a reason for the appointment:");*/ /*was causing an unexpected window to show up*/
     if (!reason) return;
   
     fetch('http://127.0.0.1:5000/book_appointment', {
@@ -200,23 +219,23 @@ export const PatientDashboard = () => {
         <div className="title-4">Schedule Appointment</div>
       </button>
 
-      <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-md">
+      <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-lg">
         <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
           Schedule Appointment
         </ModalHeader>
         <ModalBody>
           {Object.keys(appointments).length > 0 ? (
             Object.keys(appointments).map((date) => (
-              <div key={date}>
-                <p>{date}</p>
-                <ul style={{ listStyleType: 'none', padding: 0 }}>
+              <div key={date} style={{marginBottom: '20px'}}>
+                <p>{formatDate(date)}</p>
+                <ul style={{ display: 'flex', flexWrap: 'wrap', padding: 0, listStyleType: 'none', gap: '10px'}}>
                   {appointments[date].map((time, index) => (
-                    <li key={index} style={{ marginBottom: '10px' }}>
-                      <button
+                    <li key={index} style={{ flex: '0 1 auto', marginBottom: '10px' }}>
+                      <button onClickCapture={() => switchToReason(true)}
                         className="btn shadow rounded primary"
                         onClick={() => handleTimeSlotClick(date, time)}
                       >
-                        {time}
+                        {(time)}
                       </button>
                     </li>
                   ))}
@@ -245,7 +264,8 @@ export const PatientDashboard = () => {
                       />
                   </Row>
                   <Row className='col-6 mx-auto'>
-                    <Button onClick={() => setReasonModalOpen(false)}
+                    <Button onClick={() => switchToAppointmentConfirmation()}
+                      style={{marginTop: '20px'}}
                       className='btn rounded shadow'
                       type='submit'>
                       Confirm Appointment
@@ -253,6 +273,13 @@ export const PatientDashboard = () => {
                   </Row>
                 </ModalBody>
               </Modal>
+
+            <Modal isOpen={appointmentConfirmationModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
+              <ModalHeader toggle={() => setAppointmentConfirmationModalOpen(false)}>Appointemnt Confirmation </ModalHeader>
+              <ModalBody>
+                Your appointment has been confirmed for ______
+              </ModalBody>
+            </Modal>
 
               <div className="group-3" />
             </div>
@@ -272,6 +299,13 @@ export const PatientDashboard = () => {
                 <div className="text-wrapper-3">View Details</div>
               </button>
             </div>
+            
+            <Modal isOpen={viewDetailsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
+              <ModalHeader toggle={() => setViewDetailsModalOpen(false)}>Payment History</ModalHeader>
+              <ModalBody>
+                No payment history at the moment
+              </ModalBody>
+            </Modal>
 
             <button className="btn shadow rounded overlap-wrapper"
               onClick={() => setViewDentalHistroyModalOpen(true)}>
@@ -390,8 +424,8 @@ export const PatientDashboard = () => {
               </ModalBody>
             </Modal>
 
-            <Modal isOpen={successfulPaymentModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
-              <ModalHeader toggle={() => setSuccessfulPaymentModalOpen(false)}>Thank you for your payment</ModalHeader>
+            <Modal isOpen={successfulPaymentModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
+              <ModalHeader toggle={() => setSuccessfulPaymentModalOpen(false)}>Payment Confirmation</ModalHeader>
               <ModalBody>
                 Your transaction has been successfully processed
               </ModalBody>
