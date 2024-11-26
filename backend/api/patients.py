@@ -222,15 +222,17 @@ def get_available_appointments():
         if not row["Patient ID"] and not row["Treatment ID"]:  # Check availability
             date, time = row["Date"], row["Time"]
             if date > today:  # Only future dates
-                # Reformat time to "HH:MM AM/PM" and strip leading zeros
-                # Reformat time to "H:MM AM/PM" (removes leading zero in hour)
-                time_obj = datetime.strptime(time, "%I:%M:%S %p")
-                formatted_time = time_obj.strftime("%I:%M %p").lstrip('0')  # Strip leading zero
-                available_slots.setdefault(date, set()).add(formatted_time)  # Use set to avoid duplicates
+                available_slots.setdefault(date, set()).add(time)  # Use set to avoid duplicates
 
-    # Sort times for each date and convert back to lists
+    # Sort times for each date and remove seconds
     for date in available_slots:
-        available_slots[date] = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M %p")).lstrip("0")
+        # Sort the times in ascending order
+        sorted_times = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M:%S %p"))
+        # Format each time to remove the seconds part
+        available_slots[date] = [datetime.strptime(t, "%I:%M:%S %p").strftime("%I:%M %p") for t in sorted_times]
+
+        # Optionally, strip any leading zero from the hour
+        available_slots[date] = [t.lstrip("0") if t[0] == '0' else t for t in available_slots[date]]
 
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
