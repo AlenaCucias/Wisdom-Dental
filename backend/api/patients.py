@@ -218,18 +218,16 @@ def get_available_appointments():
     available_slots = {}
     today = datetime.today().date().strftime("%m-%d-%Y")
 
-    # Loop through all rows to find available time slots
+    # Collect available slots
     for row in data:
-        # If both Patient ID and Treatment ID are empty, the appointment slot is available
-        if not row["Patient ID"] and not row["Treatment ID"]:
-            date = row["Date"]
-            time = row["Time"]
-            if date not in available_slots:
-                available_slots[date] = set()  # Initialize a set for unique times
-            available_slots[date].add(time)
+        if not row["Patient ID"] and not row["Treatment ID"]:  # Check availability
+            date, time = row["Date"], row["Time"]
+            if date > today:  # Only future dates
+                available_slots.setdefault(date, set()).add(time)  # Use set to avoid duplicates
 
-    # Convert sets back to sorted lists, only showing future appointments
-    available_slots = {date: sorted(times) for date, times in available_slots.items() if date > today}
+    # Sort times for each date and convert back to lists
+    for date in available_slots:
+        available_slots[date] = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M:%S %p"))
 
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
