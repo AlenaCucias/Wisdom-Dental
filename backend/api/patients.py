@@ -352,5 +352,71 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
     # If no available slots were found
     return "Not able to reschedule your appointment."
 
+@app.route('/create_account', methods=['POST'])
+def create_account():
+    data = request.json
+    first_name = data.get('firstName')  # changed from 'Name' to 'firstName'
+    last_name = data.get('lastName')    # added 'lastName'
+    contact_email = data.get('contact_email')
+    phone_number = data.get('phone_number')
+    password = data.get('password')  # You can hash the password before saving it
+    
+    # Validate required fields
+    if not first_name or not last_name or not contact_email or not phone_number or not password:
+        return jsonify({'message': 'First name, last name, contact email, phone number, and password are required'}), 400
+
+    if not isinstance(first_name, str):
+        return jsonify({'message': 'First name must be a string'}), 400
+
+    if not isinstance(last_name, str):
+        return jsonify({'message': 'Last name must be a string'}), 400
+
+    if not isinstance(contact_email, str):
+        return jsonify({'message': 'Contact email must be a string'}), 400
+
+    if not isinstance(phone_number, str):
+        return jsonify({'message': 'Phone number must be a string'}), 400
+
+    try:
+        # Get today's date for the account creation date
+        current_date = datetime.now().strftime('%m-%d-%Y')
+
+        # Get the last Patient ID to auto-generate the next one (assuming Patient ID is numeric)
+          # Increment Patient ID by 1
+
+        # Prepare the row to insert into the "Patients" sheet
+        row = [
+             # New Patient ID
+            first_name,      # firstName
+            last_name,       # lastName
+            phone_number,
+            contact_email,
+            password,  # It's assumed that the password is already hashed
+        ]
+
+        # Assuming 'append_row' is a function that appends data to your Google Sheet
+        append_row("Patient", row)  # Assuming "Patients" is the sheet name
+
+        return jsonify({'message': 'Patient account created successfully'}), 201
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'message': 'Failed to create account', 'error': str(e)}), 500
+
+def get_last_patient_id():
+    """Fetch the last patient ID from the Google Sheet and return it"""
+    try:
+        # Access Google Sheet
+        sheet = open_google_sheet("Patients")  # Make sure "Patients" sheet exists
+        rows = sheet.get_all_records()  # Get all the records
+        if not rows:
+            return 1000  # If no rows, start from Patient ID 1000
+        # Get the max Patient ID from the existing records
+        last_patient_id = max([row['Patient ID'] for row in rows])  # Find the max Patient ID
+        return last_patient_id
+    except Exception as e:
+        print(f"Error getting last Patient ID: {e}")
+        return 1000 
+    
 if __name__ == '__main__':
     app.run(debug=True)

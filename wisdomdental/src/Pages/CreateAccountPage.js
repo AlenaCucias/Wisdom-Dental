@@ -1,10 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const CreateAccountPage = () => {
-  // State to store form input data
   const initialFormData = {
     firstName: "",
     lastName: "",
@@ -14,19 +13,19 @@ const CreateAccountPage = () => {
     confirmPassword: "",
   };
 
-  // State to store form input data
   const [formData, setFormData] = useState(initialFormData);
-
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  // Handle input changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const { password, confirmPassword } = formData;
 
     // Check if passwords match
@@ -35,18 +34,33 @@ const CreateAccountPage = () => {
       return;
     }
 
-    // Success message
-    alert("Account created successfully!");
+    try {
+      // Send data to Flask backend (replace with your backend URL)
+      const response = await axios.post("http://localhost:5000/create_account", {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        contact_email: formData.email,
+        phone_number: formData.phoneNumber,
+        password: formData.password,
+      });
 
-    // Log form data for debugging
-    console.log("Form Data:", formData);
+      // If successful, show success message
+      setSuccess(true);
+      setError(null);
+      console.log("Form Data:", formData);
+      console.log("Response from Flask:", response.data);
 
-    // Reset form fields
-    setFormData(initialFormData);
+      // Reset form fields
+      setFormData(initialFormData);
+    } catch (err) {
+      // If error, show error message
+      setError(err.response?.data?.message || "Failed to create account");
+      setSuccess(false);
+      console.error("Error:", err);
+    }
   };
 
   const handleCancel = () => {
-    // Navigate to login page
     navigate("/login");
   };
 
@@ -166,7 +180,12 @@ const CreateAccountPage = () => {
           </button>
         </div>
       </form>
+
+      {/* Show success or error message */}
+      {success && <p style={{ color: "green" }}>Account created successfully!</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
+
 export default CreateAccountPage;
