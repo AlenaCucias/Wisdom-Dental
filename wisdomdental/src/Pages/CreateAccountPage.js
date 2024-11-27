@@ -36,7 +36,7 @@ const CreateAccountPage = () => {
     console.log('Submitting form data:', formData); 
     try {
       // Send data to Flask backend (replace with your backend URL)
-      const response = await axios.post("http://localhost:5000/create_account", {
+      const response = await axios.post("http://localhost:5000/patients/create_account", {
         firstName: formData.firstName,
         lastName: formData.lastName,
         contact_email: formData.email,
