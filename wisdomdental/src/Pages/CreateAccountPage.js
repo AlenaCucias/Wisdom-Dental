@@ -33,7 +33,7 @@ const CreateAccountPage = () => {
       alert("Passwords don't match!");
       return;
     }
-
+    console.log('Submitting form data:', formData); 
     try {
       // Send data to Flask backend (replace with your backend URL)
       const response = await axios.post("http://localhost:5000/create_account", {
@@ -187,5 +187,4 @@ const CreateAccountPage = () => {
     </div>
   );
 };
-
 export default CreateAccountPage;

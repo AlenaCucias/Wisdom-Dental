@@ -1,7 +1,6 @@
 # patients.py
 from flask import Flask, request, jsonify
 from common import get_worksheet, hash_password, append_row, extract
-from feedback import submit_feedback, get_latest_reviews
 from datetime import datetime
 from collections import defaultdict
 from flask_cors import CORS
@@ -355,12 +354,11 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
 @app.route('/create_account', methods=['POST'])
 def create_account():
     data = request.json
-    first_name = data.get('firstName')  # changed from 'Name' to 'firstName'
-    last_name = data.get('lastName')    # added 'lastName'
+    first_name = data.get('firstName')
+    last_name = data.get('lastName')
     contact_email = data.get('contact_email')
     phone_number = data.get('phone_number')
-    password = data.get('password')
-    hashed_password = hash_password(password)  # You can hash the password before saving it
+    password = data.get('password') # You can hash the password before saving it
     
     # Validate required fields
     if not first_name or not last_name or not contact_email or not phone_number or not password:
@@ -379,20 +377,15 @@ def create_account():
         return jsonify({'message': 'Phone number must be a string'}), 400
 
     try:
-        # Get today's date for the account creation date
-        current_date = datetime.now().strftime('%m-%d-%Y')
-
-        # Get the last Patient ID to auto-generate the next one (assuming Patient ID is numeric)
-          # Increment Patient ID by 1
+        hashed_password = hash_password(password)
 
         # Prepare the row to insert into the "Patients" sheet
-        row = [
-             # New Patient ID
+        row =[
             first_name,      # firstName
             last_name,       # lastName
             phone_number,
             contact_email,
-            hashed_password,  # It's assumed that the password is already hashed
+            hashed_password,
         ]
 
         # Assuming 'append_row' is a function that appends data to your Google Sheet
@@ -418,6 +411,94 @@ def get_last_patient_id():
     except Exception as e:
         print(f"Error getting last Patient ID: {e}")
         return 1000
+
+@app.before_request
+def handle_options():
+    if request.method == "OPTIONS":
+        return '', 200
+
+@app.route('/submit_feedback', methods=['POST'])
+#Endpoint to submit feedback
+def submit_feedback():
+        data = request.json
+        comments = data.get ('comments')
+        contact_email = data.get('contact_email')
+        patient_name = data.get ('Name')
+        patient_status = data.get('patient_status') # current or former
+        star_rating = data.get('star_rating') # 1 to 5
+
+        print(f"Patient Name Type: {type(patient_name)}, Value: {patient_name}")
+        print(f"Comments Type: {type(comments)}, Value: {comments}")
+        print(f"Contact Email Type: {type(contact_email)}, Value: {contact_email}")
+        print(f"Patient Status Type: {type(patient_status)}, Value: {patient_status}")
+        print(f"Star Rating Type: {type(star_rating)}, Value: {star_rating}")
+        if not patient_name or not comments:
+            return jsonify({'message': 'Patient name and comments are required'}), 400
+
+        if not isinstance(patient_name, str):
+            return jsonify({'message': 'Patient name must be a string'}), 400
+
+        if not isinstance(comments, str):
+            return jsonify({'message': 'Comments must be a string'}), 400
+
+        if not isinstance(contact_email, str):
+            return jsonify({'message': 'Contact email must be a string'}), 400
+
+        if patient_status not in ['Current Patient', 'Former Patient']:
+            return jsonify({'message': 'Patient status must be "current" or "former"'}), 400
+
+        if not isinstance(patient_status, str):
+            return jsonify({'message': 'Patient status must be a string'}), 400
+
+        if not isinstance(star_rating, int):
+            return jsonify({'message': 'Star rating must be an integer'}), 400
+
+        if not (1 <= star_rating <= 5):
+            return jsonify({'message': 'Star rating must be between 1 and 5'}), 400
+
+
+        try:
+        # Get today's date
+            current_date = datetime.now().strftime('%m-%d-%Y')
+
+        # Prepare row data
+            row = [
+                patient_name,
+                contact_email,
+                comments,
+                patient_status,
+                star_rating,
+                current_date
+            ]
+        # Append the row to the Google Sheet
+            append_row("Feedback", row)
+            return jsonify({'message': 'Feedback submitted successfully'}), 201
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return jsonify({'message': 'Failed to submit feedback', 'error': str(e)}), 500
+
+@app.route('/get_latest_reviews', methods=['GET'])
+def get_latest_reviews():
+    # Get the 'Feedback' worksheet
+    sheet = get_worksheet('Feedback')
+
+    # Fetch all values from the sheet (assuming reviews are in the format: ID, Name, Comment, Star Rating, Timestamp)
+    reviews = sheet.get_all_records()
+
+    # Check the keys (columns) of the first review to verify the column names
+    if reviews:
+        print("Column Names:", reviews[0].keys())  # This will print the columns from the first record
+
+    # Ensure reviews exist
+    if not reviews:
+        return jsonify({'message': 'No reviews found'}), 404
+
+    # Sort reviews by timestamp in descending order
+    sorted_reviews = sorted(reviews, key=lambda x: x['Date'], reverse=True)
+
+    # Return the top 5 latest reviews
+    return jsonify(sorted_reviews[:4])
 
 if __name__ == '__main__':
     app.run(debug=True)
