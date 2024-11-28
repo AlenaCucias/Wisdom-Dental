@@ -8,7 +8,7 @@ export const validateLoginForm = (values) => {
     }
     if (!values.password) {
         errors.password = 'Required';
-    } else if (values.password.length < 8) {
+    } else if (values.password.length < 3) {
         errors.password = 'Must be at least 8 characters';
     }
     return errors;

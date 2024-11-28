@@ -1,6 +1,6 @@
 # patients.py
 from flask import  Blueprint, Flask, request, jsonify
-from common import get_worksheet, hash_password, append_row, extract
+from .common import get_worksheet, hash_password, append_row, extract
 from datetime import datetime
 from collections import defaultdict
 from flask_cors import CORS

@@ -1,6 +1,13 @@
 # common.py
-from google_auth import get_client
-import hashlib
+from google.auth.transport.requests import Request
+from google.oauth2.service_account import Credentials
+from google.auth import exceptions as google_auth_exceptions
+import gspread
+from flask import Blueprint,request, jsonify, make_response
+from .google_auth import get_client
+import hashlib 
+
+common_blueprint = Blueprint('common', __name__)
 
 def get_worksheet(sheet_name):
     """
@@ -33,8 +40,8 @@ def append_row(sheet_name, data):
     Appends a row to the Google Sheet with an incremented ID.
 
     Args:
-        sheet: The name of the sheet to append to.
-        data: A list of values to be appended, excluding the ID.
+        sheet_name (str): The name of the sheet to append to.
+        data (list): A list of values to be appended, excluding the ID.
     """
     # Get all existing rows
     sheet = get_worksheet(sheet_name)
@@ -53,7 +60,9 @@ def append_row(sheet_name, data):
     # Append the new row to the sheet
     sheet.append_row(new_row, value_input_option="USER_ENTERED")
 
-def authenticate_user(email, password):
+@common_blueprint.route('/authenticate_user', methods=['POST'])
+def authenticate_user():
+    #removed email and password parameters
     """
     Authenticate a user by checking their email and password across multiple sheets.
 
@@ -73,6 +82,13 @@ def authenticate_user(email, password):
 
     Note: Passwords are hashed before comparison.
     """
+
+    email = request.json.get('email')  # If the request is JSON
+    password = request.json.get('password')  # If the request is JSON
+    
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+    
     # List of sheets to search through
     sheets = ["Patient", "Staff"]
 
@@ -88,10 +104,18 @@ def authenticate_user(email, password):
         if user:
             # If found in "Staff," include the role
             role = user["Role"] if sheet_name == "Staff" else None
-            return True, user, sheet_name, role
+            # return jsonify({
+            #     "message": "Authentication successful",
+            #     "user": user,
+            #     "sheet": sheet_name,
+            #     "role": role
+            # }), 200
+            # role = user["Role"] if sheet_name == "Staff" else None
+            # return True, user, sheet_name, role
+            return make_response(jsonify([True, user, sheet_name, role]), 200)
 
     # Return failure if no match is found
-    return False, None, None, None
+    return jsonify({"error": "Authentication failed"}), 401
 
 def extract(unfiltered_data, filtered_rows, data_to_compare, filter, data_to_extract):
     """
@@ -102,7 +126,7 @@ def extract(unfiltered_data, filtered_rows, data_to_compare, filter, data_to_ext
     key and extracts desired information.
 
     Args:
-        unfiltered data (list of dict): The name of the sheet to extract data from.
+        unfiltered_data (list of dict): The name of the sheet to extract data from.
         filtered_rows (list of dict): Rows filtered from the original dataset.
         data_to_compare (str): The key in `filtered_rows` whose values will be used for matching.
         filter (str): The key in the target sheet for filtering rows based on matching IDs.

@@ -5,7 +5,7 @@ import LoginForm from "../components/LoginForm";
 
 
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
   return (
     <div className='login-page'>
         <Row>
@@ -33,7 +33,7 @@ const LoginPage = () => {
                     <div className="title mx-5 py-5 my-5 ps-3">Login To Your Account</div>
                 </Col>
                 <Col className='rightSplit' >    
-                        <LoginForm />
+                        <LoginForm onLogin={onLogin} />
                 </Col>
             </div>
         </Row>

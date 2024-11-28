@@ -5,7 +5,7 @@ import { validateLoginForm } from '../utils/validateLoginForm';
 import { useNavigate } from 'react-router-dom';
 import { authenticateUser } from '../utils/authService';
 
-const LoginForm = () => {
+const LoginForm = ({onLogin}) => {
     const [error, setError] = useState(null);
 
     const navigate = useNavigate();
@@ -13,17 +13,38 @@ const LoginForm = () => {
     const handleSubmit = async (values, { resetForm }) => {
         console.log('form values: ', values);
         console.log('in JSON format: ', JSON.stringify(values));
-        resetForm();
-    };
-    const navigate = useNavigate();
-    const handleNav = (values, route) => {
-        const validationErrors = validateLoginForm(values); 
-        if (Object.keys(validationErrors).length === 0) {
-            console.log('Form is valid, navigating...');
-            navigate(route);
-        } else {
-            console.log('Validation failed:', validationErrors);
+        try {
+            const response = await authenticateUser(values.email, values.password);
+            const [success, userDetails, sheetName, role] = response;
+
+            if (success) {
+                console.log('Authentication successful:', userDetails);
+                sessionStorage.setItem('user', JSON.stringify(userDetails));
+                onLogin(userDetails);
+
+                // Route based on the sheet and role
+                if (sheetName === "Patient") {
+                    // If the user is found on the Patient sheet, navigate to the patient dashboard
+                    console.log("Navigating to patient dashboard...");
+                    navigate('/patientDashboard');
+                } else if (sheetName === "Staff") {
+                    console.log("user role: ", role)
+                    if (role === "Admin") {
+                        console.log("Navigating to admin dashboard...");
+                        navigate('/adminDashboard');
+                    } else {
+                        console.log("Navigating to staff dashboard...");
+                        navigate('/staffDashboard');
+                    }                
+                }
+            } else {
+                setError("Authentication failed, please try again");
+            }
+        } catch (error) {
+            console.error('Authentication error: ', error);
+            setError("An error occurred, please try again later.");
         }
+        resetForm();
     };
    return (
      <div>
@@ -56,33 +77,15 @@ const LoginForm = () => {
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Col>
-                        <Button 
-                            type='submit' 
-                            className='btn shadow rounded'
-                            onClick = { () => { handleNav(values, '/patientDashboard')}}
-                        >
-                            Patient Login
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button 
-                            type='submit' 
-                            className='btn shadow rounded'
-                            onClick = { () => { handleNav(values, '/staffDashboard')}}    
-                        >
-                            Staff Login
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button 
-                            type='submit' 
-                            className='btn shadow rounded'
-                            onClick = { () => { handleNav(values, '/adminDashboard')}}
-                        >
-                            Admin Login
-                        </Button>
-                    </Col>
+                <Col>
+                    <Button
+                        type='submit'
+                        className='seconday-wrapper btn shadow rounded mb-5 secondary'
+                        style={{ width: '475px'}}
+                    >
+                        Login
+                    </Button>
+                </Col>
                 </FormGroup>
             </Form>
             )}
