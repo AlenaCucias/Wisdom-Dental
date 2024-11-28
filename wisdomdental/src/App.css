@@ -2494,7 +2494,21 @@ button:hover {
   width: fit-content;
 }
 
-.patient-dashboard .title-2 {
+.patient-dashboard .text-wrapper-2 {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 24px;
+  font-weight: 700;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 32px;
+  position: absolute;
+  top: 116px;
+  white-space: nowrap;
+  gap: 10px;
+}
+
+.patient-dashboard .text-wrapper-7 {
   color: #ffffff;
   font-family: "Roboto-Bold", Helvetica;
   font-size: 24px;
