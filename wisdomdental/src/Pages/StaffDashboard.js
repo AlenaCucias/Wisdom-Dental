@@ -7,7 +7,7 @@ import { Formik, Field, Form } from "formik";
 
 
 
-const StaffDashboard = () => {
+const StaffDashboard = ({ user }) => {
   const [openPayroll, setOpenPayroll] = useState(false);
   const handleSubmit = (values) => {
     const timesheet = 
@@ -24,7 +24,7 @@ const StaffDashboard = () => {
         <div className="title">Staff Dashboard</div>
 
         <p className="description">
-          Welcome back, John! View upcoming appointments and payroll here.
+          Welcome back, {user ? user.name : 'User'}! View upcoming appointments and payroll here.
         </p>
 
         <div className="overlap">
@@ -36,7 +36,7 @@ const StaffDashboard = () => {
                     <div className="label-normal">
                       <div className="label-text">Staff</div>
                     </div>
-                    <div className="text-wrapper">Dr. John Doe</div>
+                    <div className="text-wrapper">{user ? user.name : 'Loading...'}</div>
                     <div className="avatar" />
                   </div>
                 </Row>
