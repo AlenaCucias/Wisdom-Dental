@@ -1,11 +1,16 @@
- import React from 'react';
- import { Button, Label, Col, FormGroup } from 'reactstrap';
+import React, { useState } from 'react';
+import { Button, Label, Col, FormGroup } from 'reactstrap';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { validateLoginForm } from '../utils/validateLoginForm';
 import { useNavigate } from 'react-router-dom';
- 
- const LoginForm = () => {
-    const handleSubmit = (values, { resetForm }) => {
+import { authenticateUser } from '../utils/authService';
+
+const LoginForm = () => {
+    const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (values, { resetForm }) => {
         console.log('form values: ', values);
         console.log('in JSON format: ', JSON.stringify(values));
         resetForm();
