@@ -3,33 +3,19 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { validateLoginForm } from '../utils/validateLoginForm';
 import { useNavigate } from 'react-router-dom';
-
-const LoginForm = () => {
-    const navigate = useNavigate();
-
-    const handleLogin = async (email, password, route) => {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/patients/authenticate_patient', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-            const data = await response.json();
-            if (data.success) {
-                localStorage.setItem('user', JSON.stringify(data.user));
-                navigate(route);
-            } else {
-                alert(data.error || 'Login failed');
-            }
-        } catch (error) {
-            console.error('Error logging in:', error);
-        }
+ 
+ const LoginForm = () => {
+    const handleSubmit = (values, { resetForm }) => {
+        console.log('form values: ', values);
+        console.log('in JSON format: ', JSON.stringify(values));
+        resetForm();
     };
-    const handleNav = async (values, role) => {
-        const validationErrors = validateLoginForm(values);
+    const navigate = useNavigate();
+    const handleNav = (values, route) => {
+        const validationErrors = validateLoginForm(values); 
         if (Object.keys(validationErrors).length === 0) {
-            const { email, password } = values;
-            await handleLogin(email, password, `/${role}Dashboard`);
+            console.log('Form is valid, navigating...');
+            navigate(route);
         } else {
             console.log('Validation failed:', validationErrors);
         }
@@ -41,7 +27,7 @@ const LoginForm = () => {
                 email: '',
                 password: '',
             }}
-            onSubmit={() => {}}
+            onSubmit={handleSubmit}
             validate={validateLoginForm}
         >
             {({ values }) => (
@@ -54,23 +40,23 @@ const LoginForm = () => {
                             {(msg) => <p className='text-danger text-start'>{msg}</p>}
                         </ErrorMessage>
                     </Col>
-                 </FormGroup>
-                        <FormGroup row>
-                            <Label htmlFor='password' className='text-start'>Password</Label>
-                            <Col>
-                                <Field name='password' type='password' placeholder='Password' className='form-control mb-4' />
-                                <ErrorMessage name='password'>
-                                    {(msg) => <p className='text-danger text-start'>{msg}</p>}
-                                </ErrorMessage>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Col>
-                                <Button 
-                                    type='button' 
-                                    className='btn shadow rounded'
-                                    onClick={() => handleNav(values, 'patient')}
-                                >
+                </FormGroup>
+                <FormGroup row>
+                    <Label htmlFor='password' className='text-start'>Password</Label>
+                    <Col>
+                        <Field name='password' placeholder='Password' className='form-control mb-4'></Field>
+                        <ErrorMessage name='password'>
+                            {(msg) => <p className='text-danger text-start'>{msg}</p>}
+                        </ErrorMessage>
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Col>
+                        <Button 
+                            type='submit' 
+                            className='btn shadow rounded'
+                            onClick = { () => { handleNav(values, '/patientDashboard')}}
+                        >
                             Patient Login
                         </Button>
                     </Col>
