@@ -140,29 +140,21 @@ export const PatientDashboard = () => {
             </p>
 
             <div className="overlap">
-              <p className="email-johndoe-gmail">
-                <span className="span">Email: </span>
+            <p className="email-johndoe-gmail">
+  <span className="span">Email: </span>
+  <span className="text-wrapper-2">{user?.Email || 'N/A'}</span>
+  <br />
+  <br />
+  <span className="span">Phone Number: </span>
+  <span className="text-wrapper-2">{user?.Phone_Number || 'N/A'}</span>
+</p>
 
-                <span className="text-wrapper-2">
-                  johndoe@gmail.com
-                  <br />
-                  <br />
-                </span>
-
-                <span className="span">
-                  Phone Number: <br />
-                </span>
-
-                <span className="text-wrapper-2">+1(123) 456-7890</span>
-              </p>
-
-              <div className="group-wrapper">
-                <div className="group-2">
-                  <div className="label-normal">
-                    <div className="label-text">Patient</div>
-                  </div>
-
-                  <div className="title-2">John Doe</div>
+<div className="group-wrapper">
+  <div className="group-2">
+    <div className="label-normal">
+      <div className="label-text">Patient</div>
+    </div>
+    <div className="title-2">{user?.Name || 'N/A'}</div>
 
                   <div className="avatar" />
                 </div>
