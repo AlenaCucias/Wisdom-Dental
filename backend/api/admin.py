@@ -1,8 +1,11 @@
 # admin.py
-from backend.api.common import get_worksheet
-from backend.api.patients import dental_history
+from common import get_worksheet
+from patients import dental_history
 from datetime import datetime
 from collections import defaultdict
+from flask import Blueprint, jsonify
+
+admin_blueprint = Blueprint('admin', __name__)
 
 def get_full_names(sheet_name, id_type):
     """
