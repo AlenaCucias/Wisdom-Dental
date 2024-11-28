@@ -34,5 +34,7 @@
 #virtual environment
 venv/
 
+.env
+
 
 backend/api/googledb.json

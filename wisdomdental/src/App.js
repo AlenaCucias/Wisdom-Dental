@@ -28,6 +28,7 @@ function App() {
   const handleLogin = (userData) => {
     setUser(userData);
     sessionStorage.setItem('user', JSON.stringify(userData));
+    console.log("verifying session storage: ",sessionStorage.getItem('user'));
   }
 
   const handleLogout = () => {
@@ -47,8 +48,8 @@ function App() {
               <Route path='createAccount' element={<CreateAccountPage />} />
 
               <Route path='patientDashboard' element={user ? <PatientDashboard user={user} /> : <Navigate to="/login" />}/>
-              <Route path='staffDashboard' element={user && user.role && user.role !== 'admin' ? <StaffDashboard user={user} /> : <Navigate to='/login' />} />
-              <Route path='adminDashboard' element={user && user.role === 'admin' ? <Admin user={user} /> : <Navigate to='/login' />} />
+              <Route path='staffDashboard' element={user && user.Role && user.Role !== 'Admin' ? <StaffDashboard user={user} /> : <Navigate to='/login' />} />
+              <Route path='adminDashboard' element={user && user.Role === 'Admin' ? <Admin user={user} /> : <Navigate to='/login' />} />
 
               <Route path='info' element={<InformationPage />} />
             </Routes>
