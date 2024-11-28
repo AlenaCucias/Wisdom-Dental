@@ -4,7 +4,7 @@ import WisdomLogo from './logo.png';
 import { NavLink, useLocation } from 'react-router-dom';
 
 
-const Header = () => {
+const Header = ({ onLogout }) => {
   const location = useLocation();
   const pagesWithChange = ['/patientDashboard', '/staffDashboard', '/adminDashboard'];
   const textChange = pagesWithChange.includes(location.pathname) ? "Logout" : "Sign In";
@@ -30,7 +30,17 @@ const Header = () => {
                         </NavItem>
                         <NavItem>
                           <NavLink className='nav-link' to='/login'>
-                            <button type="button" className='btn shadow rounded roboto-regular' >{textChange}</button>
+                            <button 
+                              type="button" 
+                              className='btn shadow rounded roboto-regular' 
+                              onClick = {() => {
+                                  if (textChange === "Logout") {
+                                    onLogout();
+                                  }
+                              }}
+                            >
+                              {textChange}
+                            </button>
                           </NavLink>
                         </NavItem>
                     </Nav>
