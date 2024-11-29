@@ -38,3 +38,5 @@ venv/
 
 
 backend/api/googledb.json
+google_auth.py
+wisdom-dental-441719-b7d05d1dffd1
