@@ -293,77 +293,146 @@ def book_appointment():
     except Exception as e:
         print(f"Error booking appointment: {e}")  # Log the error
         return jsonify({"success": False, "error": str(e)}), 500
+
+@patients_blueprint.route('/get_upcoming_appointments', methods=['GET'])
+def get_upcoming_appointments():
+    """
+    Fetch upcoming appointments for a given patient ID.
+    Query Parameter:
+        - patient_id: ID of the patient
+    """
+    patient_id = request.args.get("patient_id")
+    if not patient_id:
+        return jsonify({"error": "Patient ID is required"}), 400
+
+    try:
+        sheet = get_worksheet("Appointments")
+        appointments = sheet.get_all_records()
+        today = datetime.today().date()
+        upcoming = []
+
+        # Debugging: Print patient_id and today's date
+        print(f"Fetching appointments for Patient_ID={patient_id}, Today's Date={today}")
+
+        for row in appointments:
+            try:
+                appointment_date = datetime.strptime(row["Date"], "%m-%d-%Y").date()
+                if str(row["Patient_ID"]) == str(patient_id) and appointment_date >= today:
+                    upcoming.append({
+                        "appointment_id": row["Appointment_ID"],
+                        "date": row["Date"],
+                        "time": row["Time"],
+                        "notes": row["Notes"] or "General Checkup",
+                        "paid": row["Paid"],
+                    })
+            except Exception as e:
+                print(f"Error parsing row: {row}, Error: {e}")
+
+        # Debugging: Print all matching appointments
+        print(f"Upcoming Appointments for Patient_ID={patient_id}: {upcoming}")
+
+        if not upcoming:
+            return jsonify({"message": "No upcoming appointments at the moment"}), 200
+
+        # Sort by date and time
+        upcoming.sort(
+            key=lambda x: (
+                datetime.strptime(x["date"], "%m-%d-%Y"),
+                datetime.strptime(x["time"], "%I:%M %p"),
+            )
+        )
+
+        return jsonify({"appointments": upcoming}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch appointments: {str(e)}"}), 500
+
+@patients_blueprint.route('/cancel_appointment', methods=['POST'])
+def cancel_appointment():
+    try:
+        data = request.json
+        appointment_id = data.get("appointment_id")
+        patient_id = data.get("patient_id")
+
+        if not appointment_id or not patient_id:
+            return jsonify({"success": False, "error": "Appointment ID and Patient ID are required"}), 400
+
+        sheet = get_worksheet("Appointments")
+        appointments = sheet.get_all_records()
+
+        # Loop through the data to find the matching appointment
+        for i, row in enumerate(appointments, start=2):  # Skip the header row
+            if row["Appointment_ID"] == appointment_id and row["Patient_ID"] == patient_id:
+                sheet.update(f"B{i}", [[""]])  # Clear Patient_ID
+                sheet.update(f"C{i}", [[""]])  # Clear Treatment_ID
+                sheet.update(f"G{i}", [[""]])  # Clear Notes
+                return jsonify({"success": True, "message": f"Appointment {appointment_id} canceled successfully."}), 200
+
+        return jsonify({"success": False, "error": "Appointment not found or mismatch."}), 400
+
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Error: {str(e)}"}), 500
     
-def cancel_appointment(user, date, time):
+@patients_blueprint.route('/reschedule_appointment', methods=['POST'])
+def reschedule_appointment():
     """
-    Cancel an appointment for a user.
+    Reschedule an appointment for a given patient.
 
-    Parameters:
-        user (str): A dictionary containing user information, including the "Patient_ID".
-        date (str): The date of the appointment (format: "MM-DD-YYYY").
-        time (str): The time of the appointment (format: "HH:MM:SS AM/PM").
-
-    Returns:
-        str: A success message or an error message if the appointment could not be canceled.
+    Expects JSON payload:
+    - patient_id: ID of the patient
+    - old_date: Original date of the appointment
+    - old_time: Original time of the appointment
+    - new_date: New date for the appointment
+    - new_time: New time for the appointment
+    - new_notes: Notes for the new appointment (optional)
     """
-    # Get the worksheet and all records
-    sheet = get_worksheet("Appointments")
-    data = sheet.get_all_records()
+    data = request.json
+    print(f"Request Data: {data}")
+    patient_id = data.get("patient_id")
+    old_date = data.get("old_date")
+    old_time = data.get("old_time")
+    new_date = data.get("new_date")
+    new_time = data.get("new_time")
+    new_notes = data.get("new_notes", "")
 
-    # Loop through all rows to find the appointment for the specified date, time, and user
-    for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Date"] == date and row["Time"] == time and row["Patient_ID"] == user["Patient_ID"]:
-            # Cancel the appointment
-            sheet.update(f"B{i}", [[""]])  # Patient ID is in column B
-            sheet.update(f"C{i}", [[""]])  # Treatment ID is in column C
-            sheet.update(f"G{i}", [[""]])  # Notes are in column G
-            return f"Appointment canceled successfully for {date} at {time}."
+    if not all([patient_id, old_date, old_time, new_date, new_time]):
+        return jsonify({"success": False, "error": "Missing required fields"}), 400
 
-    # If no available slots were found
-    return "Not able to cancel the appointment for the specified date and time."
+    try:
+        sheet = get_worksheet("Appointments")
+        appointments = sheet.get_all_records()
 
-def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
-    """
-    Reschedule an appointment for a user.
+        # Step 1: Cancel the original appointment
+        old_appointment_found = False
+        for i, row in enumerate(appointments, start=2):
+            if row["Date"] == old_date and row["Time"] == old_time and str(row["Patient_ID"]) == str(patient_id):
+                sheet.update(f"B{i}", [[""]])  # Clear Patient_ID
+                sheet.update(f"C{i}", [[""]])  # Clear Treatment_ID
+                sheet.update(f"G{i}", [[""]])  # Clear Notes
+                old_appointment_found = True
+                print(f"Original appointment {old_date} at {old_time} canceled.")
+                break
+        
+        if not old_appointment_found:
+            return jsonify({"success": False, "error": "Original appointment not found"}), 400
 
-    Parameters:
-        user (str): A dictionary containing user information, including the "Patient_ID".
-        date (str): The date of the original appointment (format: "MM-DD-YYYY").
-        time (str): The time of the original appointment (format: "HH:MM:SS AM/PM").
-        new_date (str): The date of the new appointment (format: "MM-DD-YYYY").
-        new_time (str): The time of the new appointment (format: "HH:MM:SS AM/PM").
-        new_notes (str): Any comments the user would like to add to the new appointment.
+        # Step 2: Check if the new time slot is available
+        for i, row in enumerate(appointments, start=2):
+            if row["Date"] == new_date and row["Time"] == new_time:
+                if not row["Patient_ID"]:  # Check if the slot is available
+                    # Book the new appointment
+                    sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
+                    sheet.update(f"C{i}", [[row["Treatment_ID"]]])  # Reassign Treatment_ID
+                    sheet.update(f"G{i}", [[new_notes]])  # Update Notes
+                    print(f"Appointment rescheduled to {new_date} at {new_time}.")
+                    return jsonify({"success": True, "message": "Appointment rescheduled successfully."}), 200
 
+        # If the slot is not available
+        return jsonify({"success": False, "error": "Selected time slot is not available."}), 400
 
-    Returns:
-        str: A success message or an error message if the appointment could not be rescheduled.
-    """
-    # Get the worksheet and all records
-    sheet = get_worksheet("Appointments")
-    data = sheet.get_all_records()
-
-    # Loop through all rows to find the appointment for the specified date, time, and user
-    for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Date"] == date and row["Time"] == time and row["Patient_ID"] == user["Patient_ID"]:
-            # Book the appointment
-            treatment = row["Treatment_ID"]
-            sheet.update(f"B{i}", [[""]])  # Patient ID is in column B
-            sheet.update(f"C{i}", [[""]])  # Treatment ID is in column C
-            sheet.update(f"G{i}", [[""]])  # Notes are in column G
-
-    # Loop through all rows to find an available slot for the specified date and time
-    for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Date"] == new_date and row["Time"] == new_time:
-            if not row["Patient_ID"] and not row["Treatment_ID"]:  # Check if slot is unbooked
-                # Book the appointment
-                sheet.update(f"B{i}", [[user["Patient_ID"]]])  # Patient ID is in column B
-                sheet.update(f"C{i}", [[treatment]]) # Treatment ID is in column C
-                sheet.update(f"G{i}", [[new_notes]])  # Notes are in column G
-                return f"Appointment rescheduled successfully for {new_date} at {new_time}."
-
-    # If no available slots were found
-    return "Not able to reschedule your appointment."
-
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+    
 @patients_blueprint.route('/create_account', methods=['POST'])
 def create_account():
     data = request.json

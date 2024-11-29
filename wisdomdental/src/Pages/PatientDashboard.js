@@ -11,7 +11,6 @@ export const PatientDashboard = () => {
   const [viewXrayModalOpen, setViewXrayModalOpen] = useState(false);
   const [viewDentalHistoryModalOpen, setViewDentalHistroyModalOpen] = useState(false);
   const [viewDetailsModalOpen, setViewDetailsModalOpen] = useState(false);
-  const [upcomingAppointemntsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   const [successfulPaymentModalOpen, setSuccessfulPaymentModalOpen] = useState(false);
   const [appointmentConfirmationModalOpen, setAppointmentConfirmationModalOpen] = useState(false);
   const [appointments, setAppointments] = useState([]);
@@ -19,13 +18,20 @@ export const PatientDashboard = () => {
   const [reasonModalOpen, setReasonModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [upcomingAppointmentsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
+  const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null); // For rescheduling/canceling
+
   
   const [user, setUser] = useState(() => {
     return JSON.parse(sessionStorage.getItem('user')) || null;
   });
 
   useEffect(() => {
-    fetchAppointments();
+    // Fetch upcoming appointments and available appointments
+    fetchUpcomingAppointments();
+    fetchAvailableAppointments();
   }, []);
 
   useEffect(() => { 
@@ -35,6 +41,20 @@ export const PatientDashboard = () => {
       setUser(userDetails); 
     } 
   }, []); 
+  
+  const fetchUpcomingAppointments = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/patients/get_upcoming_appointments', {
+        params: { patient_id: '1002' }, // Replace with the logged-in user's ID
+      });
+      if (response.status === 200) {
+        setUpcomingAppointments(response.data.appointments || []);
+      }
+    } catch (error) {
+      console.error("Error fetching upcoming appointments:", error);
+    }
+  };
+  
   
   if (!user) { 
     return <div>Loading...</div>;
@@ -48,19 +68,17 @@ export const PatientDashboard = () => {
   }
 
   //used to fetch availabe appointments
-  const fetchAppointments = async () => {
+  const fetchAvailableAppointments = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/patients/get_available_appointments');
       if (response.status === 200) {
-        setAppointments(response.data.available_slots);
-      } else {
-        console.error('Failed to fetch available appointments:', response);
+        setAppointments(response.data.available_slots || []);
       }
     } catch (error) {
-      console.error('Error fetching available appointments:', error);
+      console.error("Error fetching available appointments:", error);
     }
   };
-
+ 
   const switchToReason = () => {
     setScheduleAppointmentModalOpen(false);
     setReasonModalOpen(true);
@@ -110,7 +128,8 @@ export const PatientDashboard = () => {
         if (response.data.success) {
           alert(response.data.message);
           setReason('');
-          fetchAppointments(); // Refresh available slots
+          fetchUpcomingAppointments();
+          fetchAvailableAppointments();  // Refresh available slots
           setReasonModalOpen(false);
         } else {
           alert(response.data.error || 'Failed to book the appointment');
@@ -121,6 +140,68 @@ export const PatientDashboard = () => {
         alert('An error occurred while booking the appointment.');
       });
   };
+
+
+  const handleRescheduleClick = (appointment) => {
+    setSelectedAppointment(appointment);
+    setRescheduleModalOpen(true);
+  };
+
+  const handleCancelClick = (appointmentId) => {
+    const appointmentData = {
+      appointment_id: appointmentId,
+      patient_id: user.Patient_ID,  // Assuming this is how you access the logged-in patient's ID
+    };
+  
+    axios
+      .post("http://127.0.0.1:5000/patients/cancel_appointment", appointmentData)
+      .then((response) => {
+        if (response.data.success) {
+          alert(response.data.message);  // Success message
+          setRescheduleModalOpen(false); // Close the reschedule modal
+          fetchUpcomingAppointments();
+            // Refresh appointments
+        } else {
+          alert(response.data.error);  // Error message
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error canceling the appointment:", error);
+      });
+  };
+
+  const handleRescheduleSubmit = () => { 
+    if (!selectedDate || !selectedTime) {
+      alert("Please select a valid date and time to reschedule.");
+      return;
+    }
+  
+    const requestData = {
+      patient_id: user.Patient_ID, // Assuming this is correct
+      old_date: selectedAppointment.date,  // The original appointment's date
+      old_time: selectedAppointment.time,  // The original appointment's time
+      new_date: selectedDate,  // The new selected date
+      new_time: selectedTime,  // The new selected time
+      new_notes: "Rescheduled Appointment",  // Optional notes for the new appointment
+    };
+  
+    axios
+      .post("http://127.0.0.1:5000/patients/reschedule_appointment", requestData)
+      .then((response) => {
+        if (response.data.success) {
+          alert(response.data.message); // Success message
+          setRescheduleModalOpen(false); // Close modal
+          setRescheduleModalOpen(false); // Close the reschedule modal
+          fetchUpcomingAppointments(); // Refresh the appointment list
+        } else {
+          alert(response.data.error); // Error message
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error rescheduling the appointment:", error);
+      });
+  };
+
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -158,15 +239,90 @@ export const PatientDashboard = () => {
               <div className="overlap-group-wrapper">
                 <div className="overlap-group-2">
 
-                    <div className="title-3" onClick={() => setUpcomingAppointmentsModalOpen(true)}>Upcoming Appointments</div>
-
-                  <Modal isOpen={upcomingAppointemntsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
-                    <ModalHeader toggle ={() => setUpcomingAppointmentsModalOpen(false)}>Upcoming Appointments</ModalHeader>
-                    <ModalBody>
-                      No upcoming appointments at the moment
-                    </ModalBody>
-                  </Modal>
-
+                <div className="title-3" onClick={() => setUpcomingAppointmentsModalOpen(true)}>
+              Upcoming Appointments
+            </div>
+            
+            {/* Upcoming Appointments Modal */}
+            <Modal
+        isOpen={upcomingAppointmentsModalOpen}
+        className="modal-dialog modal-dialog-centered modal-lg"
+      >
+        <ModalHeader toggle={() => setUpcomingAppointmentsModalOpen(false)}>
+          Upcoming Appointments
+        </ModalHeader>
+        <ModalBody>
+          {Array.isArray(upcomingAppointments) && upcomingAppointments.length > 0 ? (
+            upcomingAppointments.map((appointment) => (
+              <div key={appointment.appointment_id} className="item">
+                <div className="frame-2">
+                  <p className="p">
+                    {appointment.date} <br /> {appointment.time}
+                  </p>
+                  <div className="subtitle">{appointment.treatment || "General Consultation"}</div>
+                  <Button
+                    className="btn shadow rounded primary"
+                    onClick={() => handleRescheduleClick(appointment)}
+                  >
+                    Reschedule
+                  </Button>
+                  <Button
+                    className="btn shadow rounded danger"
+                    onClick={() => handleCancelClick(appointment.appointment_id)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No upcoming appointments at the moment.</p>
+          )}
+        </ModalBody>
+      </Modal>
+            {/* Reschedule Modal */}
+            <Modal isOpen={rescheduleModalOpen} className="modal-dialog modal-dialog-centered modal-lg">
+  <ModalHeader toggle={() => setRescheduleModalOpen(false)}>Reschedule Appointment</ModalHeader>
+  <ModalBody>
+    {Object.keys(appointments).length > 0 ? (
+      Object.keys(appointments).map((date) => (
+        <div key={date} style={{ marginBottom: "20px" }}>
+          <p>{date}</p>
+          <ul style={{ display: "flex", flexWrap: "wrap", gap: "10px", listStyleType: "none" }}>
+            {appointments[date].map((time, index) => (
+              <li key={index}>
+                <button
+                  className="btn shadow rounded primary"
+                  onClick={() => {
+                    setSelectedDate(date);
+                    setSelectedTime(time);
+                  }}
+                >
+                  {time}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    ) : (
+      <p>No available slots to reschedule.</p>
+    )}
+    {selectedDate && selectedTime && (
+      <div>
+        <p>Selected Date: {selectedDate}</p>
+        <p>Selected Time: {selectedTime}</p>
+      </div>
+    )}
+    <Button
+      className="btn shadow rounded primary"
+      onClick={handleRescheduleSubmit}
+      style={{ marginTop: "20px" }}
+    >
+      Confirm Reschedule
+    </Button>
+  </ModalBody>
+</Modal>
                   <div className="list">
                     <div className="row">
                       <div className="item">
