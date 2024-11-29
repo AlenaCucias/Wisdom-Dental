@@ -246,7 +246,7 @@ export const PatientDashboard = () => {
             {/* Upcoming Appointments Modal */}
             <Modal
         isOpen={upcomingAppointmentsModalOpen}
-        className="modal-dialog modal-dialog-centered modal-lg"
+        className="modal-dialog modal-dialog-centered modal-sm"
       >
         <ModalHeader toggle={() => setUpcomingAppointmentsModalOpen(false)}>
           Upcoming Appointments
@@ -254,21 +254,24 @@ export const PatientDashboard = () => {
         <ModalBody>
           {Array.isArray(upcomingAppointments) && upcomingAppointments.length > 0 ? (
             upcomingAppointments.map((appointment) => (
-              <div key={appointment.appointment_id} className="item">
-                <div className="frame-2">
-                  <p className="p">
-                    {appointment.date} <br /> {appointment.time}
-                  </p>
-                  <div className="subtitle">{appointment.treatment || "General Consultation"}</div>
+              <div key={appointment.appointment_id} className="item" style={{ marginBottom: '25px'}}>
+                <div className="frame-2" style={{ textAlign: 'center'}}>
+                <Col className="d-flex flex-column align-items-center justify-content-center">
+                  <Row>{appointment.treatment || "General Consultation"}</Row>
+                  <Row>{formatDate(appointment.date)}</Row>
+                  <Row style={{ marginBottom: '10px'}}>{appointment.time}</Row>
+                </Col>
                   <Button
-                    className="btn shadow rounded primary"
+                    className="btn shadow rounded primary flex-grow-1"
                     onClick={() => handleRescheduleClick(appointment)}
+                    style={{ marginRight: '10px', width: '110px'}}
                   >
                     Reschedule
                   </Button>
                   <Button
                     className="btn shadow rounded danger"
                     onClick={() => handleCancelClick(appointment.appointment_id)}
+                    style={{ width: '110px'}}
                   >
                     Cancel
                   </Button>
@@ -287,7 +290,7 @@ export const PatientDashboard = () => {
     {Object.keys(appointments).length > 0 ? (
       Object.keys(appointments).map((date) => (
         <div key={date} style={{ marginBottom: "20px" }}>
-          <p>{date}</p>
+          <p>{formatDate(date)}</p>
           <ul style={{ display: "flex", flexWrap: "wrap", gap: "10px", listStyleType: "none" }}>
             {appointments[date].map((time, index) => (
               <li key={index}>
@@ -310,17 +313,19 @@ export const PatientDashboard = () => {
     )}
     {selectedDate && selectedTime && (
       <div>
-        <p>Selected Date: {selectedDate}</p>
+        <p>Selected Date: {formatDate(selectedDate)}</p>
         <p>Selected Time: {selectedTime}</p>
       </div>
     )}
+    <div className="d-flex justify-content-center" style={{ marginTop: "20px"}}>
     <Button
-      className="btn shadow rounded primary"
+      className="btn shadow rounded primary "
       onClick={handleRescheduleSubmit}
       style={{ marginTop: "20px" }}
     >
       Confirm Reschedule
     </Button>
+    </div>
   </ModalBody>
 </Modal>
                   <div className="list">
@@ -362,7 +367,7 @@ export const PatientDashboard = () => {
           {Object.keys(appointments).length > 0 ? (
             Object.keys(appointments).map((date) => (
               <div key={date} style={{ marginBottom: '20px' }}>
-                <p>{date}</p>
+                <p>{formatDate(date)}</p>
                 <ul style={{ display: 'flex', flexWrap: 'wrap', padding: 0, listStyleType: 'none', gap: '10px' }}>
                   {appointments[date].map((time, index) => (
                     <li key={index} style={{ flex: '0 1 auto', marginBottom: '10px' }}>
