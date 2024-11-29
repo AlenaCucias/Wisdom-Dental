@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Col, Row, Modal, ModalBody, FormGroup, Label, Button, ModalHeader } from 'reactstrap';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Core React component
@@ -10,6 +10,7 @@ import axios from 'axios';
 
 
 const StaffDashboard = ({ user }) => {
+  const [staffInfo, setStaffInfo] = useState(null);
   const [openPayroll, setOpenPayroll] = useState(false);
   const [error, setError] = useState(null);
   const [pay, setPay] = useState(user.Total_Pay);

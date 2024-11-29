@@ -380,6 +380,12 @@ def create_account():
 
     if not isinstance(phone_number, str):
         return jsonify({'message': 'Phone number must be a string'}), 400
+    
+    if (len(password) < 8):
+        return jsonify({'message': 'Password must be at least 8 characters'}), 400
+    
+    if ((len(phone_number) != 10) or not (phone_number.isdigit())):
+        return jsonify({'message': 'Phone number must be 10 digits'}), 400
 
     try:
         hashed_password = hash_password(password)
