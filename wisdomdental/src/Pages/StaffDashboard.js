@@ -1,13 +1,13 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Col, Row, Modal, ModalBody, FormGroup, Label, Button, ModalHeader } from 'reactstrap';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Core React component
-import { useState } from 'react';
 import { Formik, Field, Form } from "formik";
 
 
 
 const StaffDashboard = ({ user }) => {
+  const [staffInfo, setStaffInfo] = useState(null);
   const [openPayroll, setOpenPayroll] = useState(false);
   const handleSubmit = (values) => {
     const timesheet = 
@@ -18,13 +18,51 @@ const StaffDashboard = ({ user }) => {
     console.log(timesheet);
     setOpenPayroll(false);
   }
+
+  useEffect(() => {
+    // Retrieve user data from sessionStorage
+    const storedUser = JSON.parse(sessionStorage.getItem('user'));
+    setStaffInfo(storedUser);
+  }, []);
+
+  function format_payroll(pay) {
+    pay = pay.toString();
+    var decimalPart = "";
+    if (pay.indexOf('.') !== -1) {
+        //alert("decimal number");
+        pay = pay.split(".");
+        decimalPart = "." + pay[1];
+        pay = pay[0];
+        //alert(pay);
+        //alert(decimalPart);
+
+    }
+    var formatted_pay = "";
+    var count = 0;
+    for (var i = pay.length - 1; i >= 0 && pay.charAt(i) !== '-'; i--) {
+        //alert("inside for" + pay.charAt(i) + "and count=" + count + " and formatted_pay=" + formatted_pay);
+        if (count === 3) {
+          formatted_pay += ",";
+            count = 0;
+        }
+        formatted_pay += pay.charAt(i);
+        count++;
+    }
+    if (pay.charAt(0) === '-') {
+      formatted_pay += "-";
+    }
+    //alert(formatted_pay);
+    //alert(formatted_pay.split("").reverse().join(""));
+    return formatted_pay.split("").reverse().join("") + decimalPart;
+  }
+
   return (
     <div className='staff-dashboard'>
       <div className="overlap">
         <div className="title">Staff Dashboard</div>
 
         <p className="description">
-          Welcome back, {user ? user.name : 'User'}! View upcoming appointments and payroll here.
+          Welcome back, {staffInfo ? staffInfo.First_Name : 'User'}! View upcoming appointments and payroll here.
         </p>
 
         <div className="overlap">
@@ -36,7 +74,7 @@ const StaffDashboard = ({ user }) => {
                     <div className="label-normal">
                       <div className="label-text">Staff</div>
                     </div>
-                    <div className="text-wrapper">{user ? user.name : 'Loading...'}</div>
+                    <div className="text-wrapper">{staffInfo ? staffInfo.First_Name + " " + staffInfo.Last_Name : 'Loading...'}</div>
                     <div className="avatar" />
                   </div>
                 </Row>
@@ -45,7 +83,7 @@ const StaffDashboard = ({ user }) => {
                     <span className="span">Email: </span>
 
                     <span className="text-wrapper-2">
-                      johndoe@gmail.com
+                      {staffInfo ? staffInfo.Email : 'Loading...'}
                       <br />
                       <br />
                     </span>
@@ -54,7 +92,7 @@ const StaffDashboard = ({ user }) => {
                       Phone Number: <br />
                     </span>
 
-                    <span className="text-wrapper-2">+1(123) 456-7890</span>
+                    <span className="text-wrapper-2">{staffInfo ? staffInfo.Phone_Number : 'Loading...'}</span>
                   </p>
                 </Row>
 
@@ -200,7 +238,7 @@ const StaffDashboard = ({ user }) => {
                   <div className="title-8">Payroll</div>
 
                   <div className="frame-4">
-                    <div className="subtitle-3">$10,456</div>
+                    <div className="subtitle-3">{staffInfo ? "$" + format_payroll(staffInfo.Total_Pay) : 'Loading...'}</div>
 
                     <div className="text-wrapper-4">
                       Bi-weekly Salary To Date
