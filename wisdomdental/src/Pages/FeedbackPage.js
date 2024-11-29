@@ -84,6 +84,7 @@ export const FeedbackPage = () => {
       console.error("Error submitting feedback:", error);
       alert("An error occurred while submitting feedback.");
     }
+    window.location.reload();
   };
   const [expandedIndex, setExpandedIndex] = useState(null); 
   const toggleAccordion = (index) => {
@@ -147,7 +148,9 @@ export const FeedbackPage = () => {
                   <button className='secondary'onClick={handleClear}>
                   <span className='clear'>Clear</span>
                 </button>
-                    <button className='primary'onClick={handleSubmit}>
+                    <button 
+                      className='primary'
+                      onClick={handleSubmit} >
                       <span className="title-5">Submit</span>
                     </button>
                   </div>
