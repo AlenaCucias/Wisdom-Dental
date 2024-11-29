@@ -1532,7 +1532,7 @@
 /* feedback page END */
 
 
-/* This section is for the Admin Page (CSS) */
+/* Admin Page CSS */
 .admin-page {
   background-color: #ffffff;
   display: flex;
@@ -1545,9 +1545,9 @@
 .admin-page .div {
   background-color: #ffffff;
   width: 100%;
-  max-width: 1366px; /* Set a max-width for container */
+  max-width: 1366px;  /* Set a max-width for container */
   margin: 0 auto;
-  padding: 20px; /* Add some padding inside the container */
+  padding: 20px;  /* Add some padding inside the container */
 }
 
 .admin-page .title {
@@ -1556,7 +1556,7 @@
   font-size: 28px;
   font-weight: 500;
   line-height: 36px;
-  margin-top: 50px; /* Adjust space from the top */
+  margin-top: 50px;  /* Adjust space from the top */
 }
 
 .admin-page .description {
@@ -1565,28 +1565,28 @@
   font-size: 20px;
   font-weight: 400;
   line-height: 24px;
-  margin-top: 20px; /* Adjust space from the title */
+  margin-top: 20px;  /* Adjust space from the title */
 }
 
 .admin-page .rectangle {
-  background-color: #7d9db6;
+  background-color: #839cb4;
   border-radius: 50px;
   height: 30px;
   width: 83px;
-  margin-top: 30px; /* Adjust space from the description */
+  margin-top: 30px;  /* Adjust space from the description */
 }
 
 .admin-page .group-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 40px; /* Adjust space between button groups */
+  margin-top: 40px;  /* Adjust space between button groups */
 }
 
 .admin-page .group-wrapper .overlap-group {
   background-color: #839cb4;
   border-radius: 25px;
-  width: 969px; /* Set width of the button */
-  height: 97.51px; /* Set height of the button */
+  width: 969px;  /* Set width of the button */
+  height: 97.51px;  /* Set height of the button */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1598,10 +1598,18 @@
   font-size: 24px;
   font-weight: 500;
   white-space: nowrap;
+  width: 100%;  /* Ensure the button takes full width */
+  height: 100%;  /* Ensure the button takes full height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;  /* Remove any margin */
+  padding: 0;  /* Remove any padding */
 }
 
+
 .admin-page .overlap {
-  background-color: #7d9db6;
+  background-color: #7495AF;  /* Changed to match the navigation bar */
   width: 220px;
   height: 1142px;
   position: absolute;
@@ -1645,7 +1653,7 @@
 .admin-page button {
   background: transparent;
   border: none;
-  color: #ffffff; /* Button text color */
+  color: #ffffff;  /* Button text color */
   font-family: "Roboto-Medium", Helvetica;
   font-size: 24px;
   font-weight: 500;
@@ -1668,7 +1676,7 @@ button {
 }
 
 button:hover {
-  background-color: #607d8b;
+  background-color: #839cb4;
 }
 
 .modal-content {
@@ -1686,8 +1694,25 @@ button:hover {
   padding: 20px;
 }
 
+.admin-page .text-wrapper button {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: #ffffff;  /* Button text color */
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-/* This is the END of the ADMIN PAGE (CSS) */
+
+/* End of Admin Page CSS */
+
 
 /* Information Page START */
 

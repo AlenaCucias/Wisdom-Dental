@@ -1,6 +1,7 @@
 # patients.py
 from flask import  Blueprint, Flask, request, jsonify
 from common import get_worksheet, hash_password, append_row, extract
+from notification import appointment_confirmation
 from datetime import datetime
 from collections import defaultdict
 from flask_cors import CORS
@@ -236,7 +237,7 @@ def get_available_appointments():
         return jsonify({"available_slots": available_slots}), 200
     else:
         return jsonify({"message": "No available appointment slots at the moment."}), 404
-    
+
 @patients_blueprint.route('/book_appointment', methods=['POST'])
 def book_appointment():
     """
@@ -272,18 +273,31 @@ def book_appointment():
         found = False  # Flag to check if we find the slot
         for i, row in enumerate(appointments, start=2):  # Skip header row
             # Log the time format to debug the issue
-            print(f"Checking slot: Date={row['Date']}, Time={row['Time']}, Patient_ID={row['Patient_ID']}") 
+            print(f"Checking slot: Date={row['Date']}, Time={row['Time']}, Patient_ID={row['Patient_ID']}")
 
             # Ensure time comparison accounts for AM/PM and the correct formatting
             if row["Date"] == date and row["Time"].strip() == time.strip():  # Strip whitespace for exact match
                 if row["Patient_ID"]:  # If already booked
                     return jsonify({"success": False, "error": "Time slot already booked"}), 400
-                
+
                 # Update the appointment with patient details
                 appointment_sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
                 appointment_sheet.update(f"G{i}", [[notes]])  # Update Notes
                 found = True  # Slot booked successfully
                 break
+
+        # Check if a matching patient record exists
+        user = next(
+            (row for row in patients if row["Patient_ID"] == patient_id),
+            None
+        )
+
+        # Send appointment confirmation email if user found
+        if user:
+            try:
+                appointment_confirmation(user, date, time)
+            except Exception as e:
+                print(f"Error sending confirmation email: {e}")
 
         if not found:
             return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
@@ -372,7 +386,7 @@ def cancel_appointment():
 
     except Exception as e:
         return jsonify({"success": False, "error": f"Error: {str(e)}"}), 500
-    
+
 @patients_blueprint.route('/reschedule_appointment', methods=['POST'])
 def reschedule_appointment():
     """
@@ -412,7 +426,7 @@ def reschedule_appointment():
                 old_appointment_found = True
                 print(f"Original appointment {old_date} at {old_time} canceled.")
                 break
-        
+
         if not old_appointment_found:
             return jsonify({"success": False, "error": "Original appointment not found"}), 400
 
@@ -432,7 +446,7 @@ def reschedule_appointment():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-    
+
 @patients_blueprint.route('/create_account', methods=['POST'])
 def create_account():
     data = request.json
@@ -441,7 +455,7 @@ def create_account():
     contact_email = data.get('contact_email')
     phone_number = data.get('phone_number')
     password = data.get('password') # You can hash the password before saving it
-    
+
     # Validate required fields
     if not first_name or not last_name or not contact_email or not phone_number or not password:
         return jsonify({'message': 'First name, last name, contact email, phone number, and password are required'}), 400
@@ -457,10 +471,10 @@ def create_account():
 
     if not isinstance(phone_number, str):
         return jsonify({'message': 'Phone number must be a string'}), 400
-    
+
     if (len(password) < 8):
         return jsonify({'message': 'Password must be at least 8 characters'}), 400
-    
+
     if ((len(phone_number) != 10) or not (phone_number.isdigit())):
         return jsonify({'message': 'Phone number must be 10 digits'}), 400
 

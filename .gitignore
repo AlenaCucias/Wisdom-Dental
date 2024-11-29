@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Cached files
+*.pyc
+
 #virtual environment
 venv/
 
