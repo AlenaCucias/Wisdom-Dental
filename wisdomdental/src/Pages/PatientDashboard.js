@@ -43,9 +43,10 @@ export const PatientDashboard = () => {
   }, []); 
   
   const fetchUpcomingAppointments = async () => {
+    const patientId = user?.Patient_ID;
     try {
       const response = await axios.get('http://127.0.0.1:5000/patients/get_upcoming_appointments', {
-        params: { patient_id: '1002' }, // Replace with the logged-in user's ID
+        params: { patient_id: patientId }, // Replace with the logged-in user's ID
       });
       if (response.status === 200) {
         setUpcomingAppointments(response.data.appointments || []);
