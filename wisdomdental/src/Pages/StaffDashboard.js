@@ -1,4 +1,3 @@
-import React, {useState, useEffect} from 'react'
 import { Col, Row, Modal, ModalBody, FormGroup, Label, Button, ModalHeader } from 'reactstrap';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Core React component
