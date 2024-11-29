@@ -2,14 +2,14 @@
 from .common import get_worksheet, extract, append_row
 from datetime import datetime
 from collections import defaultdict
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 
 
 staff_blueprint = Blueprint('staff', __name__)
 
-
-def upcoming_appointments(user):
+@staff_blueprint.route('/upcoming_appointments', methods=['POST'])
+def upcoming_appointments():
     """
     Retrieve a list of upcoming appointments for a specific staff member.
 
@@ -33,17 +33,19 @@ def upcoming_appointments(user):
           "Appointments", "Treatment", and "Patient".
         - Appointments with missing "Patient ID" or past dates are excluded.
     """
+    data = request.json
+    user = data.get('user', {})
     # Get all relevant sheets once
     appt_data = get_worksheet("Appointments").get_all_records()
     treatments_data = get_worksheet("Treatment").get_all_records()
     patients_data = get_worksheet("Patient").get_all_records()
     today = datetime.today().date()
 
-    filtered_rows = [row for row in appt_data if row["Doctor ID"] == user['Staff ID'] and row["Patient ID"]]
-    treatment_names = [extract(treatments_data, filtered_rows, "Treatment ID", "Treatment ID", "Name")
-                       [0] if row.get("Treatment ID") else "" for row in filtered_rows]
-    patient_first_names = extract(patients_data, filtered_rows, "Patient ID", "Patient ID", "First Name")
-    patient_last_names = extract(patients_data, filtered_rows, "Patient ID", "Patient ID", "Last Name")
+    filtered_rows = [row for row in appt_data if row["Doctor_ID"] == user['Staff_ID'] and row["Patient_ID"]]
+    treatment_names = [extract(treatments_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
+                       [0] if row.get("Treatment_ID") else "" for row in filtered_rows]
+    patient_first_names = extract(patients_data, filtered_rows, "Patient_ID", "Patient_ID", "First_Name")
+    patient_last_names = extract(patients_data, filtered_rows, "Patient_ID", "Patient_ID", "Last_Name")
     # Create a new list to store the full names
     patient_full_names = [f"{first} {last}" for first, last in zip(patient_first_names, patient_last_names)]
 
@@ -56,8 +58,9 @@ def upcoming_appointments(user):
 
     return total_data
 
+@staff_blueprint.route('/update_timesheet', methods=['POST'])
+def update_timesheet():
 
-def update_timesheet(user, hours, procedure, performance):
     """
     Add hours to the current timesheet for a staff member and record the performance.
 
@@ -72,9 +75,10 @@ def update_timesheet(user, hours, procedure, performance):
         hours (str): The number of hours worked, given in the format "HH:MM" (e.g., "2:30").
         procedure (str): The name or description of the procedure performed.
         performance (int): A performance rating for the procedure between 1-5 inclusive.
+        pay (str): The total amount of money made after updating timesheet
 
     Returns:
-        str: A confirmation message indicating that the timesheet was updated.
+        int: updated total pay
 
     Note:
         - Assumes "Hours Worked" is stored in column H of the "Staff" worksheet.
@@ -82,15 +86,25 @@ def update_timesheet(user, hours, procedure, performance):
         - The `hours` argument is a string in "HH:MM" format and is converted into a float
           (e.g., "2:30" becomes 2.5).
     """
+
+    data = request.json
+    user = data.get('user', {})
+    hours = data.get('hours')
+    procedure = data.get('procedure')
+    performance = data.get('performance')
+
+    if not user or not hours or not procedure or performance is None:
+        return jsonify({"error": "Invalid input. All fields are required."}), 400
+
     # Add performance data to performance sheet
     today = datetime.today().date().strftime("%m-%d-%Y")
-    performance_data = [user["Staff ID"], hours, procedure, today, performance]
+    performance_data = [user["Staff_ID"], hours, procedure, today, performance]
     append_row("Staff Performance", performance_data)
 
     # Gather necesary data
     sheet = get_worksheet("Staff")
     data = sheet.get_all_records()
-    current_hours = user["Hours Worked"]
+    current_hours = user["Hours_Worked"]
 
     # Convert hours to float to add to the total
     hours, minutes = map(int, hours.split(":"))
@@ -99,7 +113,31 @@ def update_timesheet(user, hours, procedure, performance):
     # Add hours to total_hours in staff sheet
     new_hours = current_hours + hours_float
     for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Staff ID"] == user["Staff ID"]:
+        if row["Staff_ID"] == user["Staff_ID"]:
             # Add new hours
             sheet.update(f"H{i}", [[new_hours]])  # Hours Worked is in column H
-    return f"Timesheet updated"
+            pay = sheet.cell(i, 10).value
+    # return f"Timesheet updated"
+
+    return jsonify({"pay":pay}), 200
+
+@staff_blueprint.route('/get_performance', methods=['POST'])
+def get_performance(user_id):
+    """
+    Retrieves performance data for a specific staff member.
+
+    Args:
+        user_id (str or int): The ID of the staff member whose performance data is to be retrieved.
+
+    Returns:
+        list: A list of performance history, each containing:
+              - Date
+              - Procedure
+              - Time spent on the procedure
+              - Performance (1-5 inclusive)
+    """
+    performance_data = get_worksheet("Staff Performance").get_all_records()
+    # Get only records that are associated with user
+    filtered_rows = [ row for row in performance_data if row["Staff ID"] == user_id]
+    total_data = [[row["Date"], row["Procedure"], row["Time"], row["Performance"]] for row in filtered_rows]
+    return total_data

@@ -3594,15 +3594,18 @@ position: relative;
   position: relative;
 }
 
-.staff-dashboard .frame-3 {
-  align-items: flex-start;
-  align-self: stretch;
+.staff-dashboard .appt {
   display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  gap: 3.73px;
-  position: relative;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.staff-dashboard .frame-3 {
+  flex: 1 1 45%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .staff-dashboard .title-6 {

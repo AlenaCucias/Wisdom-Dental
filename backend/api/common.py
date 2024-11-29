@@ -104,14 +104,6 @@ def authenticate_user():
         if user:
             # If found in "Staff," include the role
             role = user["Role"] if sheet_name == "Staff" else None
-            # return jsonify({
-            #     "message": "Authentication successful",
-            #     "user": user,
-            #     "sheet": sheet_name,
-            #     "role": role
-            # }), 200
-            # role = user["Role"] if sheet_name == "Staff" else None
-            # return True, user, sheet_name, role
             return make_response(jsonify([True, user, sheet_name, role]), 200)
 
     # Return failure if no match is found
