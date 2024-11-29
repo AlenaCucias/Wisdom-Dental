@@ -16,6 +16,7 @@ const StaffDashboard = ({ user }) => {
       procedure: values.procedure
     };
     console.log(timesheet);
+    update_hours(values.hours);
     setOpenPayroll(false);
   }
 
@@ -25,22 +26,19 @@ const StaffDashboard = ({ user }) => {
     setStaffInfo(storedUser);
   }, []);
 
+  //Formats the Staff pay to a comma-separated string instead of int
   function format_payroll(pay) {
     pay = pay.toString();
     var decimalPart = "";
     if (pay.indexOf('.') !== -1) {
-        //alert("decimal number");
         pay = pay.split(".");
         decimalPart = "." + pay[1];
         pay = pay[0];
-        //alert(pay);
-        //alert(decimalPart);
 
     }
     var formatted_pay = "";
     var count = 0;
     for (var i = pay.length - 1; i >= 0 && pay.charAt(i) !== '-'; i--) {
-        //alert("inside for" + pay.charAt(i) + "and count=" + count + " and formatted_pay=" + formatted_pay);
         if (count === 3) {
           formatted_pay += ",";
             count = 0;
@@ -51,9 +49,11 @@ const StaffDashboard = ({ user }) => {
     if (pay.charAt(0) === '-') {
       formatted_pay += "-";
     }
-    //alert(formatted_pay);
-    //alert(formatted_pay.split("").reverse().join(""));
     return formatted_pay.split("").reverse().join("") + decimalPart;
+  }
+
+  function update_hours(hours_worked) {
+    staffInfo.Hours_Worked += hours_worked;
   }
 
   return (
