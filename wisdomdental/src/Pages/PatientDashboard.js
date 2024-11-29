@@ -311,9 +311,9 @@ export const PatientDashboard = () => {
               <ModalHeader toggle={() => setViewDentalHistroyModalOpen(false)}>Dental History</ModalHeader>
               <ModalBody>
                 <Row>
-                  <Col>Date</Col>
-                  <Col>Treatment</Col>
-                  <Col>Doctor</Col>
+                  <Col className="text-center">Date</Col>
+                  <Col className="text-center">Treatment</Col>
+                  <Col className="text-center">Doctor</Col>
                 </Row>
               </ModalBody>
             </Modal>
@@ -338,7 +338,7 @@ export const PatientDashboard = () => {
             <Modal isOpen={viewTreatmentPlanModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
               <ModalHeader toggle={() => setViewTreatmentPlanModalOpen(false)}>Treatment Plan</ModalHeader>
               <ModalBody>
-                No treatment plan at the moment
+                {user?.Treatment_Plan || "No treatment plan at the moment"}
               </ModalBody>
             </Modal>
 
