@@ -204,6 +204,7 @@ def update_payments(user):
 def get_available_appointments():
     """
     Get all available appointment slots with corresponding dates and times.
+    Each time slot allows 3 patients per dentist.
     Returns:
         JSON response: A list of dates and their available time slots.
     """
@@ -216,23 +217,28 @@ def get_available_appointments():
     available_slots = {}
     today = datetime.today().date().strftime("%m-%d-%Y")
 
-    # Collect available slots (No Patient_ID or Treatment_ID means available)
+    # Collect available slots (No Patient_ID means available)
     for row in data:
-        if not str(row["Patient_ID"]).strip() and not str(row["Treatment_ID"]).strip():
+        if not str(row["Patient_ID"]).strip():  # Check if the slot is free (no Patient_ID)
             date, time = row["Date"], row["Time"]
             if date > today:  # Only future dates
-                available_slots.setdefault(date, set()).add(time)
+                if date not in available_slots:
+                    available_slots[date] = {}
+                
+                # Ensure slots are only available if the max of 3 patients is not reached
+                available_slots[date].setdefault(time, 0)
+                available_slots[date][time] += 1
 
-    # Sort times for each date and remove seconds
+    # Only keep slots that are available for booking (not exceeding 3 patients)
+    for date in list(available_slots.keys()):
+        available_slots[date] = {
+            time: available_slots[date][time] for time in available_slots[date] if available_slots[date][time] < 3
+        }
+
+    # Sort times for each date
     for date in available_slots:
-        # Sort the times in ascending order
-        sorted_times = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M %p"))
-        # Format each time to remove the seconds part
-        available_slots[date] = sorted_times
+        available_slots[date] = sorted(available_slots[date].keys(), key=lambda t: datetime.strptime(t, "%I:%M %p"))
 
-        # Optionally, strip any leading zero from the hour
-        available_slots[date] = [t.lstrip("0") if t[0] == '0' else t for t in available_slots[date]]
-    print(f"Available Slots: {available_slots}")
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
     else:
@@ -270,21 +276,21 @@ def book_appointment():
         appointment_sheet = get_worksheet("Appointments")
         appointments = appointment_sheet.get_all_records()
 
-        found = False  # Flag to check if we find the slot
-        for i, row in enumerate(appointments, start=2):  # Skip header row
-            # Log the time format to debug the issue
-            print(f"Checking slot: Date={row['Date']}, Time={row['Time']}, Patient_ID={row['Patient_ID']}")
-
-            # Ensure time comparison accounts for AM/PM and the correct formatting
-            if row["Date"] == date and row["Time"].strip() == time.strip():  # Strip whitespace for exact match
-                if row["Patient_ID"]:  # If already booked
-                    return jsonify({"success": False, "error": "Time slot already booked"}), 400
-
-                # Update the appointment with patient details
+        found = False  # Flag to check if we find a valid slot
+        for i, row in enumerate(appointments, start=2):  # Start from row 2 (after header)
+            if (
+                row["Date"] == date and
+                row["Time"].strip() == time.strip() and  # Match time and date
+                not row["Patient_ID"]  # Slot is not booked
+            ):
+                # Update the first available slot for the time
                 appointment_sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
                 appointment_sheet.update(f"G{i}", [[notes]])  # Update Notes
-                found = True  # Slot booked successfully
+                found = True
                 break
+
+        if not found:
+            return jsonify({"success": False, "error": "Time slot already fully booked (3 patients max)."}), 400
 
         # Check if a matching patient record exists
         user = next(
@@ -298,9 +304,6 @@ def book_appointment():
                 appointment_confirmation(user, date, time)
             except Exception as e:
                 print(f"Error sending confirmation email: {e}")
-
-        if not found:
-            return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
 
         return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
 
