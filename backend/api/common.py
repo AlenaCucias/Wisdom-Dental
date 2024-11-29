@@ -4,8 +4,11 @@ from google.oauth2.service_account import Credentials
 from google.auth import exceptions as google_auth_exceptions
 import gspread
 from flask import Blueprint,request, jsonify, make_response
-from google_auth import get_client
-import hashlib 
+from google_auth import get_client, get_gmail_client
+import hashlib
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 common_blueprint = Blueprint('common', __name__)
 
@@ -85,10 +88,10 @@ def authenticate_user():
 
     email = request.json.get('email')  # If the request is JSON
     password = request.json.get('password')  # If the request is JSON
-    
+
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
-    
+
     # List of sheets to search through
     sheets = ["Patient", "Staff"]
 
@@ -141,3 +144,44 @@ def extract(unfiltered_data, filtered_rows, data_to_compare, filter, data_to_ext
         for doc_id in data
     ]
     return new_data
+
+def send_email(to_email, subject, body):
+    """
+    Sends an email via Gmail's SMTP server.
+
+    Args:
+        to_email (str): The recipient's email address.
+        subject (str): The subject of the email.
+        body (str): The body/content of the email.
+
+    Returns:
+        str: A success message or error message.
+    """
+    # Wisdom dental credentials
+    gmail_user = 'wisdomdentaldb@gmail.com'
+    app_password = 'vvxn fjdl bela nyxo'  # App Password
+
+    # Set up the MIME structure
+    msg = MIMEMultipart()
+    msg['From'] = gmail_user
+    msg['To'] = to_email
+    msg['Subject'] = subject
+
+    # Attach the email body
+    msg.attach(MIMEText(body, 'html'))
+
+    try:
+        # Set up the server
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()  # Secure the connection
+        server.login(gmail_user, app_password)  # Log in with your Gmail and App Password
+
+        # Send the email
+        text = msg.as_string()
+        server.sendmail(gmail_user, to_email, text)
+        server.quit()  # Close the server connection
+
+        return "Email sent successfully!"
+
+    except Exception as e:
+        return f"Failed to send email: {str(e)}"
