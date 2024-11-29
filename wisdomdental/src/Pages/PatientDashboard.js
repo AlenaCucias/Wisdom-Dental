@@ -17,9 +17,26 @@ export const PatientDashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [reason, setReason] = useState(''); // State to capture the reason
   const [reasonModalOpen, setReasonModalOpen] = useState(false);
+
   const [user, setUser] = useState(() => {
-    return JSON.parse(localStorage.getItem('user')) || null;
+    return JSON.parse(sessionStorage.getItem('user')) || null;
   });
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  useEffect(() => { 
+    const userDetails = JSON.parse(sessionStorage.getItem('user')); 
+    console.log('User Details: ', userDetails)
+    if (userDetails) { 
+      setUser(userDetails); 
+    } 
+  }, []); 
+  
+  if (!user) { 
+    return <div>Loading...</div>;
+  }
 
   const formatDate = (dataString) => {
     const [month, day, year] = dataString.split('-');
@@ -27,14 +44,6 @@ export const PatientDashboard = () => {
     const options = {year: 'numeric', month:'long', day: 'numeric'};
     return date.toLocaleDateString('en-US', options);
   }
-
-  //there is a mistake causing AM and PM to mess up
-  /*const formatTime = (timeString) => { 
-    let [hours, minutes] = timeString.split(':').map(Number); 
-    const suffix = hours >= 12 ? 'PM' : 'AM'; 
-    hours = hours % 12 || 12; 
-    return `${hours}:${minutes.toString().padStart(2, '0')} ${suffix}`;
-  }*/
 
   //used to fetch availabe appointments
   const fetchAppointments = async () => {
@@ -49,11 +58,6 @@ export const PatientDashboard = () => {
       console.error("Error fetching available appointments:", error);
     }
   };
-
-
-  useEffect(() => {
-    fetchAppointments();
-  }, [])
 
   const switchToReason = () => {
     setScheduleAppointmentModalOpen(false);
@@ -77,8 +81,9 @@ export const PatientDashboard = () => {
       setMakePaymentModalOpen(false);
       setSuccessfulPaymentModalOpen(true);
   };
+
   const handleTimeSlotClick = (date, time) => {
-    /*const reason = prompt("Enter a reason for the appointment:");*/ /*was causing an unexpected window to show up*/
+    const reason = "Enter a reason for the appointment";
     if (!reason) return;
   
     fetch('http://127.0.0.1:5000/book_appointment', {
@@ -102,32 +107,34 @@ export const PatientDashboard = () => {
       })
       .catch((error) => console.error('Error booking appointment:', error));
   };
+
   const bookAppointment = (date, time, reason) => {
-  return fetch('/book_appointment', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      user:  // Add patient info here
-      date,
-      time,
-      notes: reason,
-    }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      alert(`Appointment booked for ${date} at ${time}`);
-      return `Appointment booked successfully`;
-    } else {
-      throw new Error(data.message || 'Booking failed');
-    }
-  })
-  .catch(error => {
-    alert(`Error booking appointment: ${error.message}`);
-  });
-};
+    return fetch('/book_appointment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user:user,  // Add patient info here
+        date,
+        time,
+        notes: reason,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert(`Appointment booked for ${date} at ${time}`);
+        return `Appointment booked successfully`;
+      } else {
+        throw new Error(data.message || 'Booking failed');
+      }
+    })
+    .catch(error => {
+      alert(`Error booking appointment: ${error.message}`);
+    });
+  };
+
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -142,11 +149,11 @@ export const PatientDashboard = () => {
             <div className="overlap">
             <p className="email-johndoe-gmail">
   <span className="span">Email: </span>
-  <span className="text-wrapper-2">{user?.Email || 'N/A'}</span>
+  <span className="text-wrapper-1">{user?.Email || 'N/A'}</span>
   <br />
   <br />
   <span className="span">Phone Number: </span>
-  <span className="text-wrapper-2">{user?.Phone_Number || 'N/A'}</span>
+  <span className="text-wrapper-6">{user?.Phone_Number || 'N/A'}</span>
 </p>
 
 <div className="group-wrapper">
@@ -154,8 +161,8 @@ export const PatientDashboard = () => {
     <div className="label-normal">
       <div className="label-text">Patient</div>
     </div>
-    <div className="title-2">{user?.Name || 'N/A'}</div>
-
+    <div className="text-wrapper-2">{user?.First_Name || 'N/A'}</div>
+    <div className="text-wrapper-7">{user?.Last_Name || 'N/A'}</div>
                   <div className="avatar" />
                 </div>
               </div>
@@ -267,7 +274,7 @@ export const PatientDashboard = () => {
             <Modal isOpen={appointmentConfirmationModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
               <ModalHeader toggle={() => setAppointmentConfirmationModalOpen(false)}>Appointemnt Confirmation </ModalHeader>
               <ModalBody>
-                Your appointment has been confirmed for ______
+                Your appointment has been confirmed!
               </ModalBody>
             </Modal>
 
