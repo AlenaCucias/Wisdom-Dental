@@ -285,6 +285,7 @@ def book_appointment():
                 appointment_sheet.update(f"G{i}", [[notes]])  # Update Notes
                 found = True  # Slot booked successfully
                 break
+
         # Check if a matching patient record exists
         user = next(
             (row for row in patients if row["Patient_ID"] == patient_id),
