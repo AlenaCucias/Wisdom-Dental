@@ -1598,7 +1598,15 @@
   font-size: 24px;
   font-weight: 500;
   white-space: nowrap;
+  width: 100%;  /* Ensure the button takes full width */
+  height: 100%;  /* Ensure the button takes full height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;  /* Remove any margin */
+  padding: 0;  /* Remove any padding */
 }
+
 
 .admin-page .overlap {
   background-color: #7495AF;  /* Changed to match the navigation bar */
@@ -1685,6 +1693,23 @@ button:hover {
   background-color: #ffffff;
   padding: 20px;
 }
+
+.admin-page .text-wrapper button {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: #ffffff;  /* Button text color */
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 /* End of Admin Page CSS */
 
