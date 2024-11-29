@@ -22,8 +22,8 @@ def get_full_names(sheet_name, id_type):
     """
     data = get_worksheet(sheet_name).get_all_records()
     user_data = [
-        (row[id_type], f"{row['First Name']} {row['Last Name']}") # Concatenate first and last name
-        for row in data if id_type in row and "First Name" in row and "Last Name" in row
+        (row[id_type], f"{row['First_Name']} {row['Last_Name']}") # Concatenate first and last name
+        for row in data if id_type in row and "First_Name" in row and "Last_Name" in row
     ]
     return user_data
 
@@ -39,7 +39,7 @@ def view_patient_records(user_id):
     """
     patient_data = get_worksheet("Patient").get_all_records()
     # Get patient info to call dental_history
-    user_info = next((row for row in patient_data if row["Patient ID"] == user_id), None)
+    user_info = next((row for row in patient_data if row["Patient_ID"] == user_id), None)
     return dental_history(user_info)
 
 def view_payroll_data(user_id):
@@ -56,8 +56,8 @@ def view_payroll_data(user_id):
     """
     payroll_data = get_worksheet("Payroll").get_all_records()
     # Get only records that are associated with user
-    filtered_rows = [ row for row in payroll_data if row["Staff ID"] == user_id]
-    total_data = [[row["Payment Date"], row["Amount Paid"]] for row in filtered_rows]
+    filtered_rows = [ row for row in payroll_data if row["Staff_ID"] == user_id]
+    total_data = [[row["Payment_Date"], row["Amount_Paid"]] for row in filtered_rows]
     return total_data
 
 def view_staff_performance(user_id):
@@ -76,7 +76,7 @@ def view_staff_performance(user_id):
     """
     performance_data = get_worksheet("Staff Performance").get_all_records()
     # Get only records that are associated with user
-    filtered_rows = [ row for row in performance_data if row["Staff ID"] == user_id]
+    filtered_rows = [ row for row in performance_data if row["Staff_ID"] == user_id]
     total_data = [[row["Date"], row["Procedure"], row["Time"], row["Performance"]] for row in filtered_rows]
     return total_data
 

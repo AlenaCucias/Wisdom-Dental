@@ -79,7 +79,7 @@ def get_treatment_plan(user):
     Returns:
         str: A string containing the user's treatment plan.
     """
-    treatment_plan = user["Treatment Plan"]
+    treatment_plan = user["Treatment_Plan"]
     return treatment_plan
 
 def dental_history(user):
@@ -91,7 +91,7 @@ def dental_history(user):
     containing the details of past appointments.
 
     Args:
-        user (dict): A dictionary containing user information, including the "Patient ID".
+        user (dict): A dictionary containing user information, including the "Patient_ID".
 
     Returns:
         list of lists: Each inner list contains:
@@ -106,10 +106,10 @@ def dental_history(user):
     staff_data = get_worksheet("Staff").get_all_records()
     treatment_data = get_worksheet("Treatment").get_all_records()
     # Filter Appointments table to only those that match with the current user
-    filtered_rows = [ row for row in appt_data if row["Patient ID"] == user['Patient ID']]
+    filtered_rows = [ row for row in appt_data if row["Patient_ID"] == user['Patient_ID']]
 
-    doctor_names = extract(staff_data, filtered_rows, "Doctor ID", "Staff ID", "Last Name")
-    treatment_names = extract(treatment_data, filtered_rows, "Treatment ID", "Treatment ID", "Name")
+    doctor_names = extract(staff_data, filtered_rows, "Doctor_ID", "Staff_ID", "Last_Name")
+    treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
 
     # Use the current date to show all past visits
     today = datetime.today().date()
@@ -132,7 +132,7 @@ def payment_history(user):
     containing the appointment details.
 
     Args:
-        user (dict): A dictionary containing user information, including the "Patient ID".
+        user (dict): A dictionary containing user information, including the "Patient_ID".
 
     Returns:
         list of lists: Each inner list contains:
@@ -145,9 +145,9 @@ def payment_history(user):
     appt_data = get_worksheet("Appointments").get_all_records()
     treatment_data = get_worksheet("Treatment").get_all_records()
     # Filter Appointments table to only those that match with the current user
-    filtered_rows = [ row for row in appt_data if row["Patient ID"] == user['Patient ID']]
-    treatment_names = extract(treatment_data, filtered_rows, "Treatment ID", "Treatment ID", "Name")
-    cost = extract(treatment_data, filtered_rows, "Treatment ID", "Treatment ID", "Cost")
+    filtered_rows = [ row for row in appt_data if row["Patient_ID"] == user['Patient_ID']]
+    treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
+    cost = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Cost")
 
     # Format data in a list of tuples
     total_data = [[date, treatment, cost, status]
@@ -161,7 +161,7 @@ def get_total_cost(user):
     Calculate the total outstanding cost for a given user based on unpaid appointments.
 
     Args:
-        user (dict): A dictionary containing user information, including the "Patient ID".
+        user (dict): A dictionary containing user information, including the "Patient_ID".
 
     Returns:
         float: The total outstanding cost for the user, summing the costs of appointments where the "Paid" status is "FALSE".
@@ -175,7 +175,7 @@ def update_payments(user):
     Updates payment status for a user and appends the payment details to the Payments sheet.
 
     Args:
-        user (dict): A dictionary containing user information, including the "Patient ID".
+        user (dict): A dictionary containing user information, including the "Patient_ID".
 
     Returns:
         str: A message indicating the status of the operation.
@@ -190,11 +190,11 @@ def update_payments(user):
 
     # Loop through all rows to find an available slot for the specified date and time
     for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Patient ID"] == user["Patient ID"] and row["Paid"] == "FALSE":
+        if row["Patient_ID"] == user["Patient_ID"] and row["Paid"] == "FALSE":
             # Book the appointment
-            appointment_id = row["Appointment ID"]
+            appointment_id = row["Appointment_ID"]
             sheet.update(f"H{i}", [[True]])  # Paid is in column H
-    payment_data = [user["Patient ID"], appointment_id, payment_amount, today]
+    payment_data = [user["Patient_ID"], appointment_id, payment_amount, today]
     append_row("Payments", payment_data)
     return f"Payments updated"
 
@@ -218,7 +218,7 @@ def get_available_appointments():
 
     # Collect available slots
     for row in data:
-        if not row["Patient ID"] and not row["Treatment ID"]:  # Check availability
+        if not row["Patient_ID"] and not row["Treatment_ID"]:  # Check availability
             date, time = row["Date"], row["Time"]
             if date > today:  # Only future dates
                 available_slots.setdefault(date, set()).add(time)  # Use set to avoid duplicates
@@ -244,7 +244,7 @@ def book_appointment(user, date, time, notes):
     Book an appointment for a user.
 
     Parameters:
-        - user (dict): The dictionary containing user information, including the "Patient ID".
+        - user (dict): The dictionary containing user information, including the "Patient_ID".
         - date (str): The date of the appointment (format: "MM-DD-YYYY").
         - time (str): The time of the appointment (format: "HH:MM:SS AM/PM").
         - notes (str): Any comments the user would like to add to the appointment.
@@ -276,7 +276,7 @@ def book_appointment(user, date, time, notes):
         data = sheet.get_all_records()
 
         for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
-            if row["Date"] == date and row["Time"] == time and not row["Patient ID"]:
+            if row["Date"] == date and row["Time"] == time and not row["Patient_ID"]:
                 sheet.update(f"B{i}", [[patient_id]])  # Update Patient ID
                 sheet.update(f"G{i}", [[notes]])  # Update Notes
                 return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
@@ -291,7 +291,7 @@ def cancel_appointment(user, date, time):
     Cancel an appointment for a user.
 
     Parameters:
-        user (str): A dictionary containing user information, including the "Patient ID".
+        user (str): A dictionary containing user information, including the "Patient_ID".
         date (str): The date of the appointment (format: "MM-DD-YYYY").
         time (str): The time of the appointment (format: "HH:MM:SS AM/PM").
 
@@ -304,7 +304,7 @@ def cancel_appointment(user, date, time):
 
     # Loop through all rows to find the appointment for the specified date, time, and user
     for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Date"] == date and row["Time"] == time and row["Patient ID"] == user["Patient ID"]:
+        if row["Date"] == date and row["Time"] == time and row["Patient_ID"] == user["Patient_ID"]:
             # Cancel the appointment
             sheet.update(f"B{i}", [[""]])  # Patient ID is in column B
             sheet.update(f"C{i}", [[""]])  # Treatment ID is in column C
@@ -319,7 +319,7 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
     Reschedule an appointment for a user.
 
     Parameters:
-        user (str): A dictionary containing user information, including the "Patient ID".
+        user (str): A dictionary containing user information, including the "Patient_ID".
         date (str): The date of the original appointment (format: "MM-DD-YYYY").
         time (str): The time of the original appointment (format: "HH:MM:SS AM/PM").
         new_date (str): The date of the new appointment (format: "MM-DD-YYYY").
@@ -336,9 +336,9 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
 
     # Loop through all rows to find the appointment for the specified date, time, and user
     for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Date"] == date and row["Time"] == time and row["Patient ID"] == user["Patient ID"]:
+        if row["Date"] == date and row["Time"] == time and row["Patient_ID"] == user["Patient_ID"]:
             # Book the appointment
-            treatment = row["Treatment ID"]
+            treatment = row["Treatment_ID"]
             sheet.update(f"B{i}", [[""]])  # Patient ID is in column B
             sheet.update(f"C{i}", [[""]])  # Treatment ID is in column C
             sheet.update(f"G{i}", [[""]])  # Notes are in column G
@@ -346,9 +346,9 @@ def reschedule_appointment(user, date, time, new_date, new_time, new_notes):
     # Loop through all rows to find an available slot for the specified date and time
     for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
         if row["Date"] == new_date and row["Time"] == new_time:
-            if not row["Patient ID"] and not row["Treatment ID"]:  # Check if slot is unbooked
+            if not row["Patient_ID"] and not row["Treatment_ID"]:  # Check if slot is unbooked
                 # Book the appointment
-                sheet.update(f"B{i}", [[user["Patient ID"]]])  # Patient ID is in column B
+                sheet.update(f"B{i}", [[user["Patient_ID"]]])  # Patient ID is in column B
                 sheet.update(f"C{i}", [[treatment]]) # Treatment ID is in column C
                 sheet.update(f"G{i}", [[new_notes]])  # Notes are in column G
                 return f"Appointment rescheduled successfully for {new_date} at {new_time}."
@@ -417,7 +417,7 @@ def get_last_patient_id():
         if not rows:
             return 1000  # If no rows, start from Patient ID 1000
         # Get the max Patient ID from the existing records
-        last_patient_id = max([row['Patient ID'] for row in rows])  # Find the max Patient ID
+        last_patient_id = max([row['Patient_ID'] for row in rows])  # Find the max Patient ID
         return last_patient_id
     except Exception as e:
         print(f"Error getting last Patient ID: {e}")
