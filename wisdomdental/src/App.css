@@ -3114,67 +3114,77 @@ position: relative;
   position: relative;
   top: 0;
   width: 220px;
+  justify-content: center;
 }
   
 .staff-dashboard .group-2 {
   height: 183px;
   left: 0;
-  position: absolute;
+  position: relative;
   top: 163px;
-  width: 140px;
+  width: 220px;
   text-align: center;
-}
-.staff-dashboard .label-normal {
-  align-items: center;
-  background-color: #d8d8d880;
-  border: 0.5px solid;
-  border-color: #0000001a;
-  border-radius: 2px;
-  display: inline-flex;
-  gap: 2px;
   justify-content: center;
-  left: 46px;
-  overflow: hidden;
-  padding: 2px 4px;
-  position: absolute;
-  top: 163px;
 }
 
- 
+.staff-dashboard .staff-profile {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 32px;
+  padding: 5px 0px;
+  width: 220px;
+  padding: 0px 20px;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.staff-dashboard .staff-profile:hover {
+  overflow: visible;
+}
+
+.staff-dashboard .label-normal {
+  justify-content: center;
+  width: fit-content;
+  padding: 20px 72.5px;
+  position: relative;
+}
+
 .staff-dashboard .label-text {
   color: #000000;
+  background-color: #d8d8d880;
   font-family: "Roboto-Regular", Helvetica;
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 16px;
   margin-top: -0.50px;
+  padding: 2px 5px;
   position: relative;
   white-space: nowrap;
   width: fit-content;
 }
 
 .staff-dashboard .text-wrapper {
-  color: #ffffff;
-  font-family: "Roboto-Bold", Helvetica;
-  font-size: 24px;
-  font-weight: 700;
-  left: 0;
-  letter-spacing: 0;
-  line-height: 32px;
-  position: absolute;
-  top: 116px;
-  white-space: nowrap;
+  font-family: "Roboto-Regular", Helvetica;
+  background-color: #7495AF;
 }
 
 .staff-dashboard .avatar {
   background-color: #d8d8d880;
   border-radius: 50px;
   height: 100px;
-  left: 19px;
-  position: absolute;
-  top: 0;
+  position: relative;
   width: 100px;
+  justify-content: center;
+}
+
+.staff-dashboard .avatar-container {
+  position: relative;
+  justify-content: center;
+  padding: 10px 40px;
 }
 
 .staff-dashboard .email-johndoe-gmail {
@@ -3182,14 +3192,21 @@ position: relative;
   font-family: "Roboto-Bold", Helvetica;
   font-size: 20px;
   font-weight: 400;
-  left: -20px;
+  left: 0px;
   letter-spacing: 0;
   line-height: 30px;
-  position: absolute;
-  top: 250px;
-  width: 191px;
+  position: relative;
+  top: 50px;
+  width: 220px;
+  padding: 0px 20px;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.staff-dashboard .email-johndoe-gmail:hover {
+  overflow: visible;
 }
 
 .staff-dashboard .span {
@@ -3198,6 +3215,7 @@ position: relative;
 
 .staff-dashboard .text-wrapper-2 {
   font-family: "Roboto-Regular", Helvetica;
+  background-color: #7495AF;
 }
 
 .staff-dashboard .frame {

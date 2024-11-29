@@ -1,60 +1,88 @@
-import React, {useState, useEffect} from 'react'
 import { Col, Row, Modal, ModalBody, FormGroup, Label, Button, ModalHeader } from 'reactstrap';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Core React component
-import { Formik, Field, Form } from "formik";
+import { useState, useEffect } from 'react';
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { validatePayroll } from '../utils/validatePayroll';
+import axios from 'axios';
 
 
 
 const StaffDashboard = ({ user }) => {
   const [staffInfo, setStaffInfo] = useState(null);
   const [openPayroll, setOpenPayroll] = useState(false);
-  const handleSubmit = (values) => {
-    const timesheet = 
+  const [error, setError] = useState(null);
+  const [pay, setPay] = useState(user.Total_Pay);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(null);
+
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/staff/upcoming_appointments', { user })
+        const sortedAppointments = response.data
+          .map((appointment) => {
+            const [time, date] = appointment[2].split(' '); // Splitting "Time Date"
+            const formattedDate = new Date(`${date}T${time}`); // Create a Date object
+            return { ...appointment, formattedDate };
+          })
+          .sort((a, b) => a.formattedDate - b.formattedDate); // Sort by the Date object
+
+        // Get the two soonest appointments
+        setAppointments(sortedAppointments.slice(0, 2));
+      } catch (error) {
+        console.error("Error fetching appointments: ", error);
+        setError("Failed to load appointments.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchAppointments();
+  }, [user]);
+
+ 
+
+  const handleSubmit = async (values, { resetForm }) => {
+    const timesheet =
     {
       hours: values.hours,
-      procedure: values.procedure
+      procedure: values.procedure,
+      performance: values.performance
     };
+    const hours = values.hours;
+    const procedure = values.procedure;
+    const performance = values.performance;
     console.log(timesheet);
-    update_hours(values.hours);
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/staff/update_timesheet', { user, hours, procedure, performance });
+      console.log(response);
+      setPay(response.data.pay);
+    } catch (error) {
+      console.log("Error submitting timesheet: ", error);
+      setError("An error occurred, please try again later.");
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        console.error("Error status:", error.response.status);
+        console.error("Error headers:", error.response.headers);
+        throw new Error(`Server responded with status ${error.response.status}: ${error.response.data.error || 'Unknown error'}`);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+        throw new Error("No response from server. Please check your connection.");
+      } else {
+        console.error("Error message:", error.message);
+        throw error;
+      }
+    }
+    resetForm();
     setOpenPayroll(false);
   }
 
-  useEffect(() => {
-    // Retrieve user data from sessionStorage
-    const storedUser = JSON.parse(sessionStorage.getItem('user'));
-    setStaffInfo(storedUser);
-  }, []);
-
-  //Formats the Staff pay to a comma-separated string instead of int
-  function format_payroll(pay) {
-    pay = pay.toString();
-    var decimalPart = "";
-    if (pay.indexOf('.') !== -1) {
-        pay = pay.split(".");
-        decimalPart = "." + pay[1];
-        pay = pay[0];
-
-    }
-    var formatted_pay = "";
-    var count = 0;
-    for (var i = pay.length - 1; i >= 0 && pay.charAt(i) !== '-'; i--) {
-        if (count === 3) {
-          formatted_pay += ",";
-            count = 0;
-        }
-        formatted_pay += pay.charAt(i);
-        count++;
-    }
-    if (pay.charAt(0) === '-') {
-      formatted_pay += "-";
-    }
-    return formatted_pay.split("").reverse().join("") + decimalPart;
-  }
-
-  function update_hours(hours_worked) {
-    staffInfo.Hours_Worked += hours_worked;
-  }
+  const userName = user.First_Name;
+  const userLast = user.Last_Name;
+  const role = user.Role;
+  const email = user.Email;
+  const phone = user.Phone_Number;
 
   return (
     <div className='staff-dashboard'>
@@ -62,28 +90,29 @@ const StaffDashboard = ({ user }) => {
         <div className="title">Staff Dashboard</div>
 
         <p className="description">
-          Welcome back, {staffInfo ? staffInfo.First_Name : 'User'}! View upcoming appointments and payroll here.
+          Welcome back, {user ? userName : 'User'}! View upcoming appointments and payroll here.
         </p>
 
         <div className="overlap">
           <Col>
             <div className="group" >
               <div className="group-2">
-                <Row className='justify-content-center'>
-                  <div>
+                
+                  <div className="staff-profile">
+                    <div className="avatar-container">
+                      <div className="avatar" />
+                    </div>
+                    <div className="text-wrapper">{user && role === "Dentist" ? "Dr. " : ""}{user ? userName : 'Loading...'} {user ? userLast : ""}</div>
                     <div className="label-normal">
                       <div className="label-text">Staff</div>
                     </div>
-                    <div className="text-wrapper">{staffInfo ? staffInfo.First_Name + " " + staffInfo.Last_Name : 'Loading...'}</div>
-                    <div className="avatar" />
                   </div>
-                </Row>
-                <Row className='justify-content-center'>
-                  <p className="email-johndoe-gmail">
+                
+                  <div className="email-johndoe-gmail">
                     <span className="span">Email: </span>
 
                     <span className="text-wrapper-2">
-                      {staffInfo ? staffInfo.Email : 'Loading...'}
+                      {user ? email : "Loading..."}
                       <br />
                       <br />
                     </span>
@@ -92,11 +121,9 @@ const StaffDashboard = ({ user }) => {
                       Phone Number: <br />
                     </span>
 
-                    <span className="text-wrapper-2">{staffInfo ? staffInfo.Phone_Number : 'Loading...'}</span>
-                  </p>
-                </Row>
-
-
+                    <span className="text-wrapper-2">{user ? phone : "Loading..."}</span>
+                  </div>
+                
               </div>
             </div>
           </Col>
@@ -107,7 +134,7 @@ const StaffDashboard = ({ user }) => {
                 <div className="reviews">
 
                   <div className="container">
-                    <div className="title-2">Patient Reviews</div>
+                    <div className="title-2">Procedure Reviews</div>
                   </div>
 
                   <div className="list">
@@ -118,7 +145,7 @@ const StaffDashboard = ({ user }) => {
                             <div className="avatar-3" />
 
                             <div className="title-wrapper">
-                              <div className="title-3 text-start">Sarah Johnson <FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /></div>
+                              <div className="title-3 text-start">Sarah Johnson <FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /></div>
                             </div>
                           </div>
 
@@ -134,7 +161,7 @@ const StaffDashboard = ({ user }) => {
                             <div className="avatar-3" />
 
                             <div className="title-wrapper">
-                              <div className="title-3 text-start">Alex Chang <FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /><FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /></div>
+                              <div className="title-3 text-start">Alex Chang <FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /></div>
                             </div>
                           </div>
 
@@ -200,29 +227,23 @@ const StaffDashboard = ({ user }) => {
                     <div className="list-wrapper">
                       <div className="list-3">
                         <div className="row-3">
-                          <div className="item">
-                            <div className="frame-3">
-                              <div className="title-6">John Doe</div>
-
-                              <div className="subtitle">Cleaning</div>
-                            </div>
-
-                            <div className="subtitle-2">9:00 AM</div>
-                          </div>
-
-                          <div className="item">
-                            <div className="frame-3">
-                              <div className="title-6">Jane Smith</div>
-
-                              <div className="subtitle">Check-up</div>
-                            </div>
-
-                            <div className="subtitle-2">10:30 AM</div>
-                          </div>
+                          <Col className='item'>
+                            {appointments.length === 0 ? (
+                              <p>No upcoming appointments.</p>
+                            ) : (
+                              <div className='appt'>
+                                {appointments.map((appointment, index) => (
+                                  <div key={index} className='frame-3'>
+                                    <strong className='title-6'>{appointment[0]}</strong><div className='subtitle'>{appointment[1] || 'N/A'}</div>
+                                    <div className='subtitle-2'>{appointment[2]}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                        </Col>
                         </div>
                       </div>
                     </div>
-
                     <div className="container-2">
                       <div className="title-7">Upcoming Appointments</div>
                     </div>
@@ -238,7 +259,7 @@ const StaffDashboard = ({ user }) => {
                   <div className="title-8">Payroll</div>
 
                   <div className="frame-4">
-                    <div className="subtitle-3">{staffInfo ? "$" + format_payroll(staffInfo.Total_Pay) : 'Loading...'}</div>
+                    <div className="subtitle-3">$ {pay}</div>
 
                     <div className="text-wrapper-4">
                       Bi-weekly Salary To Date
@@ -247,49 +268,72 @@ const StaffDashboard = ({ user }) => {
 
                   <div className="overlap-group-3">
                     <Button
-                     type='button' 
-                     className="btn shadow rounded"
-                     onClick={() => setOpenPayroll(true)}
+                      type='button'
+                      className="btn shadow rounded"
+                      onClick={() => setOpenPayroll(true)}
                     >
                       Add Time and Procedure
                     </Button>
                     <Modal isOpen={openPayroll} className='modal-dialog modal-dialog-centered modal-lg'>
-                      <ModalHeader 
+                      <ModalHeader
                         toggle={() => setOpenPayroll(false)}
-                        className='mx-3'  
                       >
                         Enter Time Worked
                       </ModalHeader>
-                      <ModalBody className='my-4 mx-5'>
+                      <ModalBody className='my-4 mx-4'>
                         <Formik
                           initialValues={{
                             hours: '',
                             procedure: '',
+                            performance: '',
                           }}
                           onSubmit={handleSubmit}
+                          validate={validatePayroll}
                         >
                           <Form>
-                            <Row className='mb-4'>
+                            <Row className='mb-2'>
                               <Col>
                                 <FormGroup>
-                                  <Label htmlFor='hours'>Input Time (hours)</Label>
+                                  <Label htmlFor='hours'>Input Time (hours:minutes)</Label>
                                   <Field
                                     id="hours"
                                     name="hours"
-                                    placeholder="Enter hours"
+                                    placeholder="Enter Hours:Minutes (hh:mm)"
                                     className="form-control"
                                   />
+                                  <ErrorMessage name='hours'>
+                                    {(msg) => <p className='text-danger text-start'>{msg}</p>}
+                                  </ErrorMessage>
                                 </FormGroup>
                               </Col>
                               <Col>
                                 <FormGroup>
                                   <Label htmlFor='procedure'>Input Procedure</Label>
-                                  <Field 
-                                    id='procdure'
+                                  <Field
+                                    id='procedure'
                                     name='procedure'
                                     placeholder='Enter Procedure'
                                     className='form-control'
                                   />
+                                  <ErrorMessage name='procedure'>
+                                    {(msg) => <p className='text-danger text-start'>{msg}</p>}
+                                  </ErrorMessage>
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                            <Row className='mb-4'>
+                              <Col>
+                                <FormGroup>
+                                  <Label htmlFor='performance'>Input Performance (enter number 1-5)</Label>
+                                  <Field
+                                    id='performance'
+                                    name='performance'
+                                    placeholder='Enter Performance'
+                                    className='form-control'
+                                  />
+                                  <ErrorMessage name='performance'>
+                                    {(msg) => <p className='text-danger text-start'>{msg}</p>}
+                                  </ErrorMessage>
                                 </FormGroup>
                               </Col>
                             </Row>
@@ -352,7 +396,7 @@ const StaffDashboard = ({ user }) => {
         <div className="rectangle-4" />
 
       </div>
-    </div>
+    </div >
   )
 }
 
