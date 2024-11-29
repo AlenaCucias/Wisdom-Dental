@@ -17,7 +17,9 @@ export const PatientDashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [reason, setReason] = useState(''); // State to capture the reason
   const [reasonModalOpen, setReasonModalOpen] = useState(false);
-
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  
   const [user, setUser] = useState(() => {
     return JSON.parse(sessionStorage.getItem('user')) || null;
   });
@@ -50,12 +52,12 @@ export const PatientDashboard = () => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/patients/get_available_appointments');
       if (response.status === 200) {
-        setAppointments(response.data.available_slots); // Assuming the response is { available_slots: {...} }
+        setAppointments(response.data.available_slots);
       } else {
-        console.error("Failed to fetch available appointments:", response);
+        console.error('Failed to fetch available appointments:', response);
       }
     } catch (error) {
-      console.error("Error fetching available appointments:", error);
+      console.error('Error fetching available appointments:', error);
     }
   };
 
@@ -81,60 +83,44 @@ export const PatientDashboard = () => {
       setMakePaymentModalOpen(false);
       setSuccessfulPaymentModalOpen(true);
   };
-
-  const handleTimeSlotClick = (date, time) => {
-    const reason = "Enter a reason for the appointment";
-    if (!reason) return;
   
-    fetch('http://127.0.0.1:5000/book_appointment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        patient_id: user['Patient ID'], // Include the user's ID
-        date,
-        time,
-        notes: reason,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          alert(data.message);
+  const handleTimeSlotClick = (date, time) => {
+    setSelectedDate(date);
+    setSelectedTime(time);
+    setScheduleAppointmentModalOpen(false); // Close the time slots modal
+    setReasonModalOpen(true); // Open reason input modal
+  };
+
+  const handleSubmitReason = () => {
+    if (!reason) {
+      alert('Please enter a reason for the appointment.');
+      return;
+    }
+
+    const requestData = {
+      patient_id: user['Patient_ID'],
+      date: selectedDate,
+      time: selectedTime,
+      notes: reason,
+    };
+
+    axios
+      .post('http://127.0.0.1:5000/patients/book_appointment', requestData)
+      .then((response) => {
+        if (response.data.success) {
+          alert(response.data.message);
+          setReason('');
           fetchAppointments(); // Refresh available slots
+          setReasonModalOpen(false);
         } else {
-          alert(data.error || 'Failed to book the appointment');
+          alert(response.data.error || 'Failed to book the appointment');
         }
       })
-      .catch((error) => console.error('Error booking appointment:', error));
+      .catch((error) => {
+        console.error('Error booking appointment:', error);
+        alert('An error occurred while booking the appointment.');
+      });
   };
-
-  const bookAppointment = (date, time, reason) => {
-    return fetch('/book_appointment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user:user,  // Add patient info here
-        date,
-        time,
-        notes: reason,
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert(`Appointment booked for ${date} at ${time}`);
-        return `Appointment booked successfully`;
-      } else {
-        throw new Error(data.message || 'Booking failed');
-      }
-    })
-    .catch(error => {
-      alert(`Error booking appointment: ${error.message}`);
-    });
-  };
-
   return (
     <div className="patient-dashboard">
       <div className="div">
@@ -210,29 +196,25 @@ export const PatientDashboard = () => {
                 </div>
               </div>
               <button
-        className="btn shadow rounded primary"
-        onClick={() => setScheduleAppointmentModalOpen(true)}
-      >
+         className="btn shadow rounded primary" onClick={() => setScheduleAppointmentModalOpen(true)}>
         <div className="title-4">Schedule Appointment</div>
       </button>
 
       <Modal isOpen={scheduleAppointmentModalOpen} className="modal-dialog modal-dialog-centered modal-lg">
-        <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>
-          Schedule Appointment
-        </ModalHeader>
+        <ModalHeader toggle={() => setScheduleAppointmentModalOpen(false)}>Schedule Appointment</ModalHeader>
         <ModalBody>
           {Object.keys(appointments).length > 0 ? (
             Object.keys(appointments).map((date) => (
-              <div key={date} style={{marginBottom: '20px'}}>
-                <p>{formatDate(date)}</p>
-                <ul style={{ display: 'flex', flexWrap: 'wrap', padding: 0, listStyleType: 'none', gap: '10px'}}>
+              <div key={date} style={{ marginBottom: '20px' }}>
+                <p>{date}</p>
+                <ul style={{ display: 'flex', flexWrap: 'wrap', padding: 0, listStyleType: 'none', gap: '10px' }}>
                   {appointments[date].map((time, index) => (
                     <li key={index} style={{ flex: '0 1 auto', marginBottom: '10px' }}>
-                      <button onClickCapture={() => switchToReason(true)}
+                      <button
                         className="btn shadow rounded primary"
                         onClick={() => handleTimeSlotClick(date, time)}
                       >
-                        {(time)}
+                        {time}
                       </button>
                     </li>
                   ))}
@@ -245,39 +227,33 @@ export const PatientDashboard = () => {
         </ModalBody>
       </Modal>
 
-              <Modal isOpen={reasonModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
-                <ModalHeader toggle={() => setReasonModalOpen(false)}>Schedule Appointment</ModalHeader>
-                <ModalBody>
-                   {/* Input for the reason */}
-                  <Row>
-                    <Label htmlFor="reason" style={{ display: 'block', textAlign: 'center', width: '100%' }}> 
-                    Provide a brief description to help the medical staff prepare for your appointment</Label>
-                    <textarea
-                      id="reason"
-                      value={reason}
-                      onChange={(e) => setReason(e.target.value)}
-                      placeholder="Enter reason for visit" 
-                      style={{ width: '80%', height: '150px', margin: '0 auto'}}
-                      />
-                  </Row>
-                  <Row className='col-6 mx-auto'>
-                    <Button onClick={() => switchToAppointmentConfirmation()}
-                      style={{marginTop: '20px'}}
-                      className='btn rounded shadow'
-                      type='submit'>
-                      Confirm Appointment
-                    </Button>
-                  </Row>
-                </ModalBody>
-              </Modal>
+      <Modal isOpen={reasonModalOpen} className="modal-dialog modal-dialog-centered modal-md">
+        <ModalHeader toggle={() => setReasonModalOpen(false)}>Provide a Reason</ModalHeader>
+        <ModalBody>
+          <Row>
+            <Label htmlFor="reason" style={{ display: 'block', textAlign: 'center', width: '100%' }}>
+              Provide a brief description to help the medical staff prepare for your appointment
+            </Label>
+            <textarea
+              id="reason"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Enter reason for visit"
+              style={{ width: '80%', height: '150px', margin: '0 auto' }}
+            />
+          </Row>
+          <Row className="col-6 mx-auto">
+            <Button onClick={handleSubmitReason} style={{ marginTop: '20px' }} className="btn rounded shadow">
+              Confirm Appointment
+            </Button>
+          </Row>
+        </ModalBody>
+      </Modal>
 
-            <Modal isOpen={appointmentConfirmationModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
-              <ModalHeader toggle={() => setAppointmentConfirmationModalOpen(false)}>Appointemnt Confirmation </ModalHeader>
-              <ModalBody>
-                Your appointment has been confirmed!
-              </ModalBody>
-            </Modal>
-
+      <Modal isOpen={appointmentConfirmationModalOpen} className="modal-dialog modal-dialog-centered modal-md">
+        <ModalHeader toggle={() => setAppointmentConfirmationModalOpen(false)}>Appointment Confirmation</ModalHeader>
+        <ModalBody>Your appointment has been confirmed!</ModalBody>
+      </Modal>
               <div className="group-3" />
             </div>
 

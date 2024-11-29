@@ -1,6 +1,6 @@
 # admin.py
-from .common import get_worksheet
-from .patients import dental_history
+from common import get_worksheet
+from patients import dental_history
 from datetime import datetime
 from collections import defaultdict
 from flask import Blueprint, jsonify

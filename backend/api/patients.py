@@ -1,6 +1,6 @@
 # patients.py
 from flask import  Blueprint, Flask, request, jsonify
-from .common import get_worksheet, hash_password, append_row, extract
+from common import get_worksheet, hash_password, append_row, extract
 from datetime import datetime
 from collections import defaultdict
 from flask_cors import CORS
@@ -203,7 +203,6 @@ def update_payments(user):
 def get_available_appointments():
     """
     Get all available appointment slots with corresponding dates and times.
-
     Returns:
         JSON response: A list of dates and their available time slots.
     """
@@ -216,76 +215,85 @@ def get_available_appointments():
     available_slots = {}
     today = datetime.today().date().strftime("%m-%d-%Y")
 
-    # Collect available slots
+    # Collect available slots (No Patient_ID or Treatment_ID means available)
     for row in data:
-        if not row["Patient_ID"] and not row["Treatment_ID"]:  # Check availability
+        if not str(row["Patient_ID"]).strip() and not str(row["Treatment_ID"]).strip():
             date, time = row["Date"], row["Time"]
             if date > today:  # Only future dates
-                available_slots.setdefault(date, set()).add(time)  # Use set to avoid duplicates
+                available_slots.setdefault(date, set()).add(time)
 
     # Sort times for each date and remove seconds
     for date in available_slots:
         # Sort the times in ascending order
-        sorted_times = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M:%S %p"))
+        sorted_times = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M %p"))
         # Format each time to remove the seconds part
-        available_slots[date] = [datetime.strptime(t, "%I:%M:%S %p").strftime("%I:%M %p") for t in sorted_times]
+        available_slots[date] = sorted_times
 
         # Optionally, strip any leading zero from the hour
         available_slots[date] = [t.lstrip("0") if t[0] == '0' else t for t in available_slots[date]]
-
+    print(f"Available Slots: {available_slots}")
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
     else:
         return jsonify({"message": "No available appointment slots at the moment."}), 404
-
+    
 @patients_blueprint.route('/book_appointment', methods=['POST'])
-def book_appointment(user, date, time, notes):
+def book_appointment():
     """
     Book an appointment for a user.
 
-    Parameters:
-        - user (dict): The dictionary containing user information, including the "Patient_ID".
-        - date (str): The date of the appointment (format: "MM-DD-YYYY").
-        - time (str): The time of the appointment (format: "HH:MM:SS AM/PM").
-        - notes (str): Any comments the user would like to add to the appointment.
-
-    Returns:
-        str: A success message or an error message if the appointment could not be booked.
+    Expects JSON payload with:
+    - patient_id: ID of the patient booking the appointment
+    - date: Date of the appointment in "MM-DD-YYYY" format
+    - time: Time of the appointment in "HH:MM AM/PM" format
+    - notes: Additional notes for the appointment (optional)
     """
-    # Get the incoming JSON request
     try:
         data = request.json
         patient_id = data.get("patient_id")
         date = data.get("date")
         time = data.get("time")
-        notes = data.get("notes")
-        data = request.json
-
-        # Extract values from the request
-        patient_id = data.get("Patient_id")
-        treatment_id = data.get("treatment_id")
-        doctor_id = data.get("doctor_id")
-        date = data.get("date")
-        time = data.get("time")
         notes = data.get("notes", "")
 
+        # Validate required fields
         if not all([patient_id, date, time]):
-                return jsonify({"success": False, "error": "Missing required fields"}), 400
+            return jsonify({"success": False, "error": "Missing required fields"}), 400
 
-        sheet = get_worksheet("Appointments")
-        data = sheet.get_all_records()
+        # Validate Patient ID
+        patient_sheet = get_worksheet("Patient")
+        patients = patient_sheet.get_all_records()
+        if not any(str(patient["Patient_ID"]) == str(patient_id) for patient in patients):
+            return jsonify({"success": False, "error": "Invalid Patient ID"}), 400
 
-        for i, row in enumerate(data, start=2):  # Rows start at 2 because of the header
-            if row["Date"] == date and row["Time"] == time and not row["Patient_ID"]:
-                sheet.update(f"B{i}", [[patient_id]])  # Update Patient ID
-                sheet.update(f"G{i}", [[notes]])  # Update Notes
-                return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
+        # Access the Appointments worksheet
+        appointment_sheet = get_worksheet("Appointments")
+        appointments = appointment_sheet.get_all_records()
 
-        return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
+        found = False  # Flag to check if we find the slot
+        for i, row in enumerate(appointments, start=2):  # Skip header row
+            # Log the time format to debug the issue
+            print(f"Checking slot: Date={row['Date']}, Time={row['Time']}, Patient_ID={row['Patient_ID']}") 
+
+            # Ensure time comparison accounts for AM/PM and the correct formatting
+            if row["Date"] == date and row["Time"].strip() == time.strip():  # Strip whitespace for exact match
+                if row["Patient_ID"]:  # If already booked
+                    return jsonify({"success": False, "error": "Time slot already booked"}), 400
+                
+                # Update the appointment with patient details
+                appointment_sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
+                appointment_sheet.update(f"G{i}", [[notes]])  # Update Notes
+                found = True  # Slot booked successfully
+                break
+
+        if not found:
+            return jsonify({"success": False, "error": "Selected time slot is not available"}), 400
+
+        return jsonify({"success": True, "message": "Appointment booked successfully"}), 200
 
     except Exception as e:
+        print(f"Error booking appointment: {e}")  # Log the error
         return jsonify({"success": False, "error": str(e)}), 500
-
+    
 def cancel_appointment(user, date, time):
     """
     Cancel an appointment for a user.

@@ -4,7 +4,7 @@ from google.oauth2.service_account import Credentials
 from google.auth import exceptions as google_auth_exceptions
 import gspread
 from flask import Blueprint,request, jsonify, make_response
-from .google_auth import get_client
+from google_auth import get_client
 import hashlib 
 
 common_blueprint = Blueprint('common', __name__)

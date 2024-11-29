@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
-from .patients import patients_blueprint
-from .staff import staff_blueprint
-from .feedback import feedback_blueprint
-from .admin import admin_blueprint
-from .common import common_blueprint
+from patients import patients_blueprint
+from staff import staff_blueprint
+from feedback import feedback_blueprint
+from admin import admin_blueprint
+from common import common_blueprint
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for cross-origin requests

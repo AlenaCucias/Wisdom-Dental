@@ -1,5 +1,5 @@
 from flask import Blueprint,request, jsonify
-from .common import append_row, get_worksheet
+from common import append_row, get_worksheet
 from datetime import datetime
 from flask_cors import CORS
 

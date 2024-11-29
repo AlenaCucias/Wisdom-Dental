@@ -1,10 +1,8 @@
 # staff.py
-from .common import get_worksheet, extract, append_row
+from common import get_worksheet, extract, append_row
 from datetime import datetime
 from collections import defaultdict
 from flask import Blueprint, jsonify, request
-
-
 
 staff_blueprint = Blueprint('staff', __name__)
 
