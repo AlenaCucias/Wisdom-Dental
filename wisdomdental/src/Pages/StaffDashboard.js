@@ -97,17 +97,18 @@ const StaffDashboard = ({ user }) => {
           <Col>
             <div className="group" >
               <div className="group-2">
-                <Row className='justify-content-center'>
-                  <div>
-                    <div className="label-normal ms-3">
-                      <div className="label-text">Staff</div>
+                
+                  <div className="staff-profile">
+                    <div className="avatar-container">
+                      <div className="avatar" />
                     </div>
                     <div className="text-wrapper">{user && role === "Dentist" ? "Dr. " : ""}{user ? userName : 'Loading...'} {user ? userLast : ""}</div>
-                    <div className="avatar ms-2" />
+                    <div className="label-normal">
+                      <div className="label-text">Staff</div>
+                    </div>
                   </div>
-                </Row>
-                <Row className='justify-content-center'>
-                  <p className="email-johndoe-gmail">
+                
+                  <div className="email-johndoe-gmail">
                     <span className="span">Email: </span>
 
                     <span className="text-wrapper-2">
@@ -121,10 +122,8 @@ const StaffDashboard = ({ user }) => {
                     </span>
 
                     <span className="text-wrapper-2">{user ? phone : "Loading..."}</span>
-                  </p>
-                </Row>
-
-
+                  </div>
+                
               </div>
             </div>
           </Col>
