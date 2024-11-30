@@ -15,7 +15,8 @@ const StaffDashboard = ({ user }) => {
   const [pay, setPay] = useState(user.Total_Pay);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(null);
-
+  const [performanceReviews, setPerformanceReviews] = useState([]);
+  const [averageTime, setAverageTime] = useState(0);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -41,7 +42,30 @@ const StaffDashboard = ({ user }) => {
     fetchAppointments();
   }, [user]);
 
- 
+  useEffect(() => {
+    const fetchPerformance = async () => {
+      const userID = user.Staff_ID;
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/staff/get_performance', { userID });
+        const sortedData = response.data
+          .map((review) => ({
+            date: new Date(review[0]),
+            procedure: review[1],
+            time: parseFloat(review[2]),
+            performance: review[3],
+          }))
+          .sort((a, b) => b.date - a.date);
+
+          const recentReviews = sortedData.slice(0, 2);
+          setPerformanceReviews(recentReviews);
+
+
+      } catch(error) {
+        console.error('Error fetching performance data:', error);
+      }
+    };
+    fetchPerformance();
+  },[user]);
 
   const handleSubmit = async (values, { resetForm }) => {
     const timesheet =
@@ -137,41 +161,28 @@ const StaffDashboard = ({ user }) => {
                     <div className="title-2">Procedure Reviews</div>
                   </div>
 
-                  <div className="list">
+                  <div className="list performance-reviews">
                     <div className="row">
-                      <div className="card">
-                        <div className="user">
-                          <div className="avatar-2">
-                            <div className="avatar-3" />
-
-                            <div className="title-wrapper">
-                              <div className="title-3 text-start">Sarah Johnson <FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /></div>
+                        {performanceReviews.map((review, index) => (
+                          <div className="card my-auto">
+                            <div key={index} className='review'>
+                              <div className="user">
+                                <div className="avatar-2">
+                                  <div className="title-wrapper">
+                                    <div className="text-center mb-1 subtitle-2">{review.procedure}</div>
+                                    <div className="title-3 text-center">{review.date.toDateString()}</div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div>
+                                {[...Array(review.performance)].map((_, starIndex) => (
+                                  <FontAwesomeIcon key={starIndex} icon={faStar} style={{color: 'gold' }} className='mb-1'/>
+                                ))}
+                              </div>
+                                {/* <FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /> */}
                             </div>
                           </div>
-
-
-                        </div>
-
-                        <p className="p">Great service and friendly staff</p>
-                      </div>
-
-                      <div className="card">
-                        <div className="user">
-                          <div className="avatar-2">
-                            <div className="avatar-3" />
-
-                            <div className="title-wrapper">
-                              <div className="title-3 text-start">Alex Chang <FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /><FontAwesomeIcon icon={faStar} style={{ color: 'gold' }} /></div>
-                            </div>
-                          </div>
-
-
-                        </div>
-
-                        <p className="p">
-                          The best dental experience I’ve had!
-                        </p>
-                      </div>
+                        ))}
                     </div>
                   </div>
                 </div>

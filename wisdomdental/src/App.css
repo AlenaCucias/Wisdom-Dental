@@ -3326,8 +3326,6 @@ position: relative;
   flex-direction: column;
   gap: 5.35px;
   height: 65px;
-  /* overflow: hidden; */
-  padding: 7px 12px;
   position: relative;
   width: 247px;
 }

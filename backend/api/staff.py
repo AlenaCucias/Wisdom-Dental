@@ -1,5 +1,5 @@
 # staff.py
-from common import get_worksheet, extract, append_row
+from .common import get_worksheet, extract, append_row
 from datetime import datetime
 from collections import defaultdict
 from flask import Blueprint, jsonify, request
@@ -120,7 +120,7 @@ def update_timesheet():
     return jsonify({"pay":pay}), 200
 
 @staff_blueprint.route('/get_performance', methods=['POST'])
-def get_performance(user_id):
+def get_performance():
     """
     Retrieves performance data for a specific staff member.
 
@@ -134,8 +134,10 @@ def get_performance(user_id):
               - Time spent on the procedure
               - Performance (1-5 inclusive)
     """
+    data = request.json
+    user_id = data.get('userID')
     performance_data = get_worksheet("Staff Performance").get_all_records()
     # Get only records that are associated with user
-    filtered_rows = [ row for row in performance_data if row["Staff ID"] == user_id]
+    filtered_rows = [ row for row in performance_data if row["Staff_ID"] == user_id]
     total_data = [[row["Date"], row["Procedure"], row["Time"], row["Performance"]] for row in filtered_rows]
     return total_data

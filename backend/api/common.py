@@ -4,7 +4,7 @@ from google.oauth2.service_account import Credentials
 from google.auth import exceptions as google_auth_exceptions
 import gspread
 from flask import Blueprint,request, jsonify, make_response
-from google_auth import get_client
+from .google_auth import get_client
 import hashlib
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -133,16 +133,20 @@ def extract(unfiltered_data, filtered_rows, data_to_compare, filter, data_to_ext
 
     Note: The order of `filtered_rows` is preserved in the returned list of extracted values.
     """
+    
+
     data = [row[data_to_compare] for row in filtered_rows]
+
 
     # Filter rows where the row[filter] matches any ID in data
     new_rows = [row for row in unfiltered_data if row[filter] in data]
 
     # Extract new data in the same order as data
     new_data = [
-        next(row[data_to_extract] for row in new_rows if row[filter] == doc_id)
+        next((row[data_to_extract] for row in new_rows if row[filter] == doc_id), None)
         for doc_id in data
     ]
+
     return new_data
 
 def send_email(to_email, subject, body):
