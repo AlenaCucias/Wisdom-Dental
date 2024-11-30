@@ -104,6 +104,7 @@ def dental_history():
     Note: Only past appointments (with dates before today's date) are included.
     """
     patient_id = request.args.get("patient_id")
+
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
     
@@ -114,6 +115,11 @@ def dental_history():
         treatment_data = get_worksheet("Treatment").get_all_records()
         # Filter Appointments table to only those that match with the current user
         filtered_rows = [ row for row in appt_data if row["Patient_ID"] == patient_id]
+
+        #testing
+        print(f"patient id: {patient_id}")
+        print(f"filtered rows: {filtered_rows}")
+
 
         doctor_names = extract(staff_data, filtered_rows, "Doctor_ID", "Staff_ID", "Last_Name")
         treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
