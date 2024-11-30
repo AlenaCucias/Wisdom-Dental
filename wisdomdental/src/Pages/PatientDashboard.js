@@ -55,6 +55,10 @@ export const PatientDashboard = () => {
       console.error("Error fetching upcoming appointments:", error);
     }
   };
+
+  const sortedAppointments = upcomingAppointments.sort((a,b) => {
+    return new Date(a.date) - new Date(b.data);
+  })
   
   
   if (!user) { 
@@ -229,8 +233,7 @@ export const PatientDashboard = () => {
     <div className="label-normal">
       <div className="label-text">Patient</div>
     </div>
-    <div className="text-wrapper-2">{user?.First_Name || 'N/A'}</div>
-    <div className="text-wrapper-7">{user?.Last_Name || 'N/A'}</div>
+    <div className="text-wrapper-2">{user?.First_Name || 'N/A'}{' '}{user?.Last_Name || 'N/A'}</div>
                   <div className="avatar" />
                 </div>
               </div>
@@ -331,28 +334,22 @@ export const PatientDashboard = () => {
 </Modal>
                   <div className="list">
                     <div className="row">
-                      <div className="item">
+                      {sortedAppointments.map((appointment, index) => (
+                      <div className="item" key={index}>
                         <div className="frame-2">
                           <p className="p">
-                            Wednesday, October 16
-                            <br /> 10 AM
+                            {new Date(appointment.date).toLocaleDateString('en-US', {
+                              weekday: 'long',
+                              month: 'long',
+                              day: 'numeric',
+                            })}
+                            <br />
+                            {appointment.time}
                           </p>
-
-                          <div className="subtitle">Dental Cleaning</div>
+                          <div className="subtitle">{appointment.treatment || "General Consultation"}</div>
                         </div>
                       </div>
-
-                      <div className="item">
-                        <div className="frame-2">
-                          <p className="p">
-                            Friday, <br />
-                            October 18
-                            <br /> 2 PM
-                          </p>
-
-                          <div className="subtitle">Consultation</div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
