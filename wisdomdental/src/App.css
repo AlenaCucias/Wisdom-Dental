@@ -1542,6 +1542,7 @@
   padding: 20px;
 }
 
+
 .admin-page .div {
   background-color: #ffffff;
   width: 100%;
@@ -1549,6 +1550,7 @@
   margin: 0 auto;
   padding: 20px;  /* Add some padding inside the container */
 }
+
 
 .admin-page .title {
   color: #000000;
@@ -1559,6 +1561,7 @@
   margin-top: 50px;  /* Adjust space from the top */
 }
 
+
 .admin-page .description {
   color: #000000;
   font-family: "Roboto-Regular", Helvetica;
@@ -1568,6 +1571,7 @@
   margin-top: 20px;  /* Adjust space from the title */
 }
 
+
 .admin-page .rectangle {
   background-color: #839cb4;
   border-radius: 50px;
@@ -1576,11 +1580,13 @@
   margin-top: 30px;  /* Adjust space from the description */
 }
 
+
 .admin-page .group-wrapper {
   display: flex;
   justify-content: center;
   margin-top: 40px;  /* Adjust space between button groups */
 }
+
 
 .admin-page .group-wrapper .overlap-group {
   background-color: #839cb4;
@@ -1591,6 +1597,7 @@
   justify-content: center;
   align-items: center;
 }
+
 
 .admin-page .text-wrapper {
   color: #ffffff;
@@ -1609,7 +1616,7 @@
 
 
 .admin-page .overlap {
-  background-color: #7495AF;  /* Changed to match the navigation bar */
+  background-color: #7495AF;  /* Match the navigation bar */
   width: 220px;
   height: 1142px;
   position: absolute;
@@ -1617,11 +1624,13 @@
   left: 0;
 }
 
+
 .admin-page .group-2 {
   height: 183px;
   width: 104px;
   margin-left: 20px;
 }
+
 
 .admin-page .label-normal {
   align-items: center;
@@ -1634,13 +1643,17 @@
   margin-top: 10px;
 }
 
+
 .admin-page .avatar {
   background-color: #d8d8d880;
-  border-radius: 50px;
+  border-radius: 50%;
   height: 100px;
   width: 100px;
-  margin-top: 20px;
+  position: absolute;
+  top: 90px;  /* Set the vertical position */
+  left: 61px;  /* Set the horizontal position */
 }
+
 
 .admin-page .email-johndoe-gmail {
   color: #ffffff;
@@ -1649,6 +1662,7 @@
   font-weight: 400;
   margin-top: 20px;
 }
+
 
 .admin-page button {
   background: transparent;
@@ -1664,6 +1678,7 @@
   display: inline-block;
 }
 
+
 button {
   background-color: #839cb4;
   color: white;
@@ -1675,13 +1690,16 @@ button {
   cursor: pointer;
 }
 
+
 button:hover {
   background-color: #839cb4;
 }
 
+
 .modal-content {
   background-color: #f0f4f7;
 }
+
 
 .modal-header {
   background-color: #839cb4;
@@ -1689,10 +1707,12 @@ button:hover {
   font-weight: bold;
 }
 
+
 .modal-body {
   background-color: #ffffff;
   padding: 20px;
 }
+
 
 .admin-page .text-wrapper button {
   width: 100%;
@@ -1712,6 +1732,9 @@ button:hover {
 
 
 /* End of Admin Page CSS */
+
+
+
 
 
 /* Information Page START */
@@ -3318,6 +3341,17 @@ position: relative;
   width: 535px;
 }
 
+.staff-dashboard .container-7 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.staff-dashboard .item-5 {
+  flex: 1 1 48%;
+  width: 150%;
+}
+
 .staff-dashboard .card {
   align-items: center;
   background-color: #0000000d;
@@ -3827,30 +3861,6 @@ position: relative;
   width: 203px;
 }
 
-/* .staff-dashboard .rectangle-2 {
-  background-color: #839cb4;
-  border-radius: 8px;
-  box-shadow: 0px 4px 4px #00000040;
-  height: 38px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 203px;
-} */
-
-/* .staff-dashboard .title-9 {
-  color: #ffffff;
-  font-family: "Roboto-Medium", Helvetica;
-  font-size: 16px;
-  font-weight: 500;
-  left: 14px;
-  letter-spacing: 0;
-  line-height: 24px;
-  position: absolute;
-  top: 7px;
-  white-space: nowrap;
-} */
-
 .staff-dashboard .frame-5 {
   height: 277px;
   left: 0;
@@ -3922,20 +3932,10 @@ position: relative;
   flex-direction: column;
   gap: 17.27px;
   justify-content: center;
-  left: 56px;
+  /* left: 56px; */
   position: absolute;
   top: 52px;
   width: 586px;
-}
-
-.staff-dashboard .row-4 {
-  align-items: flex-start;
-  align-self: stretch;
-  display: flex;
-  flex: 0 0 auto;
-  gap: 8.63px;
-  position: relative;
-  width: 100%;
 }
 
 .staff-dashboard .metric-2 {

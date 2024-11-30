@@ -141,3 +141,25 @@ def get_performance():
     filtered_rows = [ row for row in performance_data if row["Staff_ID"] == user_id]
     total_data = [[row["Date"], row["Procedure"], row["Time"], row["Performance"]] for row in filtered_rows]
     return total_data
+
+@staff_blueprint.route('/get_qualifications', methods=['POST'])
+def get_qualifications():
+    """
+    Retrieves qualifcations for staff member
+
+    Args:
+        user_id (str or int): The ID of the staff member whose performance data is to be retrieved.
+
+    Returns:
+        list of qualifcaions, containg:
+            - degree
+            - certificationsi
+            - years of expirience 
+    """
+
+    data = request.json
+    user_id = data.get('userID')    
+    qualifications_data = get_worksheet("Qualifications").get_all_records()
+    filtered_rows = [ row for row in qualifications_data if row["Staff_ID"] == user_id]
+    total_data = [[row["Degree"], row["Certification"], row["Experience"]] for row in filtered_rows]
+    return total_data
