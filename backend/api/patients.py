@@ -83,7 +83,8 @@ def get_treatment_plan(user):
     treatment_plan = user["Treatment_Plan"]
     return treatment_plan
 
-def dental_history(user):
+@patients_blueprint.route('/get_dental_history', methods=['GET'])
+def dental_history():
     """
     Retrieve the dental history for a given user.
 
@@ -102,27 +103,35 @@ def dental_history(user):
 
     Note: Only past appointments (with dates before today's date) are included.
     """
-    # Get all relevant sheets
-    appt_data = get_worksheet("Appointments").get_all_records()
-    staff_data = get_worksheet("Staff").get_all_records()
-    treatment_data = get_worksheet("Treatment").get_all_records()
-    # Filter Appointments table to only those that match with the current user
-    filtered_rows = [ row for row in appt_data if row["Patient_ID"] == user['Patient_ID']]
+    patient_id = request.args.get("patient_id")
+    if not patient_id:
+        return jsonify({"error": "Patient ID is required"}), 400
+    
+    try:
+        # Get all relevant sheets
+        appt_data = get_worksheet("Appointments").get_all_records()
+        staff_data = get_worksheet("Staff").get_all_records()
+        treatment_data = get_worksheet("Treatment").get_all_records()
+        # Filter Appointments table to only those that match with the current user
+        filtered_rows = [ row for row in appt_data if row["Patient_ID"] == patient_id]
 
-    doctor_names = extract(staff_data, filtered_rows, "Doctor_ID", "Staff_ID", "Last_Name")
-    treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
+        doctor_names = extract(staff_data, filtered_rows, "Doctor_ID", "Staff_ID", "Last_Name")
+        treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
 
-    # Use the current date to show all past visits
-    today = datetime.today().date()
+        # Use the current date to show all past visits
+        today = datetime.today().date()
 
-    # Format data in a list of tuples
-    total_data = [[date, treatment, doctor]
-                   for date, treatment, doctor in
-                   zip([row["Date"]for row in filtered_rows], treatment_names, doctor_names)
-                   if datetime.strptime(date, "%m-%d-%Y").date() < today
-                   ]
+        # Format data in a list of tuples
+        total_data = [[date, treatment, doctor]
+                    for date, treatment, doctor in
+                    zip([row["Date"]for row in filtered_rows], treatment_names, doctor_names)
+                    if datetime.strptime(date, "%m-%d-%Y").date() < today
+                    ]
 
-    return total_data
+        return jsonify({"appointments": total_data}),200
+    
+    except Exception as e:
+        return jsonify({"error":f"Failed to fetch dental history: {str(e)}"}),500
 
 def payment_history(user):
     """

@@ -22,6 +22,7 @@ export const PatientDashboard = () => {
   const [upcomingAppointmentsModalOpen, setUpcomingAppointmentsModalOpen] = useState(false);
   const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null); // For rescheduling/canceling
+  const [dentalHistory, setDentalHistory] = useState([]);
 
   
   const [user, setUser] = useState(() => {
@@ -41,6 +42,24 @@ export const PatientDashboard = () => {
       setUser(userDetails); 
     } 
   }, []); 
+
+  useEffect(() => {
+    const fetchDentalHistory = async () => {
+      const patientId = user?.Patient_ID;
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/patients/get_dental_history', {
+          params: { patient_id: patientId }, // Replace with the logged-in user's ID
+        });
+        if (response.status === 200) {
+          setDentalHistory(response.data.appointments || []);
+          console.log("Dental History Fetched:", response.data.appointments);
+        }
+      } catch (error) {
+        console.error("Error fetching dental history:", error);
+      }
+    };
+    fetchDentalHistory();
+  }, []);
   
   const fetchUpcomingAppointments = async () => {
     const patientId = user?.Patient_ID;
@@ -215,7 +234,7 @@ export const PatientDashboard = () => {
             <div className="text-wrapper">Patient Dashboard</div>
 
             <p className="description">
-              Welcome back! View and manage your dental information here.
+              Welcome back {user?.First_Name}! View and manage your dental information here.
             </p>
 
             <div className="overlap">
@@ -333,6 +352,9 @@ export const PatientDashboard = () => {
   </ModalBody>
 </Modal>
                   <div className="list">
+                    {sortedAppointments.length == 0 ? (
+                      <p>No uncoming appointments at the moment</p>
+                    ) : (
                     <div className="row">
                       {sortedAppointments.map((appointment, index) => (
                       <div className="item" key={index}>
@@ -351,6 +373,7 @@ export const PatientDashboard = () => {
                       </div>
                       ))}
                     </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -445,11 +468,26 @@ export const PatientDashboard = () => {
             <Modal isOpen={viewDentalHistoryModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
               <ModalHeader toggle={() => setViewDentalHistroyModalOpen(false)}>Dental History</ModalHeader>
               <ModalBody>
-                <Row>
-                  <Col className="text-center">Date</Col>
-                  <Col className="text-center">Treatment</Col>
-                  <Col className="text-center">Doctor</Col>
-                </Row>
+                {dentalHistory.length > 0 ? (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Treatment</th>
+                        <th>Doctor</th>
+                      </tr>
+                    </thead>
+                    {dentalHistory.map((appointments, index) => (
+                      <tr key={index}>
+                        <td>{appointments.date}</td>
+                        <td>{appointments.treatment}</td>
+                        <td>{appointments.doctor}</td>
+                      </tr>
+                    ))}
+                  </table>
+                ) : (
+                  <p>No dental history at the moment</p>
+                )}
               </ModalBody>
             </Modal>
 
