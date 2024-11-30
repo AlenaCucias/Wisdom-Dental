@@ -465,25 +465,27 @@ export const PatientDashboard = () => {
                 <div className="text-wrapper-4">View Dental History</div>
             </button>
 
-            <Modal isOpen={viewDentalHistoryModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
+            <Modal isOpen={viewDentalHistoryModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
               <ModalHeader toggle={() => setViewDentalHistroyModalOpen(false)}>Dental History</ModalHeader>
               <ModalBody>
                 {dentalHistory.length > 0 ? (
-                  <table>
+                  <table style={{ width: "100%", textAlign: "center"}}>
                     <thead>
                       <tr>
-                        <th>Date</th>
-                        <th>Treatment</th>
-                        <th>Doctor</th>
+                        <th style={{ width: "25%", textAlign: "center", padding: "10px"}}>Date</th>
+                        <th style={{ width: "50%", textAlign: "center", padding: "10px"}}>Treatment</th>
+                        <th style={{ width: "75%", textAlign: "center", padding: "10px"}}>Doctor</th>
                       </tr>
                     </thead>
+                    <tbody>
                     {dentalHistory.map((appointments, index) => (
                       <tr key={index}>
-                        <td>{appointments.date}</td>
-                        <td>{appointments.treatment}</td>
-                        <td>{appointments.doctor}</td>
+                        <td>{formatDate(appointments[0])}</td>
+                        <td>{appointments[1]}</td>
+                        <td>{appointments[2]}</td>
                       </tr>
                     ))}
+                    </tbody>
                   </table>
                 ) : (
                   <p>No dental history at the moment</p>
