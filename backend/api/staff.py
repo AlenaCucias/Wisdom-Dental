@@ -153,7 +153,7 @@ def get_qualifications():
     Returns:
         list of qualifcaions, containg:
             - degree
-            - certifications
+            - certificationsi
             - years of expirience 
     """
 
