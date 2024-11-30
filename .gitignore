@@ -34,6 +34,9 @@
 # Cached files
 *.pyc
 
+# Mac files
+.DS_Store
+
 #virtual environment
 venv/
 

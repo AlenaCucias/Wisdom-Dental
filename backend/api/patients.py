@@ -419,6 +419,7 @@ def reschedule_appointment():
     try:
         sheet = get_worksheet("Appointments")
         appointments = sheet.get_all_records()
+        patient_data = get_worksheet("Patient").get_all_records()
 
         # Step 1: Cancel the original appointment
         old_appointment_found = False
@@ -443,6 +444,20 @@ def reschedule_appointment():
                     sheet.update(f"C{i}", [[row["Treatment_ID"]]])  # Reassign Treatment_ID
                     sheet.update(f"G{i}", [[new_notes]])  # Update Notes
                     print(f"Appointment rescheduled to {new_date} at {new_time}.")
+
+                    # Check if a matching patient record exists
+                    user = next(
+                        (row for row in patient_data if row["Patient_ID"] == patient_id),
+                        None
+                    )
+
+                    # Send appointment confirmation email if user found
+                    if user:
+                        try:
+                            appointment_confirmation(user, new_date, new_time)
+                        except Exception as e:
+                            print(f"Error sending confirmation email: {e}")
+
                     return jsonify({"success": True, "message": "Appointment rescheduled successfully."}), 200
 
         # If the slot is not available

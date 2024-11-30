@@ -163,7 +163,7 @@ def send_email(to_email, subject, body):
 
     # Set up the MIME structure
     msg = MIMEMultipart()
-    msg['From'] = gmail_user
+    msg['From'] = 'Wisdom Dental Clinic <wisdomdentaldb@gmail.com>'
     msg['To'] = to_email
     msg['Subject'] = subject
 
@@ -174,7 +174,7 @@ def send_email(to_email, subject, body):
         # Set up the server
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()  # Secure the connection
-        server.login(gmail_user, app_password)  # Log in with your Gmail and App Password
+        server.login(gmail_user, app_password)  # Log in with Gmail and App Password
 
         # Send the email
         text = msg.as_string()
