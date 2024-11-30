@@ -23,6 +23,7 @@ export const PatientDashboard = () => {
   const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null); // For rescheduling/canceling
   const [dentalHistory, setDentalHistory] = useState([]);
+  const [paymentHistory, setPaymentHistory] = useState([]);
 
   
   const [user, setUser] = useState(() => {
@@ -42,6 +43,24 @@ export const PatientDashboard = () => {
       setUser(userDetails); 
     } 
   }, []); 
+
+  useEffect(() => {
+    const fetchPaymentHistory = async () => {
+      const patientId = user?.Patient_ID;
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/patients/get_payment_history', {
+          params: { patient_id: patientId }, // Replace with the logged-in user's ID
+        });
+        if (response.status === 200) {
+          setPaymentHistory(response.data.payments || []);
+          console.log("Payment History Fetched:", response.data.payments);
+        }
+      } catch (error) {
+        console.error("Error fetching payment history:", error);
+      }
+    };
+    fetchPaymentHistory();
+  }, []);
 
   useEffect(() => {
     const fetchDentalHistory = async () => {
@@ -456,7 +475,30 @@ export const PatientDashboard = () => {
             <Modal isOpen={viewDetailsModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
               <ModalHeader toggle={() => setViewDetailsModalOpen(false)}>Payment History</ModalHeader>
               <ModalBody>
-                No payment history at the moment
+              {paymentHistory.length > 0 ? (
+                  <table style={{ width: "100%", textAlign: "center"}}>
+                    <thead>
+                      <tr>
+                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Date</th>
+                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Treatment</th>
+                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Cost</th>
+                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {paymentHistory.map((payments, index) => (
+                      <tr key={index}>
+                        <td style={{ padding: "10px"}}>{formatDate(payments[0])}</td>
+                        <td>{payments[1]}</td>
+                        <td>{payments[2]}</td>
+                        <td>{payments[3]}</td>
+                      </tr>
+                    ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p>No payment history at the moment</p>
+                )}
               </ModalBody>
             </Modal>
 
@@ -480,7 +522,7 @@ export const PatientDashboard = () => {
                     <tbody>
                     {dentalHistory.map((appointments, index) => (
                       <tr key={index}>
-                        <td>{formatDate(appointments[0])}</td>
+                        <td style={{padding: "10px"}}>{formatDate(appointments[0])}</td>
                         <td>{appointments[1]}</td>
                         <td>{appointments[2]}</td>
                       </tr>

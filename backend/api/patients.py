@@ -116,14 +116,6 @@ def dental_history():
         # Filter Appointments table to only those that match with the current user
         filtered_rows = [ row for row in appt_data if str(row["Patient_ID"]) == patient_id]
 
-        #testing
-        #print(f"patient id: {patient_id}")
-        #print(f"Patient ID type: {type(patient_id)}")  # Type of patient_id
-        #for row in appt_data:
-            #print(f"Row Patient_ID: {row['Patient_ID']}, Type: {type(row['Patient_ID'])}")
-        #print(f"filtered rows: {filtered_rows}")
-
-
         doctor_names = extract(staff_data, filtered_rows, "Doctor_ID", "Staff_ID", "Last_Name")
         treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
 
@@ -142,7 +134,8 @@ def dental_history():
     except Exception as e:
         return jsonify({"error":f"Failed to fetch dental history: {str(e)}"}),500
 
-def payment_history(user):
+@patients_blueprint.route('/get_payment_history', methods=['GET'])
+def payment_history():
     """
     Retrieve the payment history for a given user.
 
@@ -160,20 +153,29 @@ def payment_history(user):
             - str or float: The cost of the treatment.
             - str or bool: The payment status of the appointment (e.g., "TRUE" for paid or "FALSE" for not paid).
     """
-    # Get all relevant sheets
-    appt_data = get_worksheet("Appointments").get_all_records()
-    treatment_data = get_worksheet("Treatment").get_all_records()
-    # Filter Appointments table to only those that match with the current user
-    filtered_rows = [ row for row in appt_data if row["Patient_ID"] == user['Patient_ID']]
-    treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
-    cost = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Cost")
+    patient_id = request.args.get("patient_id")
 
-    # Format data in a list of tuples
-    total_data = [[date, treatment, cost, status]
-                   for date, treatment, cost, status in
-                   zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
-                   ]
-    return total_data
+    if not patient_id:
+        return jsonify({"error": "Patient ID is required"}), 400
+    
+    try:
+        # Get all relevant sheets
+        appt_data = get_worksheet("Appointments").get_all_records()
+        treatment_data = get_worksheet("Treatment").get_all_records()
+        # Filter Appointments table to only those that match with the current user
+        filtered_rows = [ row for row in appt_data if str(row["Patient_ID"]) == patient_id]
+        treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
+        cost = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Cost")
+
+        # Format data in a list of tuples
+        total_data = [[date, treatment, cost, status]
+                    for date, treatment, cost, status in
+                    zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
+                    ]
+        
+        return jsonify({"payments": total_data}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch payment history: {str(e)}"}), 500
 
 def get_total_cost(user):
     """
