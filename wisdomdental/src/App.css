@@ -1626,29 +1626,37 @@
 .admin-page .overlap {
   background-color: #7495AF;  /* Match the navigation bar */
   width: 220px;
-  height: 1142px;
-  position: absolute;
-  top: 2px;
+  position: fixed;  /* Fix position so it stays below the navbar */
+  top: 4rem;  /* Offset by navbar height */
   left: 0;
+  height: calc(100vh - 4rem);  /* Full height of viewport minus navbar height */
+  display: flex;  /* Make sure children are flex items */
+  flex-direction: column;
+  align-items: center;  /* Center items horizontally */
 }
 
 
+
 .admin-page .group-2 {
-  height: 183px;
-  width: 104px;
-  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;  /* Adjust margin to position below the blue rectangle */
 }
 
 
 .admin-page .label-normal {
+  display: flex;
   align-items: center;
+  justify-content: center;
   background-color: #d8d8d880;
   border: 0.5px solid #0000001a;
   border-radius: 2px;
-  display: inline-flex;
-  gap: 2px;
-  justify-content: center;
   margin-top: 10px;
+  padding: 5px 10px;
+  font-family: "Roboto-Medium", Helvetica;
+  font-size: 16px;
+  color: #ffffff;  /* Ensure text color contrasts with background */
 }
 
 
@@ -1657,9 +1665,7 @@
   border-radius: 50%;
   height: 100px;
   width: 100px;
-  position: absolute;
-  top: 90px;  /* Set the vertical position */
-  left: 61px;  /* Set the horizontal position */
+  margin-top: 20px;
 }
 
 
@@ -1668,7 +1674,9 @@
   font-family: "Roboto-Bold", Helvetica;
   font-size: 20px;
   font-weight: 400;
-  margin-top: 20px;
+  margin-top: 10px;
+  text-align: center;
+
 }
 
 
@@ -1742,6 +1750,17 @@ button:hover {
   width: 969px;  /* Set the same width as the button container */
   margin: 0 auto;  /* Center container if needed */
 }
+
+.admin-page .title-2 {
+  color: #ffffff;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+  text-align: center;
+
+}
+
 
 
 
