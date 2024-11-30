@@ -1553,12 +1553,18 @@
 
 
 .admin-page .title {
+  margin: 0 auto;  /* Center container if needed */
+}
+
+.admin-page .title {
   color: #000000;
   font-family: "Roboto-Medium", Helvetica;
   font-size: 28px;
   font-weight: 500;
   line-height: 36px;
   margin-top: 50px;  /* Adjust space from the top */
+  text-align: left;  /* Ensure the text is left aligned */
+
 }
 
 
@@ -1569,6 +1575,8 @@
   font-weight: 400;
   line-height: 24px;
   margin-top: 20px;  /* Adjust space from the title */
+  text-align: left;  /* Ensure the text is left aligned */
+
 }
 
 
@@ -1729,6 +1737,12 @@ button:hover {
   justify-content: center;
   align-items: center;
 }
+
+.admin-page .text-buttons-wrapper {
+  width: 969px;  /* Set the same width as the button container */
+  margin: 0 auto;  /* Center container if needed */
+}
+
 
 
 /* End of Admin Page CSS */
