@@ -17,6 +17,7 @@ const StaffDashboard = ({ user }) => {
   const [loading, setLoading] = useState(null);
   const [performanceReviews, setPerformanceReviews] = useState([]);
   const [topProcedures, setTopProcedures] = useState([]);
+  const [qualifications, setQualifications] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -88,6 +89,25 @@ const StaffDashboard = ({ user }) => {
     fetchPerformance();
   },[user]);
 
+  useEffect(() => {
+    const fetchQualifications = async () => {
+      const userID = user.Staff_ID;
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/staff/get_qualifications', { userID });
+        const info = response.data
+          .map((qualifcation) => ({
+            degree: qualifcation[0],
+            certification: qualifcation[1],
+            experience: qualifcation[2],
+          }))
+        setQualifications(info);
+        }catch(error) {
+          console.error("error fetching qualifications: ", error);
+      }
+    };
+    fetchQualifications();
+  },[user])
+
   const handleSubmit = async (values, { resetForm }) => {
     const timesheet =
     {
@@ -133,16 +153,13 @@ const StaffDashboard = ({ user }) => {
     <div className='staff-dashboard'>
       <div className="overlap">
         <div className="title">Staff Dashboard</div>
-
         <p className="description">
           Welcome back, {user ? userName : 'User'}! View upcoming appointments and payroll here.
         </p>
-
         <div className="overlap">
           <Col>
             <div className="group" >
               <div className="group-2">
-                
                   <div className="staff-profile">
                     <div className="avatar-container">
                       <div className="avatar" />
@@ -152,36 +169,28 @@ const StaffDashboard = ({ user }) => {
                       <div className="label-text">Staff</div>
                     </div>
                   </div>
-                
                   <div className="email-johndoe-gmail">
                     <span className="span">Email: </span>
-
                     <span className="text-wrapper-2">
                       {user ? email : "Loading..."}
                       <br />
                       <br />
                     </span>
-
                     <span className="span">
                       Phone Number: <br />
                     </span>
-
                     <span className="text-wrapper-2">{user ? phone : "Loading..."}</span>
                   </div>
-                
               </div>
             </div>
           </Col>
-
           <div className='mt-3'>
             <div className="frame">
               <div className="overlap-group">
                 <div className="reviews">
-
                   <div className="container">
                     <div className="title-2 mt-2">Procedure Reviews</div>
                   </div>
-
                   <div className="list performance-reviews">
                     <div className="row ms-3 mt-2">
                         {performanceReviews.map((review, index) => (
@@ -206,54 +215,39 @@ const StaffDashboard = ({ user }) => {
                     </div>
                   </div>
                 </div>
-
                 <div className="data-metrics">
                   <div className="container-wrapper">
                     <div className="div-wrapper">
                       <div className="title-4">Qualifications Overview</div>
                     </div>
                   </div>
-
                   <div className="row-wrapper">
-                    <div className="row-2">
-                      <div className="metric">
-                        <div className="title-5">Dental Degree</div>
-
-                        <div className="data">DDS</div>
-
-                        <div className="change">Updated</div>
-                      </div>
-
-                      <div className="metric">
-                        <div className="title-5">Certifications</div>
-
-                        <div className="data">Implantology</div>
-
-                        <div className="change">Expires soon</div>
-                      </div>
-
-                      <div className="metric">
-                        <div className="title-5">Years of Experience</div>
-
-                        <div className="data">8</div>
-
-                        <div className="change">Growing</div>
-                      </div>
-                    </div>
+                      {qualifications.map((qualifcation, index) => (
+                        <div className="row-2">
+                          <div className="metric">
+                            <div className="title-5">Degree</div>
+                            <div className="data">{qualifcation.degree}</div>
+                          </div>
+                          <div className="metric">
+                            <div className="title-5">Certification</div>
+                            <div className="data">{qualifcation.certification}</div>
+                          </div>
+                          <div className="metric">
+                            <div className="title-5">Years of Experience</div>
+                            <div className="data">{qualifcation.experience}</div>
+                          </div>
+                        </div>
+                      ))}
                   </div>
-
                 </div>
               </div>
-
             </div>
           </div>
-
           <div className="overlap-2">
             <div className="frame-2">
               <div className="overlap-group-wrapper">
                 <div className="overlap-group-2">
                   <div className="rectangle" />
-
                   <div className="list-2">
                     <div className="list-wrapper">
                       <div className="list-3">
@@ -281,22 +275,16 @@ const StaffDashboard = ({ user }) => {
                   </div>
                 </div>
               </div>
-
-
               <div className="text-wrapper-3">Logout</div>
-
               <div className="overlap-wrapper">
                 <div className="overlap-3">
                   <div className="title-8">Payroll</div>
-
                   <div className="frame-4">
                     <div className="subtitle-3">$ {pay}</div>
-
                     <div className="text-wrapper-4">
                       Bi-weekly Salary To Date
                     </div>
                   </div>
-
                   <div className="overlap-group-3">
                     <Button
                       type='button'
@@ -384,11 +372,9 @@ const StaffDashboard = ({ user }) => {
                 </div>
               </div>
             </div>
-
             <div className="frame-5">
               <div className="overlap-4">
                 <div className="rectangle-3" />
-
                 <div className="data-metrics-2">
                   <div className="container-3">
                     <div className="container-4">
@@ -397,7 +383,6 @@ const StaffDashboard = ({ user }) => {
                   </div>
                   <div className="list-4 ">
                     <div className="container-7 mx-auto">
-
                       {topProcedures.map((procedure, index) => (
                           <div key={index} className='mx-auto'> 
                             <div className="metric-2 item-5 ps-1 ms-1">
@@ -405,19 +390,8 @@ const StaffDashboard = ({ user }) => {
                               <div className="data-2">{procedure.avgTime.toFixed(2)} Hours (Performed {procedure.count} times)</div>
                             </div>
                           </div>
-
                       ))}
-                    
                     </div>
-
-
-                    {/* <div className="row-4">
-                      <div className="metric-2">
-                        <div className="title-11">Root Canal</div>
-
-                        <div className="data-2">120 mins</div>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
               </div>
@@ -425,7 +399,6 @@ const StaffDashboard = ({ user }) => {
           </div>
         </div>
         <div className="rectangle-4" />
-
       </div>
     </div >
   )
