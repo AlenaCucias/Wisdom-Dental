@@ -24,6 +24,7 @@ export const PatientDashboard = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null); // For rescheduling/canceling
   const [dentalHistory, setDentalHistory] = useState([]);
   const [paymentHistory, setPaymentHistory] = useState([]);
+  const [totalCost, setTotalCost] = useState(null);
 
   
   const [user, setUser] = useState(() => {
@@ -43,6 +44,24 @@ export const PatientDashboard = () => {
       setUser(userDetails); 
     } 
   }, []); 
+
+  useEffect(() => {
+    const fetchTotalCost = async () => {
+      const patientId = user?.Patient_ID;
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/patients/get_total_cost', {
+          params: { patient_id: patientId }, // Replace with the logged-in user's ID
+        });
+        if (response.status === 200) {
+          setTotalCost(response.data.total_cost || 0);
+          console.log("Total Cost Fetched:", response.data.total_cost);
+        }
+      } catch (error) {
+        console.error("Error fetching total cost:", error);
+      }
+    };
+    fetchTotalCost();
+  }, [user]);
 
   useEffect(() => {
     const fetchPaymentHistory = async () => {
@@ -465,7 +484,7 @@ export const PatientDashboard = () => {
                 <div className="metric">
                   <div className="title-6">Total Fees</div>
 
-                  <div className="data">$0.00</div>
+                  <div className="data">{totalCost !== null ? `$${totalCost.toFixed(2)}` : "Loading..."}</div>
                 </div>
               </div>
                 

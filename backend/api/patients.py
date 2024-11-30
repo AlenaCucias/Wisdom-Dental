@@ -176,8 +176,9 @@ def payment_history():
         return jsonify({"payments": total_data}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to fetch payment history: {str(e)}"}), 500
-
-def get_total_cost(user):
+    
+@patients_blueprint.route('/get_total_cost', methods=['GET'])
+def get_total_cost():
     """
     Calculate the total outstanding cost for a given user based on unpaid appointments.
 
@@ -187,9 +188,38 @@ def get_total_cost(user):
     Returns:
         float: The total outstanding cost for the user, summing the costs of appointments where the "Paid" status is "FALSE".
     """
-    data = payment_history(user)
-    total_cost = sum(row[2] for row in data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
-    return total_cost
+    patient_id = request.args.get("patient_id")
+    
+    if not patient_id:
+        return jsonify({"error": "Patient ID is required"}), 400
+    
+    try:
+        # Get all relevant sheets
+        appt_data = get_worksheet("Appointments").get_all_records()
+        treatment_data = get_worksheet("Treatment").get_all_records()
+        # Filter Appointments table to only those that match with the current user
+        filtered_rows = [ row for row in appt_data if str(row["Patient_ID"]) == patient_id]
+        treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
+        cost = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Cost")
+
+        cost = [float(c) if c is not None else 0.0 for c in cost]
+
+        # Format data in a list of tuples
+        total_data = [[date, treatment, cost, status]
+                    for date, treatment, cost, status in
+                    zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
+                    ]
+        
+        total_cost = sum(row[2] for row in total_data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
+        
+        return jsonify({"total_cost": total_cost}), 200
+    except Exception as e:
+        print(f"Error in get_total_cost: {e}")
+        return jsonify({"error": f"Failed to fetch total cost: {str(e)}"}), 500
+
+    #data = payment_history()
+    #total_cost = sum(row[2] for row in data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
+    #return total_cost
 
 def update_payments(user):
     """
