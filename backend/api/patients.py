@@ -114,11 +114,14 @@ def dental_history():
         staff_data = get_worksheet("Staff").get_all_records()
         treatment_data = get_worksheet("Treatment").get_all_records()
         # Filter Appointments table to only those that match with the current user
-        filtered_rows = [ row for row in appt_data if row["Patient_ID"] == patient_id]
+        filtered_rows = [ row for row in appt_data if str(row["Patient_ID"]) == patient_id]
 
         #testing
-        print(f"patient id: {patient_id}")
-        print(f"filtered rows: {filtered_rows}")
+        #print(f"patient id: {patient_id}")
+        #print(f"Patient ID type: {type(patient_id)}")  # Type of patient_id
+        #for row in appt_data:
+            #print(f"Row Patient_ID: {row['Patient_ID']}, Type: {type(row['Patient_ID'])}")
+        #print(f"filtered rows: {filtered_rows}")
 
 
         doctor_names = extract(staff_data, filtered_rows, "Doctor_ID", "Staff_ID", "Last_Name")
