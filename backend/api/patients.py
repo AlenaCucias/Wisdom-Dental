@@ -204,9 +204,7 @@ def update_payments(user):
 def get_available_appointments():
     """
     Get all available appointment slots with corresponding dates and times.
-    Each time slot allows 3 patients per dentist.
-    Returns:
-        JSON response: A list of dates and their available time slots.
+    Each time slot allows up to 3 patients across dentists.
     """
     try:
         sheet = get_worksheet("Appointments")
@@ -217,33 +215,36 @@ def get_available_appointments():
     available_slots = {}
     today = datetime.today().date().strftime("%m-%d-%Y")
 
-    # Collect available slots (No Patient_ID means available)
-    for row in data:
-        if not str(row["Patient_ID"]).strip():  # Check if the slot is free (no Patient_ID)
-            date, time = row["Date"], row["Time"]
-            if date > today:  # Only future dates
-                if date not in available_slots:
-                    available_slots[date] = {}
-                
-                # Ensure slots are only available if the max of 3 patients is not reached
-                available_slots[date].setdefault(time, 0)
-                available_slots[date][time] += 1
+    # Track total bookings for each date and time
+    time_slot_counts = {}
 
-    # Only keep slots that are available for booking (not exceeding 3 patients)
-    for date in list(available_slots.keys()):
-        available_slots[date] = {
-            time: available_slots[date][time] for time in available_slots[date] if available_slots[date][time] < 3
-        }
+    for row in data:
+        date, time = row["Date"], row["Time"]
+        if date > today:  # Only consider future dates
+            key = (date, time)
+
+            # Count how many rows have a Patient_ID for the same time slot
+            if key not in time_slot_counts:
+                time_slot_counts[key] = 0
+            if row["Patient_ID"]:
+                time_slot_counts[key] += 1
+
+    # Include slots with fewer than 3 patients
+    for (date, time), count in time_slot_counts.items():
+        if count < 3:  # Only include time slots with fewer than 3 bookings
+            if date not in available_slots:
+                available_slots[date] = []
+            available_slots[date].append(time)
 
     # Sort times for each date
     for date in available_slots:
-        available_slots[date] = sorted(available_slots[date].keys(), key=lambda t: datetime.strptime(t, "%I:%M %p"))
+        available_slots[date] = sorted(available_slots[date], key=lambda t: datetime.strptime(t, "%I:%M %p"))
 
     if available_slots:
         return jsonify({"available_slots": available_slots}), 200
     else:
         return jsonify({"message": "No available appointment slots at the moment."}), 404
-
+    
 @patients_blueprint.route('/book_appointment', methods=['POST'])
 def book_appointment():
     """
