@@ -479,19 +479,19 @@ export const PatientDashboard = () => {
                   <table style={{ width: "100%", textAlign: "center"}}>
                     <thead>
                       <tr>
-                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Date</th>
-                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Treatment</th>
-                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Cost</th>
-                        <th style={{ width: "33%", textAlign: "center", padding: "10px"}}>Status</th>
+                        <th style={{ width: "10%", textAlign: "center", padding: "10px"}}>Date</th>
+                        <th style={{ width: "30%", textAlign: "center", padding: "10px", paddingLeft: "60px"}}>Treatment</th>
+                        <th style={{ width: "20%", textAlign: "center", padding: "10px"}}>Cost</th>
+                        <th style={{ width: "10%", textAlign: "center", padding: "10px"}}>Status</th>
                       </tr>
                     </thead>
                     <tbody>
                     {paymentHistory.map((payments, index) => (
                       <tr key={index}>
                         <td style={{ padding: "10px"}}>{formatDate(payments[0])}</td>
-                        <td>{payments[1]}</td>
-                        <td>{payments[2]}</td>
-                        <td>{payments[3]}</td>
+                        <td style={{paddingLeft: "60px"}}> {payments[1]}</td>
+                        <td> ${Number(payments[2]).toFixed(2)}</td>
+                        <td> {payments[3] === "TRUE" ? "Paid" : "Not Paid"}</td>
                       </tr>
                     ))}
                     </tbody>
