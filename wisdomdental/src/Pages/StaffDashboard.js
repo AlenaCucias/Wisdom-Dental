@@ -16,7 +16,7 @@ const StaffDashboard = ({ user }) => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(null);
   const [performanceReviews, setPerformanceReviews] = useState([]);
-  const [averageTime, setAverageTime] = useState(0);
+  const [topProcedures, setTopProcedures] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -58,6 +58,27 @@ const StaffDashboard = ({ user }) => {
 
           const recentReviews = sortedData.slice(0, 2);
           setPerformanceReviews(recentReviews);
+
+          const procedureStats = sortedData.reduce((acc, { procedure, time}) => {
+            if(!acc[procedure]) {
+              acc[procedure] = { totalTime: 0, count: 0 };
+            }
+            acc[procedure].totalTime += time;
+            acc[procedure].count += 1;
+            return acc;
+          }, {});
+
+          const procedureArray = Object.keys(procedureStats).map(procedure => {
+            const { totalTime, count } = procedureStats[procedure];
+            const avgTime = totalTime / count;
+            return { procedure, avgTime, count };
+          });
+
+          const topThreeProcedures = procedureArray
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 3);
+
+          setTopProcedures(topThreeProcedures);
 
 
       } catch(error) {
@@ -152,17 +173,17 @@ const StaffDashboard = ({ user }) => {
             </div>
           </Col>
 
-          <div>
+          <div className='mt-3'>
             <div className="frame">
               <div className="overlap-group">
                 <div className="reviews">
 
                   <div className="container">
-                    <div className="title-2">Procedure Reviews</div>
+                    <div className="title-2 mt-2">Procedure Reviews</div>
                   </div>
 
                   <div className="list performance-reviews">
-                    <div className="row">
+                    <div className="row ms-3 mt-2">
                         {performanceReviews.map((review, index) => (
                           <div className="card my-auto">
                             <div key={index} className='review'>
@@ -179,7 +200,6 @@ const StaffDashboard = ({ user }) => {
                                   <FontAwesomeIcon key={starIndex} icon={faStar} style={{color: 'gold' }} className='mb-1'/>
                                 ))}
                               </div>
-                                {/* <FontAwesomeIcon icon={faStar} style={{color: 'gold'}} /> */}
                             </div>
                           </div>
                         ))}
@@ -375,29 +395,29 @@ const StaffDashboard = ({ user }) => {
                       <div className="title-10">Treatment Times</div>
                     </div>
                   </div>
+                  <div className="list-4 ">
+                    <div className="container-7 mx-auto">
 
-                  <div className="list-4">
-                    <div className="row-4">
-                      <div className="metric-2">
-                        <div className="title-11">Dental Cleaning</div>
+                      {topProcedures.map((procedure, index) => (
+                          <div key={index} className='mx-auto'> 
+                            <div className="metric-2 item-5 ps-1 ms-1">
+                              <div className="title-11"><strong>{procedure.procedure}</strong></div>
+                              <div className="data-2">{procedure.avgTime.toFixed(2)} Hours (Performed {procedure.count} times)</div>
+                            </div>
+                          </div>
 
-                        <div className="data-2">45 mins</div>
-                      </div>
-
-                      <div className="metric-2">
-                        <div className="title-11">Tooth Extraction</div>
-
-                        <div className="data-2">90 mins</div>
-                      </div>
+                      ))}
+                    
                     </div>
 
-                    <div className="row-4">
+
+                    {/* <div className="row-4">
                       <div className="metric-2">
                         <div className="title-11">Root Canal</div>
 
                         <div className="data-2">120 mins</div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
