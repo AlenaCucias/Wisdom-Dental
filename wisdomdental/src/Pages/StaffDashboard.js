@@ -113,14 +113,16 @@ const StaffDashboard = ({ user }) => {
     {
       hours: values.hours,
       procedure: values.procedure,
-      performance: values.performance
+      performance: values.performance,
+      apptTime: values.apptTime, 
     };
     const hours = values.hours;
     const procedure = values.procedure;
     const performance = values.performance;
+    const apptTime = values.apptTime;
     console.log(timesheet);
     try {
-      const response = await axios.post('http://127.0.0.1:5000/staff/update_timesheet', { user, hours, procedure, performance });
+      const response = await axios.post('http://127.0.0.1:5000/staff/update_timesheet', { user, hours, procedure, performance, apptTime });
       console.log(response);
       setPay(response.data.pay);
     } catch (error) {
@@ -305,6 +307,7 @@ const StaffDashboard = ({ user }) => {
                             hours: '',
                             procedure: '',
                             performance: '',
+                            apptTime: '',
                           }}
                           onSubmit={handleSubmit}
                           validate={validatePayroll}
@@ -313,11 +316,11 @@ const StaffDashboard = ({ user }) => {
                             <Row className='mb-2'>
                               <Col>
                                 <FormGroup>
-                                  <Label htmlFor='hours'>Input Time (hours:minutes)</Label>
+                                  <Label htmlFor='hours'>Input Time (HH:MM)</Label>
                                   <Field
                                     id="hours"
                                     name="hours"
-                                    placeholder="Enter Hours:Minutes (hh:mm)"
+                                    placeholder="Enter Hours:Minutes (HH:MM)"
                                     className="form-control"
                                   />
                                   <ErrorMessage name='hours'>
@@ -351,6 +354,20 @@ const StaffDashboard = ({ user }) => {
                                     className='form-control'
                                   />
                                   <ErrorMessage name='performance'>
+                                    {(msg) => <p className='text-danger text-start'>{msg}</p>}
+                                  </ErrorMessage>
+                                </FormGroup>
+                              </Col>
+                              <Col>
+                                <FormGroup>
+                                  <Label htmlFor='apptTime'>Input Appointment Time (HH:MM)</Label>
+                                  <Field
+                                    id='apptTime'
+                                    name='apptTime'
+                                    placeholder='Enter Appointment Time (HH:MM)'
+                                    className='form-control'
+                                  />
+                                  <ErrorMessage name='apptTime'>
                                     {(msg) => <p className='text-danger text-start'>{msg}</p>}
                                   </ErrorMessage>
                                 </FormGroup>

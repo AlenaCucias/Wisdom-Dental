@@ -90,6 +90,7 @@ def update_timesheet():
     hours = data.get('hours')
     procedure = data.get('procedure')
     performance = data.get('performance')
+    apptTime = data.get('apptTime')
 
     if not user or not hours or not procedure or performance is None:
         return jsonify({"error": "Invalid input. All fields are required."}), 400
@@ -98,6 +99,10 @@ def update_timesheet():
     today = datetime.today().date().strftime("%m-%d-%Y")
     performance_data = [user["Staff_ID"], hours, procedure, today, performance]
     append_row("Staff Performance", performance_data)
+
+    #Add time sheet data to timesheet sheet
+    timesheet_data = [user["Staff_ID"], hours, procedure, performance, apptTime, today, False]
+    append_row("Timesheet", timesheet_data)
 
     # Gather necesary data
     sheet = get_worksheet("Staff")
