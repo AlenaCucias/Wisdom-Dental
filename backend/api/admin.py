@@ -1,5 +1,5 @@
-from common import get_worksheet
-from patients import dental_history
+from .common import get_worksheet, append_row
+from .patients import dental_history
 from datetime import datetime
 from collections import defaultdict
 from flask import Blueprint, jsonify, request
@@ -100,8 +100,8 @@ def view_timesheet():
     total_data = [[row["Timesheet_ID"], row["Date"], row["Appt_Time"], row["Procedure"], row["Time"]] for row in filtered_rows]
     return total_data
 
-@admin_blueprint.route('/update_time_and_pay')
-def update_time_and_pay():
+@admin_blueprint.route('/update_time', methods=['POST'])
+def update_time():
     """
         resolves timesheet, adds timesheet data to payroll, and resets hours worked and total pay in staff worksheet
 
@@ -110,22 +110,101 @@ def update_time_and_pay():
     """
     data = request.json
     timesheet_ids = data.get('timesheetIDs', [])
+    
     staff_data = get_worksheet("Staff").get_all_records()
     timesheet_data = get_worksheet('Timesheet').get_all_records()
-    amount_owed = 0
-    staffID = ''
+
+    today = datetime.today().date()
+    
+    total_hours_to_remove = 0
+    total_amount_owed = 0
+    staff_id = None
+
     for timesheet_id in timesheet_ids:
-        filtered_rows = [ row for row in timesheet_data if row["Timesheet_ID"] == timesheet_id]
-        payroll_data = [[row["Staff_ID"], row["Date"]] for row in filtered_rows]
-        hours = [[row["Time"]] for row in filtered_rows]
-        staffID = [[row["Staff_ID"]] for row in filtered_rows]
-        filtered_staff = [ row for row in staff_data if row["Staff_ID"] == staffID]
-        wage = [[row["Hourly_Pay"]] for row in filtered_staff]
-        amountOwed += hours * wage
-        if filtered_rows is not None:
-            for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-                if row["Timesheet_ID"] == timesheet_id:
-                    get_worksheet("Timesheet").update(f"H{i}", [True])
+        filtered_rows = [row for row in timesheet_data if row["Timesheet_ID"] == timesheet_id]
+        
+        for row in filtered_rows:
+            staff_id = row["Staff_ID"]
+            hours = float(row["Time"])
+            total_hours_to_remove += hours
+            
+            # Get staff information
+            staff_record = next((s for s in staff_data if s["Staff_ID"] == staff_id), None)
+            if staff_record:
+                wage = float(staff_record["Hourly_Pay"])
+                total_amount_owed += hours * wage
+                
+                # Mark the timesheet as resolved
+                row_index = timesheet_data.index(row) + 2
+                get_worksheet("Timesheet").update(f"H{row_index}", [[True]])
+
+    if staff_id:
+        # Update the staff record
+        staff_row_index = next((i for i, s in enumerate(staff_data, start=2) if s["Staff_ID"] == staff_id), None)
+        if staff_row_index:
+            current_hours = float(staff_record["Hours_Worked"])
+            current_pay = float(staff_record["Total_Pay"])
+            
+            # Update the Staff worksheet with new hours and pay
+            get_worksheet("Staff").update(f"H{staff_row_index}", [[current_hours - total_hours_to_remove]])
+            get_worksheet("Staff").update(f"J{staff_row_index}", [[current_pay - total_amount_owed]])
+
+    total_data = [staff_id, today, total_amount_owed ]
+    
+    return total_data
+
+@admin_blueprint.route('/update_performance', methods=['POST'])
+def update_performance():
+    """
+        add performance data from timesheet to Staff Performance Sheet
+
+        Args:        
+          user_id (str or int): The ID of the staff member whose payroll data is to be retrieved.
+
+    """
+    data = request.json
+    user_id = data.get('userID')
+    timesheet_data = get_worksheet("Timesheet").get_all_records()
+    filtered_rows = [ row for row in timesheet_data if row["Resolved"] == True and row["Send_Performance"] == False]
+    for i in filtered_rows:    
+        next_index = len(get_worksheet("Staff Performance").get_all_records()) + 1
+        time = i["H"] 
+        procedure = i["D"]
+        date = i["G"]
+        performance = i["E"]
+        performance_data = [next_index, user_id, time, procedure, date, performance]
+        append_row("Staff Performance", performance_data)
+        row_index = timesheet_data.index(i) + 2
+        get_worksheet("Timesheet").update(f"I{row_index}", [[True]])
+
+    return jsonify({"message": "Performance updated successfully!"}), 200
+
+
+@admin_blueprint.route('/update_payroll', methods=["POST"])
+def update_payroll():
+    """
+
+    updates payroll sheet with admin  validate timesheet information
+
+    Args:
+        user (object): passes staffID date and amount owed
+    """
+    data = request.json
+    staffID = data.get('staffID')
+    date = data.get("date")
+    amount = data.get('paid')
+
+    payroll_data = get_worksheet("Payroll").get_all_records()
+
+    next_index = len(payroll_data) + 1
+
+    payStub = [next_index, staffID, date, amount]
+    append_row("Payroll", payStub)
+    
+    return jsonify({"message": "payroll updated successfully!"}), 200
+
+
+
 
 @admin_blueprint.route('/view_staff_performance', methods=['GET'])
 def view_staff_performance():

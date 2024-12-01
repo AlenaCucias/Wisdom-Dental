@@ -16,6 +16,10 @@ export const AdminPage = () => {
   const [staffPerformance, setStaffPerformance] = useState([]);
   const [staffList, setStaffList] = useState([]);
   const [selectedStaffName, setSelectedStaffName] = useState("");
+  const [staffPerfID, setStaffPerfID] = useState(null);
+  const [staffPayID, setStaffPayID] = useState(null);
+  const [payDate, setPayDate] = useState(null);
+  const [payAmount, setPayAmount] = useState(null);
 
   const toggleModal = (modalName) => {
     setModal((prevState) => ({
@@ -94,17 +98,48 @@ export const AdminPage = () => {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const handleTimesheet = async () => {
       try{
-        const response = await axios.post("http:\\127.0.0.1:5000/admin/update_time_and_pay", {timesheetIDs: selectedTimesheets,
-        });
-        console.log(response);
+        const response = await axios.post("http://127.0.0.1:5000/admin/update_time", {timesheetIDs: selectedTimesheets,});
+        const timeInfo = response.data;
+        setStaffPerfID(timeInfo.staff_id);
+        setStaffPayID(timeInfo.staff_id);
+        setPayDate(timeInfo.today);
+        setPayAmount(timeInfo.total_amount_owed);
       } catch(error) {
         console.error("error updating timesheet: ", error);
       }
     };
-    handleTimesheet();
+    const handlePerformance = async (staffPerfID) => {
+      try {  
+        const response = await axios.post("http://127.0.0.1:5000/admin/update_performance", { staffPerfID })
+        console.log(response);
+      } catch(error) {
+        console.log("error setting performance: ", error);
+      }
+    };
+    const handlePayroll = async (staffPayID, payDate, payAmount) => {
+      const paydayInfo = {
+        staffID: staffPayID,
+        date: payDate,
+        paid: payAmount
+      }
+      try{
+        const response = await axios.post("http://127.0.0.1:5000/admin/update_payroll", paydayInfo)
+        console.log(response);
+      } catch(error) {
+        console.log("error updating payroll", error);
+      }
+    }
+    await handleTimesheet();
+    await handlePerformance(staffPerfID);
+    await handlePayroll(staffPayID, payDate, payAmount)
+    setModal((prevModal) => ({
+      ...prevModal,
+      payrollTimesheet: false,
+    }));
+
   }
   const fetchStaffPerformance = async (staffID, staffName) => {
     setSelectedStaffName(staffName); // Set the staff name for display
@@ -457,7 +492,7 @@ export const AdminPage = () => {
               </Row>
               <Row>
                 {payrollInfo.map((pay, index) => (
-                  <Row className="mb-1">
+                  <Row className="mb-1" key={pay}>
                     <Card className="text-bg-secondary">
                       <CardBody>
                         <Row>
@@ -480,12 +515,16 @@ export const AdminPage = () => {
                 <Col className="px-1 text-center">Procedure</Col>
                 <Col className="px-1 text-center">Hours</Col>
               </Row>
-                {timesheetDisplay.map((timesheet, key) => (
+                {timesheetDisplay.map((timesheet, index) => (
                   <Row className="ms-2">
                     <Row
                       key={timesheet.timesheetID}
                       className={`mb-1 text-bg-light my-1 ${selectedTimesheets.includes(timesheet.timesheetID) ? 'selected' : ''}`}
-                      onClick={() => toggleTimesheetSelection(timesheet.timesheetID)}
+                      onClick={(e) => {
+                        toggleTimesheetSelection(timesheet.timesheetID)
+                        const currentBorder = e.currentTarget.style.border;
+                        e.currentTarget.style.border = currentBorder ? '' : '2px solid black';
+                      }}
                     >
                       <Col className="px-1 text-center"> 
                         {timesheet.timesheetID}
