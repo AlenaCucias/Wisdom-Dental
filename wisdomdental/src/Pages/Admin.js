@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, ModalHeader, ModalBody, Button, Row, Col, CardBody, Card } from "reactstrap";
 
 export const AdminPage = () => {
@@ -13,7 +13,9 @@ export const AdminPage = () => {
   const [payrollInfo, setPayrollInfo] = useState([]);
   const [timesheetDisplay, setTimeSheetDisplay] = useState([]);
   const [selectedTimesheets, setSelectedTimesheets] = useState([]); 
-  
+  const [staffPerformance, setStaffPerformance] = useState([]);
+  const [staffList, setStaffList] = useState([]);
+  const [selectedStaffName, setSelectedStaffName] = useState("");
 
   const toggleModal = (modalName) => {
     setModal((prevState) => ({
@@ -25,6 +27,20 @@ export const AdminPage = () => {
   const [user, setUser] = useState(() => {
     return JSON.parse(sessionStorage.getItem('user')) || null;
   });
+  useEffect(() => {
+    const fetchStaffList = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/admin/view_staff_list");
+        if (response.status === 200) {
+          setStaffList(response.data.staff_list || []);
+        }
+      } catch (error) {
+        console.error("Error fetching staff list:", error);
+      }
+    };
+
+    fetchStaffList();
+  }, []);
 
   const getPayroll = async (userID) => {
     toggleModal('payrollTimesheet');
@@ -90,7 +106,20 @@ export const AdminPage = () => {
     };
     handleTimesheet();
   }
-
+  const fetchStaffPerformance = async (staffID, staffName) => {
+    setSelectedStaffName(staffName); // Set the staff name for display
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/admin/view_staff_performance", {
+        params: { staff_id: staffID },  // Pass staff_id as a query parameter
+      });
+      if (response.status === 200) {
+        setStaffPerformance(response.data.staff_performance || []);
+      }
+    } catch (error) {
+      console.error("Error fetching staff performance:", error);
+    }
+  };
+  
   return (
     <div className="admin-page">
       <div className="text-buttons-wrapper">
@@ -485,9 +514,61 @@ export const AdminPage = () => {
       </Modal>
 
       <Modal isOpen={modal.staffPerformance} toggle={() => toggleModal("staffPerformance")}>
-        <ModalHeader toggle={() => toggleModal("staffPerformance")}>View Staff Performance</ModalHeader>
+        <ModalHeader toggle={() => toggleModal("staffPerformance")}>
+          {selectedStaffName ? `Performance of ${selectedStaffName}` : "Staff List"}
+        </ModalHeader>
         <ModalBody>
-          <p>Display Staff Performance here...</p>
+          {/* Show Staff List if no staff is selected */}
+          {!selectedStaffName ? (
+            <Row className="mb-2">
+              {staffList.map((staff) => (
+                <Col key={staff.Staff_ID} className="mb-2">
+                  <Button
+                    className="btn shadow rounded"
+                    onClick={() => fetchStaffPerformance(staff.Staff_ID, staff.Name)}
+                  >
+                    {staff.Name}
+                  </Button>
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            <>
+              {/* Show Performance Data for the selected staff */}
+              <Button
+                className="btn btn-secondary mb-3"
+                onClick={() => setSelectedStaffName(null)} // Back to staff list
+              >
+                Back to Staff List
+              </Button>
+              {staffPerformance.length > 0 ? (
+                staffPerformance.map((performance, index) => (
+                  <Row key={index} className="mb-2">
+                    <Card className="text-bg-secondary">
+                      <CardBody>
+                        <Row>
+                          <Col className="text-start">
+                            <strong>Date:</strong> {performance.Date}
+                          </Col>
+                          <Col className="text-center">
+                            <strong>Time:</strong> {performance.Time}
+                          </Col>
+                          <Col className="text-center">
+                            <strong>Procedure:</strong> {performance.Procedure}
+                          </Col>
+                          <Col className="text-end">
+                            <strong>Score:</strong> {performance.Performance}
+                          </Col>
+                        </Row>
+                      </CardBody>
+                    </Card>
+                  </Row>
+                ))
+              ) : (
+                <p>No performance data available for this staff member.</p>
+              )}
+            </>
+          )}
         </ModalBody>
       </Modal>
     </div>

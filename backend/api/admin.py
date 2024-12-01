@@ -1,4 +1,3 @@
-# admin.py
 from common import get_worksheet
 from patients import dental_history
 from datetime import datetime
@@ -7,13 +6,27 @@ from flask import Blueprint, jsonify, request
 
 admin_blueprint = Blueprint('admin', __name__)
 
+@admin_blueprint.route('/view_staff_list', methods=['GET'])
+def view_staff_list():
+    try:
+        staff_data = get_worksheet("Staff").get_all_records()
+        staff_list = [
+            {"Staff_ID": row["Staff_ID"], "Name": f"{row['First_Name']} {row['Last_Name']}"}
+            for row in staff_data
+        ]
+        return jsonify({"staff_list": staff_list}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch staff list: {str(e)}"}), 500
+    
+
 def get_full_names(sheet_name, id_type):
     """
     Extracts user IDs, first and last names from a sheet, combines the names,
     and returns a list of tuples with user IDs and full names.
 
     Args:
-        sheet: The worksheet object to extract data from.
+        sheet_name: The name of the sheet to extract data from.
+        id_type: The ID field to be used (e.g., "Staff_ID" or "Patient_ID").
 
     Returns:
         list: A list of tuples, where each tuple contains:
@@ -22,7 +35,7 @@ def get_full_names(sheet_name, id_type):
     """
     data = get_worksheet(sheet_name).get_all_records()
     user_data = [
-        (row[id_type], f"{row['First_Name']} {row['Last_Name']}") # Concatenate first and last name
+        (row[id_type], f"{row['First_Name']} {row['Last_Name']}")  # Concatenate first and last name
         for row in data if id_type in row and "First_Name" in row and "Last_Name" in row
     ]
     return user_data
@@ -114,28 +127,29 @@ def update_time_and_pay():
                 if row["Timesheet_ID"] == timesheet_id:
                     get_worksheet("Timesheet").update(f"H{i}", [True])
 
+@admin_blueprint.route('/view_staff_performance', methods=['GET'])
+def view_staff_performance():
+    try:
+        staff_id = request.args.get("staff_id")  # Get the staff_id from query parameters
+        performance_data = get_worksheet("Staff Performance").get_all_records()  # Fetch performance data
 
+        # Filter data based on the staff ID
+        filtered_data = [
+            {
+                "Performance_ID": record["Performance_ID"],
+                "Date": record["Date"],
+                "Time": record["Time"],
+                "Procedure": record["Procedure"],
+                "Performance": record["Performance"],
+            }
+            for record in performance_data if record["Staff_ID"] == int(staff_id)  # Ensure Staff_ID is compared as integer
+        ]
 
-def view_staff_performance(user_id):
-    """
-    Retrieves performance data for a specific staff member.
+        return jsonify({"staff_performance": filtered_data}), 200
 
-    Args:
-        user_id (str or int): The ID of the staff member whose performance data is to be retrieved.
-
-    Returns:
-        list: A list of performance history, each containing:
-              - Date
-              - Procedure
-              - Time spent on the procedure
-              - Performance (1-5 inclusive)
-    """
-    performance_data = get_worksheet("Staff Performance").get_all_records()
-    # Get only records that are associated with user
-    filtered_rows = [ row for row in performance_data if row["Staff_ID"] == user_id]
-    total_data = [[row["Date"], row["Procedure"], row["Time"], row["Performance"]] for row in filtered_rows]
-    return total_data
-
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch staff performance: {str(e)}"}), 500
+    
 
 def view_feedback():
     """
