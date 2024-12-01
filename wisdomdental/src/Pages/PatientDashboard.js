@@ -25,6 +25,7 @@ export const PatientDashboard = () => {
   const [dentalHistory, setDentalHistory] = useState([]);
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [totalCost, setTotalCost] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState('');
 
   
   const [user, setUser] = useState(() => {
@@ -44,6 +45,21 @@ export const PatientDashboard = () => {
       setUser(userDetails); 
     } 
   }, []); 
+
+  const updatePayments = async () => {
+    const patientId = user?.Patient_ID;
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/patients/update_payments', {
+        params: { patient_id: patientId }, // Replace with the logged-in user's ID
+      });
+      if (response.status === 200) {
+        setPaymentStatus(response.data.message || 'Payments Updated');
+        console.log("Payments updated:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating payments:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchTotalCost = async () => {

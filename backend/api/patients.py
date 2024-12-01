@@ -221,7 +221,8 @@ def get_total_cost():
     #total_cost = sum(row[2] for row in data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
     #return total_cost
 
-def update_payments(user):
+@patients_blueprint.route('/update_payments', methods=['GET'])
+def update_payments():
     """
     Updates payment status for a user and appends the payment details to the Payments sheet.
 
@@ -236,18 +237,49 @@ def update_payments(user):
     # Get the worksheet and all records
     sheet = get_worksheet("Appointments")
     data = sheet.get_all_records()
-    payment_amount = get_total_cost(user)
-    today = datetime.today().date().strftime("%m-%d-%Y")
 
-    # Loop through all rows to find an available slot for the specified date and time
-    for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
-        if row["Patient_ID"] == user["Patient_ID"] and row["Paid"] == "FALSE":
-            # Book the appointment
-            appointment_id = row["Appointment_ID"]
-            sheet.update(f"H{i}", [[True]])  # Paid is in column H
-    payment_data = [user["Patient_ID"], appointment_id, payment_amount, today]
-    append_row("Payments", payment_data)
-    return f"Payments updated"
+    patient_id = request.args.get("patient_id")
+    
+    if not patient_id:
+        return jsonify({"error": "Patient ID is required"}), 400
+    
+    try:
+        # Get all relevant sheets
+        appt_data = get_worksheet("Appointments").get_all_records()
+        treatment_data = get_worksheet("Treatment").get_all_records()
+        # Filter Appointments table to only those that match with the current user
+        filtered_rows = [ row for row in appt_data if str(row["Patient_ID"]) == patient_id]
+        treatment_names = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
+        cost = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Cost")
+
+        cost = [float(c) if c is not None else 0.0 for c in cost]
+
+        # Format data in a list of tuples
+        total_data = [[date, treatment, cost, status]
+                    for date, treatment, cost, status in
+                    zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
+                    ]
+        
+        payment_amount = sum(row[2] for row in total_data if row[3] == "FALSE") 
+
+        if payment_amount == 0:
+            return jsonify({"error": "No outstanding payment to update."}), 400
+
+        today = datetime.today().date().strftime("%m-%d-%Y")
+
+        # Loop through all rows to find an available slot for the specified date and time
+        for i, row in enumerate(data, start=2):  # Start=2 because headers are in the first row
+            if str(row["Patient_ID"]) == patient_id and row["Paid"] == "FALSE":
+                # Book the appointment
+                appointment_id = row["Appointment_ID"]
+                sheet.update(f"H{i}", [[True]])  # Paid is in column H
+        payment_data = [patient_id, appointment_id, payment_amount, today]
+        append_row("Payments", payment_data)
+
+        return jsonify({"message":f"Payments updated"}), 200
+    
+    except Exception as e:
+        return jsonify({"error": f"Failed to update payments: {str(e)}"}), 500
 
 # ADDED
 @patients_blueprint.route('/get_available_appointments', methods=['GET'])
