@@ -61,41 +61,63 @@ export const PatientDashboard = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchTotalCost = async () => {
-      const patientId = user?.Patient_ID;
-      try {
-        const response = await axios.get('http://127.0.0.1:5000/patients/get_total_cost', {
-          params: { patient_id: patientId }, // Replace with the logged-in user's ID
-        });
-        if (response.status === 200) {
-          setTotalCost(response.data.total_cost || 0);
-          console.log("Total Cost Fetched:", response.data.total_cost);
-        }
-      } catch (error) {
-        console.error("Error fetching total cost:", error);
+  const fetchTotalCost = async () => {
+    const patientId = user?.Patient_ID;
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/patients/get_total_cost", {
+        params: { patient_id: patientId },
+      });
+      if (response.status === 200) {
+        setTotalCost(response.data.total_cost || 0);
+        console.log("Total Cost Fetched:", response.data.total_cost);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching total cost:", error);
+    }
+  };
+
+  
+  const fetchPaymentHistory = async () => {
+    const patientId = user?.Patient_ID;
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/patients/get_payment_history", {
+        params: { patient_id: patientId },
+      });
+      if (response.status === 200) {
+        setPaymentHistory(response.data.payments || []);
+        console.log("Payment History Fetched:", response.data.payments);
+      }
+    } catch (error) {
+      console.error("Error fetching payment history:", error);
+    }
+  };
+  useEffect(() => {
+    fetchPaymentHistory();
     fetchTotalCost();
   }, [user]);
 
-  useEffect(() => {
-    const fetchPaymentHistory = async () => {
-      const patientId = user?.Patient_ID;
-      try {
-        const response = await axios.get('http://127.0.0.1:5000/patients/get_payment_history', {
-          params: { patient_id: patientId }, // Replace with the logged-in user's ID
-        });
-        if (response.status === 200) {
-          setPaymentHistory(response.data.payments || []);
-          console.log("Payment History Fetched:", response.data.payments);
-        }
-      } catch (error) {
-        console.error("Error fetching payment history:", error);
-      }
+  const handlePaymentSubmit = async (values) => {
+    const paymentForm = {
+      cardNumber: values.cardNumber,
+      expirationDate: values.expirationDate,
+      cvv: values.cvv,
+      cardName: values.cardName,
     };
-    fetchPaymentHistory();
-  }, []);
+
+    console.log("Payment Details Submitted:", paymentForm);
+
+    try {
+      await updatePayments(); // Update payment status
+      setMakePaymentModalOpen(false);
+      setSuccessfulPaymentModalOpen(true);
+
+      // Fetch updated data
+      await fetchPaymentHistory();
+      await fetchTotalCost();
+    } catch (error) {
+      console.error("Error processing payment:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchDentalHistory = async () => {
@@ -279,6 +301,7 @@ export const PatientDashboard = () => {
         console.error("There was an error rescheduling the appointment:", error);
       });
   };
+
 
   return (
     <div className="patient-dashboard">
@@ -604,14 +627,15 @@ export const PatientDashboard = () => {
             <Modal isOpen={makePaymentModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
               <ModalHeader toggle={() => setMakePaymentModalOpen(false)}>Make Payment</ModalHeader>
               <ModalBody>
-                  <Formik 
-                    initialValues={{
-                      cardNumber: '',
-                      expirationDate: '',
-                      cvv: '',
-                      cardName: '',
-                    }}
-                    onSubmit={handleSubmit}>
+                  <Formik
+    initialValues={{
+    cardNumber: '',
+    expirationDate: '',
+    cvv: '',
+    cardName: '',
+  }}
+  onSubmit={handlePaymentSubmit}
+>
                       <Form>
                         <Col className='mb-4'>
                           <Row>
@@ -671,13 +695,13 @@ export const PatientDashboard = () => {
               </ModalBody>
             </Modal>
 
-            <Modal isOpen={successfulPaymentModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
-              <ModalHeader toggle={() => setSuccessfulPaymentModalOpen(false)}>Payment Confirmation</ModalHeader>
-              <ModalBody>
-                Your transaction has been successfully processed
-              </ModalBody>
-            </Modal>
-
+            <Modal isOpen={successfulPaymentModalOpen} className="modal-dialog modal-dialog-centered modal-md">
+  <ModalHeader toggle={() => setSuccessfulPaymentModalOpen(false)}>Payment Confirmation</ModalHeader>
+  <ModalBody>
+    <p>Your transaction has been successfully processed.</p>
+    <p>Thank you for your payment!</p>
+  </ModalBody>
+</Modal>
           </div>
         </div>
       </div>
