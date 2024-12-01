@@ -311,28 +311,34 @@ export const PatientDashboard = () => {
             <div className="text-wrapper">Patient Dashboard</div>
 
             <p className="description">
-              Welcome back {user?.First_Name}! View and manage your dental information here.
+              Welcome back, {user?.First_Name}! View and manage your dental information here.
             </p>
 
             <div className="overlap">
-            <p className="email-johndoe-gmail">
-  <span className="span">Email: </span>
-  <span className="text-wrapper-1">{user?.Email || 'N/A'}</span>
-  <br />
-  <br />
-  <span className="span">Phone Number: </span>
-  <span className="text-wrapper-6">{user?.Phone_Number || 'N/A'}</span>
-</p>
 
-<div className="group-wrapper">
-  <div className="group-2">
-    <div className="label-normal">
-      <div className="label-text">Patient</div>
-    </div>
-    <div className="text-wrapper-2">{user?.First_Name || 'N/A'}{' '}{user?.Last_Name || 'N/A'}</div>
-                  <div className="avatar" />
+            <div className="group-wrapper">
+                <div className="group-2">
+                  <div className="avatar-container">
+                    <div className="avatar" />
+                  </div>
+                  <div className="text-wrapper-2">{user?.First_Name || 'N/A'}{' '}{user?.Last_Name || 'N/A'}</div>
+                  <div className="label-normal">
+                    <div className="label-text">Patient</div>
+                  </div>
                 </div>
-              </div>
+            </div>
+
+            <p className="email-johndoe-gmail">
+                <span className="span">Email: </span>
+                <span className="text-wrapper-1">{user?.Email || 'N/A'}</span>
+                <br />
+                <br />
+                <span className="span">Phone Number: </span>
+                <br />
+                <span className="text-wrapper-6">{user?.Phone_Number || 'N/A'}</span>
+              </p>
+
+
             </div>
 
             <div className="overlap-2">
