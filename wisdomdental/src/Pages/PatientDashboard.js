@@ -567,7 +567,8 @@ export const PatientDashboard = () => {
             </Modal>
 
             <button className="btn shadow rounded overlap-wrapper"
-              onClick={() => setViewDentalHistroyModalOpen(true)}>
+              onClick={() => setViewDentalHistroyModalOpen(true)}
+              style={{top: "600px"}}>
                 <div className="text-wrapper-4">View Dental History</div>
             </button>
 
@@ -600,7 +601,9 @@ export const PatientDashboard = () => {
             </Modal>
 
             <button className="btn shadow rounded overlap-group-4"
-              onClick={() => setViewXrayModalOpen(true)}>
+              onClick={() => setViewXrayModalOpen(true)}
+              style={{top: "-450px"}}
+              >
               <div className="text-wrapper-9">View X-Rays</div>
             </button>
 
@@ -612,7 +615,8 @@ export const PatientDashboard = () => {
             </Modal>
 
             <button className="btn shadow rounded overlap-group-3"
-              onClick={() => setViewTreatmentPlanModalOpen(true)}>
+              onClick={() => setViewTreatmentPlanModalOpen(true)}
+              style={{top: "-437px"}}>
                 <div className="text-wrapper-5">View Treatment Plan</div>
             </button>
 

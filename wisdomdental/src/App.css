@@ -2448,11 +2448,12 @@ button:hover {
   flex-direction: row;
   justify-content: center;
   width: 100%;
+  overflow: hidden;
 }
 
 .patient-dashboard .div {
   background-color: #ffffff;
-  height: 1246px;
+  height: 1100px;
   /* overflow: hidden; */
   /* position: relative; */
   width: 1366px;
@@ -3032,6 +3033,10 @@ button:hover {
   left: 0 !important;
   position: absolute !important;
   top: 0 !important;
+}
+
+.patient-dashboard .btn shadow rounded overlap-wrapper {
+  top: -200px;
 }
 
 /* Patient Dashboard End */
