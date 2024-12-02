@@ -1,3 +1,4 @@
+from user import User
 from common import get_worksheet, append_row
 from patients import dental_history
 from datetime import datetime

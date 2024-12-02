@@ -1,4 +1,5 @@
 # staff.py
+from user import User
 from common import get_worksheet, extract, append_row
 from datetime import datetime
 from collections import defaultdict

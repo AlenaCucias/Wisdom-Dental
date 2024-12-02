@@ -1,4 +1,5 @@
 # patients.py
+from user import User
 from flask import  Blueprint, Flask, request, jsonify
 from common import get_worksheet, hash_password, append_row, extract
 from notification import appointment_confirmation
