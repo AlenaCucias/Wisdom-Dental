@@ -26,7 +26,9 @@ export const PatientDashboard = () => {
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [totalCost, setTotalCost] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('');
-
+  const [treatments, setTreatments] = useState([]);
+  const [treatmentModalOpen, setTreatmentModalOpen] = useState(false);
+  const [selectedTreatment, setSelectedTreatment] = useState({ id: null, name: null });
   
   const [user, setUser] = useState(() => {
     return JSON.parse(sessionStorage.getItem('user')) || null;
@@ -178,6 +180,19 @@ export const PatientDashboard = () => {
       console.error("Error fetching available appointments:", error);
     }
   };
+
+  const fetchTreatments = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/patients/get_treatments");
+      if (response.status === 200) {
+        setTreatments(response.data.treatments || []);
+      } else {
+        console.error("Failed to fetch treatments:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching treatments:", error);
+    }
+  };  
  
   const switchToReason = () => {
     setScheduleAppointmentModalOpen(false);
@@ -205,8 +220,8 @@ export const PatientDashboard = () => {
   const handleTimeSlotClick = (date, time) => {
     setSelectedDate(date);
     setSelectedTime(time);
-    setScheduleAppointmentModalOpen(false); // Close the time slots modal
-    setReasonModalOpen(true); // Open reason input modal
+    fetchTreatments(); // Fetch treatments after selecting time
+    setTreatmentModalOpen(true); // Open the treatment modal
   };
 
   const handleSubmitReason = () => {
@@ -219,6 +234,7 @@ export const PatientDashboard = () => {
       patient_id: user['Patient_ID'],
       date: selectedDate,
       time: selectedTime,
+      treatment: selectedTreatment.id,
       notes: reason,
     };
 
@@ -227,6 +243,7 @@ export const PatientDashboard = () => {
       .then((response) => {
         if (response.data.success) {
           alert(response.data.message);
+          setSelectedTreatment({ id: null, name: null });
           setReason('');
           fetchUpcomingAppointments();
           fetchAvailableAppointments();  // Refresh available slots
@@ -439,7 +456,7 @@ export const PatientDashboard = () => {
                       <p>No uncoming appointments at the moment</p>
                     ) : (
                     <div className="row">
-                      {sortedAppointments.map((appointment, index) => (
+                      {sortedAppointments.slice(0,2).map((appointment, index) => (
                       <div className="item" key={index}>
                         <div className="frame-2">
                           <p className="p">
@@ -492,10 +509,42 @@ export const PatientDashboard = () => {
         </ModalBody>
       </Modal>
 
+      <Modal isOpen={treatmentModalOpen} className="modal-dialog modal-dialog-centered modal-lg">
+  <ModalHeader toggle={() => setTreatmentModalOpen(false)}>Select a Treatment</ModalHeader>
+  <ModalBody>
+    {treatments.length > 0 ? (
+      <ul style={{ listStyleType: "none", padding: 0 }}>
+        {treatments.map((treatment) => (
+          <li key={treatment.id} style={{ marginBottom: "20px" }}>
+            <div>
+              <strong>{treatment.name}</strong>
+              <button
+                className="btn shadow rounded primary"
+                onClick={() => {
+                  setSelectedTreatment({ id: treatment.id, name: treatment.name }); // Store ID and name
+                  setTreatmentModalOpen(false); // Close treatment modal
+                  setReasonModalOpen(true); // Open reason textbox modal
+                }}
+              >
+                Select
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No treatments available.</p>
+    )}
+  </ModalBody>
+</Modal> 
+
       <Modal isOpen={reasonModalOpen} className="modal-dialog modal-dialog-centered modal-md">
         <ModalHeader toggle={() => setReasonModalOpen(false)}>Provide a Reason</ModalHeader>
         <ModalBody>
           <Row>
+            <p>
+              Selected Treatment: <strong>{selectedTreatment.name}</strong>
+            </p>
             <Label htmlFor="reason" style={{ display: 'block', textAlign: 'center', width: '100%' }}>
               Provide a brief description to help the medical staff prepare for your appointment
             </Label>

@@ -343,6 +343,7 @@ def book_appointment():
         patient_id = data.get("patient_id")
         date = data.get("date")
         time = data.get("time")
+        treatment = data.get("treatment")
         notes = data.get("notes", "")
 
         # Validate required fields
@@ -368,7 +369,7 @@ def book_appointment():
             ):
                 # Update the first available slot for the time
                 appointment_sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
-                appointment_sheet.update(f"C{i}", [[4013]]) # set default treatment to general consultation
+                appointment_sheet.update(f"C{i}", [[treatment]]) # set default treatment to general consultation
                 appointment_sheet.update(f"G{i}", [[notes]])  # Update Notes
                 found = True
                 break
@@ -394,6 +395,33 @@ def book_appointment():
     except Exception as e:
         print(f"Error booking appointment: {e}")  # Log the error
         return jsonify({"success": False, "error": str(e)}), 500
+    
+    
+@patients_blueprint.route('/get_treatments', methods=['GET'])
+def get_treatments():
+    """
+    Fetch all available treatments from the 'Treatment' sheet.
+
+    Returns:
+        JSON: A list of treatment names and IDs.
+    """
+    try:
+        treatment_sheet = get_worksheet("Treatment")
+        treatments = treatment_sheet.get_all_records()
+
+        if not treatments:
+            return jsonify({"success": False, "message": "No treatments found"}), 404
+
+        treatment_list = [
+            {"id": row["Treatment_ID"], "name": row["Name"]}
+            for row in treatments
+        ]
+
+        return jsonify({"success": True, "treatments": treatment_list}), 200
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+    
 
 @patients_blueprint.route('/get_upcoming_appointments', methods=['GET'])
 def get_upcoming_appointments():
