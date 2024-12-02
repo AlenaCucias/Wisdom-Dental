@@ -220,6 +220,7 @@ export const PatientDashboard = () => {
   const handleTimeSlotClick = (date, time) => {
     setSelectedDate(date);
     setSelectedTime(time);
+    setScheduleAppointmentModalOpen(false);
     fetchTreatments(); // Fetch treatments after selecting time
     setTreatmentModalOpen(true); // Open the treatment modal
   };
@@ -380,7 +381,9 @@ export const PatientDashboard = () => {
               <div key={appointment.appointment_id} className="item" style={{ marginBottom: '25px'}}>
                 <div className="frame-2" style={{ textAlign: 'center'}}>
                 <Col className="d-flex flex-column align-items-center justify-content-center">
-                  <Row>{appointment.treatment || "General Consultation"}</Row>
+                  <Row>
+                    <strong>{appointment.treatment || "General Consultation"}</strong>
+                    </Row>
                   <Row>{formatDate(appointment.date)}</Row>
                   <Row style={{ marginBottom: '10px'}}>{appointment.time}</Row>
                 </Col>
@@ -509,7 +512,7 @@ export const PatientDashboard = () => {
         </ModalBody>
       </Modal>
 
-      <Modal isOpen={treatmentModalOpen} className="modal-dialog modal-dialog-centered modal-lg">
+      <Modal isOpen={treatmentModalOpen} className="modal-dialog modal-dialog-centered modal-sm">
   <ModalHeader toggle={() => setTreatmentModalOpen(false)}>Select a Treatment</ModalHeader>
   <ModalBody>
     {treatments.length > 0 ? (
@@ -517,7 +520,7 @@ export const PatientDashboard = () => {
         {treatments.map((treatment) => (
           <li key={treatment.id} style={{ marginBottom: "20px" }}>
             <div>
-              <strong>{treatment.name}</strong>
+              {/* Make the treatment name a button */}
               <button
                 className="btn shadow rounded primary"
                 onClick={() => {
@@ -525,8 +528,9 @@ export const PatientDashboard = () => {
                   setTreatmentModalOpen(false); // Close treatment modal
                   setReasonModalOpen(true); // Open reason textbox modal
                 }}
+                style={{ textAlign: "left", padding: "10px", fontSize: "16px", width: "100%" }} // Style as a clickable button
               >
-                Select
+                <div>{treatment.name}</div>  {/* Display treatment name */}
               </button>
             </div>
           </li>
@@ -536,7 +540,8 @@ export const PatientDashboard = () => {
       <p>No treatments available.</p>
     )}
   </ModalBody>
-</Modal> 
+</Modal>
+ 
 
       <Modal isOpen={reasonModalOpen} className="modal-dialog modal-dialog-centered modal-md">
         <ModalHeader toggle={() => setReasonModalOpen(false)}>Provide a Reason</ModalHeader>
