@@ -437,6 +437,8 @@ def get_upcoming_appointments():
     try:
         sheet = get_worksheet("Appointments")
         appointments = sheet.get_all_records()
+        treatment_sheet = get_worksheet("Treatment")  # Fetch the treatment sheet
+        treatments = treatment_sheet.get_all_records()
         today = datetime.today().date()
         upcoming = []
 
@@ -447,11 +449,21 @@ def get_upcoming_appointments():
             try:
                 appointment_date = datetime.strptime(row["Date"], "%m-%d-%Y").date()
                 if str(row["Patient_ID"]) == str(patient_id) and appointment_date >= today:
+
+                    # Find the treatment name by matching Treatment_ID from the appointments sheet
+                    treatment_name = "General Checkup"  # Default value if no treatment found
+                    treatment_id = row["Treatment_ID"]
+
+                    # Loop through the treatments to find the matching Treatment_ID
+                    for treatment in treatments:
+                        if str(treatment["Treatment_ID"]) == str(treatment_id):
+                            treatment_name = treatment["Name"]  # Get the treatment name
+
                     upcoming.append({
                         "appointment_id": row["Appointment_ID"],
                         "date": row["Date"],
                         "time": row["Time"],
-                        "notes": row["Notes"] or "General Checkup",
+                        "treatment": treatment_name,
                         "paid": row["Paid"],
                     })
             except Exception as e:
