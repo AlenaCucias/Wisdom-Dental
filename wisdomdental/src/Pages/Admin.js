@@ -160,7 +160,7 @@ export const AdminPage = () => {
       <div className="text-buttons-wrapper">
         <div className="title">Admin Dashboard</div>
         <p className="description">
-          Welcome back! View and manage Patient and Staff Information here.
+          Welcome back, {user?.First_Name || 'N/A'}! View and manage Patient and Staff Information here.
         </p>
 
         <div className="group-wrapper">
@@ -196,21 +196,23 @@ export const AdminPage = () => {
 
       <div className="overlap">
         <div className="group-2">
-          <div className="avatar" />
+          <div className="avatar-container">
+            <div className="avatar" />
+          </div>
+          <div className="title-2">{user?.First_Name || 'N/A'}{' '}{user?.Last_Name || 'N/A'}</div>
           <div className="label-normal">
             <div className="label-text">Admin</div>
           </div>
-          <div className="title-2">{user?.First_Name || 'N/A'}{' '}{user?.Last_Name || 'N/A'}</div>
         </div>
 
         <p className="email-johndoe-gmail">
-          <span className="span">Email: </span>
+          <span className="span" style={{fontWeight: "bold"}}>Email: </span>
           <span className="text-wrapper-2">
             {user?.Email || 'N/A'}
             <br />
             <br />
           </span>
-          <span className="span">Phone Number: <br /></span>
+          <span className="span" style={{fontWeight: "bold"}}>Phone Number: <br /></span>
           <span className="text-wrapper-2">{user?.Phone_Number || 'N/A'}</span>
         </p>
       </div>
