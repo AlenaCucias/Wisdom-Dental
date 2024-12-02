@@ -17,7 +17,7 @@ def view_staff_list():
         return jsonify({"staff_list": staff_list}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to fetch staff list: {str(e)}"}), 500
-    
+
 
 def get_full_names(sheet_name, id_type):
     """
@@ -66,7 +66,7 @@ def view_patient_list():
         return jsonify({"patients": patient_list}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to fetch patient list: {str(e)}"}), 500
-    
+
 @admin_blueprint.route('/view_payroll_data', methods=['POST'])
 def view_payroll_data():
     """
@@ -81,7 +81,7 @@ def view_payroll_data():
               - Amount Paid
     """
     data = request.json
-    user_id = data.get('userID') 
+    user_id = data.get('userID')
     payroll_data = get_worksheet("Payroll").get_all_records()
     # Get only records that are associated with user
     filtered_rows = [ row for row in payroll_data if row["Staff_ID"] == user_id]
@@ -102,7 +102,7 @@ def view_timesheet():
               - date
               - time
               - procedure
-              - hours worked 
+              - hours worked
     """
 
     data = request.json
@@ -122,33 +122,35 @@ def update_time():
     """
     data = request.json
     timesheet_ids = data.get('timesheetIDs', [])
-    
-    staff_data = get_worksheet("Staff").get_all_records()
-    timesheet_data = get_worksheet('Timesheet').get_all_records()
+
+    staff_sheet = get_worksheet("Staff")
+    staff_data = staff_sheet.get_all_records()
+    timesheet = get_worksheet('Timesheet')
+    timesheet_data = timesheet.get_all_records()
 
     today = datetime.today().date()
-    
+
     total_hours_to_remove = 0
     total_amount_owed = 0
     staff_id = None
 
     for timesheet_id in timesheet_ids:
         filtered_rows = [row for row in timesheet_data if row["Timesheet_ID"] == timesheet_id]
-        
+
         for row in filtered_rows:
             staff_id = row["Staff_ID"]
             hours = float(row["Time"])
             total_hours_to_remove += hours
-            
+
             # Get staff information
             staff_record = next((s for s in staff_data if s["Staff_ID"] == staff_id), None)
             if staff_record:
                 wage = float(staff_record["Hourly_Pay"])
                 total_amount_owed += hours * wage
-                
+
                 # Mark the timesheet as resolved
                 row_index = timesheet_data.index(row) + 2
-                get_worksheet("Timesheet").update(f"H{row_index}", [[True]])
+                timesheet.update(f"H{row_index}", [[True]])
 
     if staff_id:
         # Update the staff record
@@ -156,13 +158,13 @@ def update_time():
         if staff_row_index:
             current_hours = float(staff_record["Hours_Worked"])
             current_pay = float(staff_record["Total_Pay"])
-            
+
             # Update the Staff worksheet with new hours and pay
-            get_worksheet("Staff").update(f"H{staff_row_index}", [[current_hours - total_hours_to_remove]])
-            get_worksheet("Staff").update(f"J{staff_row_index}", [[current_pay - total_amount_owed]])
+            staff_sheet.update(f"H{staff_row_index}", [[current_hours - total_hours_to_remove]])
+            staff_sheet.update(f"J{staff_row_index}", [[current_pay - total_amount_owed]])
 
     total_data = [staff_id, today, total_amount_owed ]
-    
+
     return total_data
 
 @admin_blueprint.route('/update_performance', methods=['POST'])
@@ -170,24 +172,25 @@ def update_performance():
     """
         add performance data from timesheet to Staff Performance Sheet
 
-        Args:        
+        Args:
           user_id (str or int): The ID of the staff member whose payroll data is to be retrieved.
 
     """
     data = request.json
     user_id = data.get('userID')
-    timesheet_data = get_worksheet("Timesheet").get_all_records()
+    timesheet = get_worksheet('Timesheet')
+    timesheet_data = timesheet.get_all_records()
     filtered_rows = [ row for row in timesheet_data if row["Resolved"] == True and row["Send_Performance"] == False]
-    for i in filtered_rows:    
+    for i in filtered_rows:
         next_index = len(get_worksheet("Staff Performance").get_all_records()) + 1
-        time = i["H"] 
+        time = i["H"]
         procedure = i["D"]
         date = i["G"]
         performance = i["E"]
         performance_data = [next_index, user_id, time, procedure, date, performance]
         append_row("Staff Performance", performance_data)
         row_index = timesheet_data.index(i) + 2
-        get_worksheet("Timesheet").update(f"I{row_index}", [[True]])
+        timesheet.update(f"I{row_index}", [[True]])
 
     return jsonify({"message": "Performance updated successfully!"}), 200
 
@@ -212,7 +215,7 @@ def update_payroll():
 
     payStub = [next_index, staffID, date, amount]
     append_row("Payroll", payStub)
-    
+
     return jsonify({"message": "payroll updated successfully!"}), 200
 
 
@@ -240,7 +243,7 @@ def view_staff_performance():
 
     except Exception as e:
         return jsonify({"error": f"Failed to fetch staff performance: {str(e)}"}), 500
-    
+
 
 def view_feedback():
     """
