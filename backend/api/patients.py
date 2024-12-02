@@ -108,7 +108,7 @@ def dental_history():
 
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -131,7 +131,7 @@ def dental_history():
                     ]
 
         return jsonify({"appointments": total_data}),200
-    
+
     except Exception as e:
         return jsonify({"error":f"Failed to fetch dental history: {str(e)}"}),500
 
@@ -158,7 +158,7 @@ def payment_history():
 
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -173,11 +173,11 @@ def payment_history():
                     for date, treatment, cost, status in
                     zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
                     ]
-        
+
         return jsonify({"payments": total_data}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to fetch payment history: {str(e)}"}), 500
-    
+
 @patients_blueprint.route('/get_total_cost', methods=['GET'])
 def get_total_cost():
     """
@@ -190,10 +190,10 @@ def get_total_cost():
         float: The total outstanding cost for the user, summing the costs of appointments where the "Paid" status is "FALSE".
     """
     patient_id = request.args.get("patient_id")
-    
+
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -210,9 +210,9 @@ def get_total_cost():
                     for date, treatment, cost, status in
                     zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
                     ]
-        
+
         total_cost = sum(row[2] for row in total_data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
-        
+
         return jsonify({"total_cost": total_cost}), 200
     except Exception as e:
         print(f"Error in get_total_cost: {e}")
@@ -240,10 +240,10 @@ def update_payments():
     data = sheet.get_all_records()
 
     patient_id = request.args.get("patient_id")
-    
+
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -260,8 +260,8 @@ def update_payments():
                     for date, treatment, cost, status in
                     zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
                     ]
-        
-        payment_amount = sum(row[2] for row in total_data if row[3] == "FALSE") 
+
+        payment_amount = sum(row[2] for row in total_data if row[3] == "FALSE")
 
         if payment_amount == 0:
             return jsonify({"error": "No outstanding payment to update."}), 400
@@ -278,7 +278,7 @@ def update_payments():
         append_row("Payments", payment_data)
 
         return jsonify({"message":f"Payments updated"}), 200
-    
+
     except Exception as e:
         return jsonify({"error": f"Failed to update payments: {str(e)}"}), 500
 
@@ -327,7 +327,7 @@ def get_available_appointments():
         return jsonify({"available_slots": available_slots}), 200
     else:
         return jsonify({"message": "No available appointment slots at the moment."}), 404
-    
+
 @patients_blueprint.route('/book_appointment', methods=['POST'])
 def book_appointment():
     """
@@ -396,8 +396,8 @@ def book_appointment():
     except Exception as e:
         print(f"Error booking appointment: {e}")  # Log the error
         return jsonify({"success": False, "error": str(e)}), 500
-    
-    
+
+
 @patients_blueprint.route('/get_treatments', methods=['GET'])
 def get_treatments():
     """
@@ -422,7 +422,7 @@ def get_treatments():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-    
+
 
 @patients_blueprint.route('/get_upcoming_appointments', methods=['GET'])
 def get_upcoming_appointments():

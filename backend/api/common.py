@@ -133,7 +133,7 @@ def extract(unfiltered_data, filtered_rows, data_to_compare, filter, data_to_ext
 
     Note: The order of `filtered_rows` is preserved in the returned list of extracted values.
     """
-    
+
 
     data = [row[data_to_compare] for row in filtered_rows]
 
