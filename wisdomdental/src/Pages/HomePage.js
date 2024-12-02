@@ -1,14 +1,14 @@
 import React from 'react'
-import logo from "../components/logo.png";
-import { Row, Col } from 'reactstrap';
-import smile from "../components/homeSmile.png";
+import logo from "../components/logo.png";//logo image for homepage
+import { Row, Col } from 'reactstrap';//layout components from Reactstrap
+import smile from "../components/homeSmile.png";//image for homepage
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Core React component
 import { faBookmark, faStar } from '@fortawesome/free-regular-svg-icons'; // Specific icon
-import { faFileWaveform } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { faFileWaveform } from '@fortawesome/free-solid-svg-icons';//solid style FontAwesome icon
+import { Link } from 'react-router-dom';//Link component for navigation
 
 
-
+//HomePage component- the main landing page of the application
 const HomePage = () => {
   return (
     <div className='home-page mt-1'>
