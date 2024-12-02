@@ -1,5 +1,5 @@
-from .common import get_worksheet, append_row
-from .patients import dental_history
+from common import get_worksheet, append_row
+from patients import dental_history
 from datetime import datetime
 from collections import defaultdict
 from flask import Blueprint, jsonify, request
@@ -55,6 +55,18 @@ def view_patient_records(user_id):
     user_info = next((row for row in patient_data if row["Patient_ID"] == user_id), None)
     return dental_history(user_info)
 
+@admin_blueprint.route('/view_patient_list', methods=['GET'])
+def view_patient_list():
+    try:
+        patient_data = get_worksheet("Patient").get_all_records()
+        patient_list = [
+            {"Patient_ID": row["Patient_ID"], "Name": f"{row['First_Name']} {row['Last_Name']}"}
+            for row in patient_data
+        ]
+        return jsonify({"patients": patient_list}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch patient list: {str(e)}"}), 500
+    
 @admin_blueprint.route('/view_payroll_data', methods=['POST'])
 def view_payroll_data():
     """

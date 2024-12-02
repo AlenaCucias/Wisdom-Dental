@@ -20,6 +20,11 @@ export const AdminPage = () => {
   const [staffPayID, setStaffPayID] = useState(null);
   const [payDate, setPayDate] = useState(null);
   const [payAmount, setPayAmount] = useState(null);
+  const [patientList, setPatientList] = useState([]);
+  const [selectedPatientHistory, setSelectedPatientHistory] = useState([]);
+  const [selectedPatientName, setSelectedPatientName] = useState("");
+
+
 
   const toggleModal = (modalName) => {
     setModal((prevState) => ({
@@ -46,6 +51,30 @@ export const AdminPage = () => {
     fetchStaffList();
   }, []);
 
+  const fetchPatientList = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/admin/view_patient_list");
+      if (response.status === 200) {
+        setPatientList(response.data.patients || []);
+      }
+    } catch (error) {
+      console.error("Error fetching patient list:", error);
+    }
+  };
+  
+  const fetchDentalHistory = async (patientID, patientName) => {
+    setSelectedPatientName(patientName);
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/patients/get_dental_history", {
+        params: { patient_id: patientID },
+      });
+      if (response.status === 200) {
+        setSelectedPatientHistory(response.data.appointments || []);
+      }
+    } catch (error) {
+      console.error("Error fetching dental history:", error);
+    }
+  };
   const getPayroll = async (userID) => {
     toggleModal('payrollTimesheet');
     try{
@@ -154,7 +183,10 @@ export const AdminPage = () => {
       console.error("Error fetching staff performance:", error);
     }
   };
-  
+  useEffect(() => {
+    if (modal.patientRecords) fetchPatientList();
+  }, [modal.patientRecords]);
+
   return (
     <div className="admin-page">
       <div className="text-buttons-wrapper">
@@ -218,13 +250,63 @@ export const AdminPage = () => {
       </div>
 
       {/* Modals for each button */}
-      <Modal isOpen={modal.patientRecords} toggle={() => toggleModal("patientRecords")}>
-        <ModalHeader toggle={() => toggleModal("patientRecords")}>All Patient Records</ModalHeader>
+       <Modal
+        isOpen={modal.patientRecords}
+        toggle={() => toggleModal("patientRecords")}
+      >
+        <ModalHeader toggle={() => toggleModal("patientRecords")}>
+          {selectedPatientName
+            ? `Dental History of ${selectedPatientName}`
+            : "All Patient Records"}
+        </ModalHeader>
         <ModalBody>
-          <p>Display Patient Records here...</p>
+          {!selectedPatientName ? (
+            <div>
+              <h5>Select a Patient</h5>
+              {patientList.map((patient) => (
+                <Button
+                  key={patient.Patient_ID}
+                  className="btn shadow rounded my-2"
+                  onClick={() =>
+                    fetchDentalHistory(patient.Patient_ID, patient.Name)
+                  }
+                >
+                  {patient.Name}
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <Button
+                className="btn btn-secondary mb-3"
+                onClick={() => setSelectedPatientName("")}
+              >
+                Back to Patient List
+              </Button>
+              <h5>Dental History for {selectedPatientName}</h5>
+              {selectedPatientHistory.length > 0 ? (
+                selectedPatientHistory.map((history, index) => (
+                  <Card key={index} className="mb-2 text-bg-secondary">
+                    <CardBody>
+                      <p>
+                        <strong>Date:</strong> {history[0]}
+                      </p>
+                      <p>
+                        <strong>Treatment:</strong> {history[1]}
+                      </p>
+                      <p>
+                        <strong>Doctor:</strong> {history[2]}
+                      </p>
+                    </CardBody>
+                  </Card>
+                ))
+              ) : (
+                <p>No dental history available for this patient.</p>
+              )}
+            </div>
+          )}
         </ModalBody>
       </Modal>
-
       <Modal isOpen={modal.payrollInfo} toggle={() => toggleModal("payrollInfo")}>
         <ModalHeader toggle={() => toggleModal("payrollInfo")}>View Payroll Information</ModalHeader>
         <ModalBody>
