@@ -368,6 +368,7 @@ def book_appointment():
             ):
                 # Update the first available slot for the time
                 appointment_sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
+                appointment_sheet.update(f"C{i}", [[4013]]) # set default treatment to general consultation
                 appointment_sheet.update(f"G{i}", [[notes]])  # Update Notes
                 found = True
                 break
