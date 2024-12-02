@@ -12,7 +12,7 @@ export const AdminPage = () => {
 
   const [payrollInfo, setPayrollInfo] = useState([]);
   const [timesheetDisplay, setTimeSheetDisplay] = useState([]);
-  const [selectedTimesheets, setSelectedTimesheets] = useState([]); 
+  const [selectedTimesheets, setSelectedTimesheets] = useState([]);
   const [staffPerformance, setStaffPerformance] = useState([]);
   const [staffList, setStaffList] = useState([]);
   const [selectedStaffName, setSelectedStaffName] = useState("");
@@ -61,7 +61,12 @@ export const AdminPage = () => {
       console.error("Error fetching patient list:", error);
     }
   };
-  
+  const formatDate = (dataString) => {
+    const [month, day, year] = dataString.split('-');
+    const date = new Date(year, month - 1, day);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
   const fetchDentalHistory = async (patientID, patientName) => {
     setSelectedPatientName(patientName);
     try {
@@ -77,7 +82,7 @@ export const AdminPage = () => {
   };
   const getPayroll = async (userID) => {
     toggleModal('payrollTimesheet');
-    try{
+    try {
       const response = await axios.post('http://127.0.0.1:5000/admin/view_payroll_data', { userID })
       const payInfo = response.data
         .map((pay) => ({
@@ -91,7 +96,7 @@ export const AdminPage = () => {
         })
         .slice(0, 4);
       setPayrollInfo(payInfo);
-    } catch(error) {
+    } catch (error) {
       console.error("error fetching payroll: ", error);
     }
     getTimesheets(userID);
@@ -113,8 +118,8 @@ export const AdminPage = () => {
           return dateA - dateB;
         })
         .slice(0, 4);
-        setTimeSheetDisplay(timesheetInfo);
-    } catch(error) {
+      setTimeSheetDisplay(timesheetInfo);
+    } catch (error) {
       console.error('error fetching timesheet', error);
     }
   }
@@ -122,29 +127,29 @@ export const AdminPage = () => {
   const toggleTimesheetSelection = (id) => {
     setSelectedTimesheets((prevSelected) =>
       prevSelected.includes(id)
-        ? prevSelected.filter((item) => item !== id) 
-        : [...prevSelected, id] 
+        ? prevSelected.filter((item) => item !== id)
+        : [...prevSelected, id]
     );
   };
 
   const handleSubmit = async () => {
     const handleTimesheet = async () => {
-      try{
-        const response = await axios.post("http://127.0.0.1:5000/admin/update_time", {timesheetIDs: selectedTimesheets,});
+      try {
+        const response = await axios.post("http://127.0.0.1:5000/admin/update_time", { timesheetIDs: selectedTimesheets, });
         const timeInfo = response.data;
         setStaffPerfID(timeInfo.staff_id);
         setStaffPayID(timeInfo.staff_id);
         setPayDate(timeInfo.today);
         setPayAmount(timeInfo.total_amount_owed);
-      } catch(error) {
+      } catch (error) {
         console.error("error updating timesheet: ", error);
       }
     };
     const handlePerformance = async (staffPerfID) => {
-      try {  
+      try {
         const response = await axios.post("http://127.0.0.1:5000/admin/update_performance", { staffPerfID })
         console.log(response);
-      } catch(error) {
+      } catch (error) {
         console.log("error setting performance: ", error);
       }
     };
@@ -154,10 +159,10 @@ export const AdminPage = () => {
         date: payDate,
         paid: payAmount
       }
-      try{
+      try {
         const response = await axios.post("http://127.0.0.1:5000/admin/update_payroll", paydayInfo)
         console.log(response);
-      } catch(error) {
+      } catch (error) {
         console.log("error updating payroll", error);
       }
     }
@@ -238,31 +243,33 @@ export const AdminPage = () => {
         </div>
 
         <p className="email-johndoe-gmail">
-          <span className="span" style={{fontWeight: "bold"}}>Email: </span>
+          <span className="span" style={{ fontWeight: "bold" }}>Email: </span>
           <span className="text-wrapper-2">
             {user?.Email || 'N/A'}
             <br />
             <br />
           </span>
-          <span className="span" style={{fontWeight: "bold"}}>Phone Number: <br /></span>
+          <span className="span" style={{ fontWeight: "bold" }}>Phone Number: <br /></span>
           <span className="text-wrapper-2">{user?.Phone_Number || 'N/A'}</span>
         </p>
       </div>
 
       {/* Modals for each button */}
-       <Modal
+      <Modal
         isOpen={modal.patientRecords}
         toggle={() => toggleModal("patientRecords")}
+        style={{ maxWidth: '800px', width: '80%' }}
       >
         <ModalHeader toggle={() => toggleModal("patientRecords")}>
           {selectedPatientName
-            ? `Dental History of ${selectedPatientName}`
+            ? `Dental History for ${selectedPatientName}`
             : "All Patient Records"}
         </ModalHeader>
         <ModalBody>
           {!selectedPatientName ? (
             <div>
               <h5>Select a Patient</h5>
+              <div className="button-grid-container">
               {patientList.map((patient) => (
                 <Button
                   key={patient.Patient_ID}
@@ -274,6 +281,7 @@ export const AdminPage = () => {
                   {patient.Name}
                 </Button>
               ))}
+              </div>
             </div>
           ) : (
             <div>
@@ -283,23 +291,25 @@ export const AdminPage = () => {
               >
                 Back to Patient List
               </Button>
-              <h5>Dental History for {selectedPatientName}</h5>
               {selectedPatientHistory.length > 0 ? (
-                selectedPatientHistory.map((history, index) => (
-                  <Card key={index} className="mb-2 text-bg-secondary">
-                    <CardBody>
-                      <p>
-                        <strong>Date:</strong> {history[0]}
-                      </p>
-                      <p>
-                        <strong>Treatment:</strong> {history[1]}
-                      </p>
-                      <p>
-                        <strong>Doctor:</strong> {history[2]}
-                      </p>
-                    </CardBody>
-                  </Card>
-                ))
+                <table style={{ width: "100%", textAlign: "center" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: "25%", textAlign: "center", padding: "10px" }}>Date</th>
+                      <th style={{ width: "50%", textAlign: "center", padding: "10px" }}>Treatment</th>
+                      <th style={{ width: "75%", textAlign: "center", padding: "10px" }}>Doctor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedPatientHistory.map((history, index) => (
+                      <tr key={index}>
+                        <td style={{ padding: "10px" }}>{formatDate(history[0])}</td>
+                        <td>{history[1]}</td>
+                        <td>{history[2]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               ) : (
                 <p>No dental history available for this patient.</p>
               )}
@@ -307,7 +317,7 @@ export const AdminPage = () => {
           )}
         </ModalBody>
       </Modal>
-      <Modal isOpen={modal.payrollInfo} toggle={() => toggleModal("payrollInfo")}>
+      <Modal isOpen={modal.payrollInfo} toggle={() => toggleModal("payrollInfo")} style={{ maxWidth: '800px', width: '80%' }}>
         <ModalHeader toggle={() => toggleModal("payrollInfo")}>View Payroll Information</ModalHeader>
         <ModalBody>
           <Row className="mb-2">
@@ -583,12 +593,12 @@ export const AdminPage = () => {
                           <Col>{pay.date}</Col>
                           <Col className="text-end">$ {pay.amount}</Col>
                         </Row>
-                        
+
                       </CardBody>
                     </Card>
                   </Row>
                 ))}
-                  
+
               </Row>
             </Col>
             <Col className="mx-3">
@@ -599,35 +609,35 @@ export const AdminPage = () => {
                 <Col className="px-1 text-center">Procedure</Col>
                 <Col className="px-1 text-center">Hours</Col>
               </Row>
-                {timesheetDisplay.map((timesheet, index) => (
-                  <Row className="ms-2">
-                    <Row
-                      key={timesheet.timesheetID}
-                      className={`mb-1 text-bg-light my-1 ${selectedTimesheets.includes(timesheet.timesheetID) ? 'selected' : ''}`}
-                      onClick={(e) => {
-                        toggleTimesheetSelection(timesheet.timesheetID)
-                        const currentBorder = e.currentTarget.style.border;
-                        e.currentTarget.style.border = currentBorder ? '' : '2px solid black';
-                      }}
-                    >
-                      <Col className="px-1 text-center"> 
-                        {timesheet.timesheetID}
-                      </Col>
-                      <Col className="px-1 text-center">
-                        {timesheet.date}
-                      </Col>
-                      <Col className="px-1 text-center">
-                        {timesheet.time}
-                      </Col>
-                      <Col className="px-1 text-center">
-                        {timesheet.procedure}
-                      </Col>
-                      <Col className="px-1 text-center">
-                        {timesheet.hours}
-                      </Col>
+              {timesheetDisplay.map((timesheet, index) => (
+                <Row className="ms-2">
+                  <Row
+                    key={timesheet.timesheetID}
+                    className={`mb-1 text-bg-light my-1 ${selectedTimesheets.includes(timesheet.timesheetID) ? 'selected' : ''}`}
+                    onClick={(e) => {
+                      toggleTimesheetSelection(timesheet.timesheetID)
+                      const currentBorder = e.currentTarget.style.border;
+                      e.currentTarget.style.border = currentBorder ? '' : '2px solid black';
+                    }}
+                  >
+                    <Col className="px-1 text-center">
+                      {timesheet.timesheetID}
+                    </Col>
+                    <Col className="px-1 text-center">
+                      {timesheet.date}
+                    </Col>
+                    <Col className="px-1 text-center">
+                      {timesheet.time}
+                    </Col>
+                    <Col className="px-1 text-center">
+                      {timesheet.procedure}
+                    </Col>
+                    <Col className="px-1 text-center">
+                      {timesheet.hours}
+                    </Col>
                   </Row>
                 </Row>
-                ))}  
+              ))}
               <Row className="mt-3">
                 <Button className="btn shadow rounded" onClick={handleSubmit}>Submit</Button>
               </Row>
@@ -636,7 +646,7 @@ export const AdminPage = () => {
         </ModalBody>
       </Modal>
 
-      <Modal isOpen={modal.staffPerformance} toggle={() => toggleModal("staffPerformance")}>
+      <Modal isOpen={modal.staffPerformance} toggle={() => toggleModal("staffPerformance")} style={{ maxWidth: '800px', width: '80%' }}>
         <ModalHeader toggle={() => toggleModal("staffPerformance")}>
           {selectedStaffName ? `Performance of ${selectedStaffName}` : "Staff List"}
         </ModalHeader>
@@ -665,28 +675,26 @@ export const AdminPage = () => {
                 Back to Staff List
               </Button>
               {staffPerformance.length > 0 ? (
-                staffPerformance.map((performance, index) => (
-                  <Row key={index} className="mb-2">
-                    <Card className="text-bg-secondary">
-                      <CardBody>
-                        <Row>
-                          <Col className="text-start">
-                            <strong>Date:</strong> {performance.Date}
-                          </Col>
-                          <Col className="text-center">
-                            <strong>Time:</strong> {performance.Time}
-                          </Col>
-                          <Col className="text-center">
-                            <strong>Procedure:</strong> {performance.Procedure}
-                          </Col>
-                          <Col className="text-end">
-                            <strong>Score:</strong> {performance.Performance}
-                          </Col>
-                        </Row>
-                      </CardBody>
-                    </Card>
-                  </Row>
-                ))
+                <table style={{ width: "100%", textAlign: "center" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: "30%", textAlign: "center", padding: "10px" }}>Date</th>
+                      <th style={{ width: "20%", textAlign: "center", padding: "10px" }}>Time</th>
+                      <th style={{ width: "30%", textAlign: "center", padding: "10px" }}>Procedure</th>
+                      <th style={{ width: "20%", textAlign: "center", padding: "10px" }}>Performance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {staffPerformance.map((performance, index) => (
+                      <tr key={index}>
+                        <td style={{ padding: "10px" }}>{performance.Date}</td>
+                        <td>{performance.Time}</td>
+                        <td>{performance.Procedure}</td>
+                        <td>{performance.Performance}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               ) : (
                 <p>No performance data available for this staff member.</p>
               )}
