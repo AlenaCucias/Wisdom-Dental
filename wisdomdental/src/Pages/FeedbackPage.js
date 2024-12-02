@@ -219,8 +219,7 @@ export const FeedbackPage = () => {
             data-bs-parent="#faqAccordion"
           >
             <div class="accordion-body">
-            Our clinic offers a wide variety of services, including consutations, teeth cleaning, dental crowns, dental fillings, dentures, root canals, and tooth extractions.
-            </div>
+            Our clinic offers a wide variety of services, including consultations, teeth cleaning, dental crowns, dental fillings, dentures, root canals, and tooth extractions.            </div>
           </div>
         </div>
 
@@ -272,8 +271,7 @@ export const FeedbackPage = () => {
             data-bs-parent="#faqAccordion"
           >
             <div class="accordion-body">
-            You can pay through our website Juet leg in to yotr assaunt and you willid thel Make a Payment option on your dashboard.
-            </div>
+            You can pay through our website. Just log in to your account and you will they Make a Payment option on your dashboard.            </div>
           </div>
         </div>
 
@@ -299,7 +297,7 @@ export const FeedbackPage = () => {
             data-bs-parent="#faqAccordion"
           >
             <div class="accordion-body">
-            Your petient dastiacare al ant you the eaten to cancel er reschedule your account Just log in to your account, click on your upcoming appointments then select which option youd like.
+            Your patient dashboard allows you the option to cancel or reschedule your account. Just log in to your account, click on your upcoming appointments then select which option youd like.
             </div>
           </div>
         </div>
