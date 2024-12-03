@@ -120,7 +120,7 @@ def update_timesheet():
     append_row("Staff Performance", performance_data)
 
     #Add time sheet data to timesheet sheet
-    timesheet_data = [user["Staff_ID"], hours, procedure, performance, apptTime, today, False]
+    timesheet_data = [user["Staff_ID"], hours, procedure, performance, apptTime, today, False, False]
     append_row("Timesheet", timesheet_data)
 
     # Gather necesary data
