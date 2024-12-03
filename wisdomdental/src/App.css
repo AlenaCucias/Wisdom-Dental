@@ -1622,7 +1622,7 @@
   position: absolute;  
   top: 0;  /* Align to the top of the viewport */
   left: 0;
-  height: 100vh;  /* Full height of viewport */
+  height: 120vh;  /* Full height of viewport */
   display: flex;  /* Make sure children are flex items */
   flex-direction: column;
   align-items: center;  /* Center items horizontally */
