@@ -543,52 +543,47 @@ def reschedule_appointment():
     try:
         sheet = get_worksheet("Appointments")
         appointments = sheet.get_all_records()
-        patient_data = get_worksheet("Patient").get_all_records()
 
-        # Step 1: Cancel the original appointment
-        old_appointment_found = False
+        # Step 1: Retrieve the Treatment_ID of the original appointment
+        treatment_id = None
         for i, row in enumerate(appointments, start=2):
             if row["Date"] == old_date and row["Time"] == old_time and str(row["Patient_ID"]) == str(patient_id):
+                treatment_id = row["Treatment_ID"]  # Get the Treatment_ID
+                # Clear the original appointment slot
                 sheet.update(f"B{i}", [[""]])  # Clear Patient_ID
                 sheet.update(f"C{i}", [[""]])  # Clear Treatment_ID
                 sheet.update(f"G{i}", [[""]])  # Clear Notes
-                old_appointment_found = True
                 print(f"Original appointment {old_date} at {old_time} canceled.")
                 break
 
-        if not old_appointment_found:
+        if not treatment_id:
             return jsonify({"success": False, "error": "Original appointment not found"}), 400
 
-        # Step 2: Check if the new time slot is available
+        # Step 2: Reschedule the appointment with the same Treatment_ID
         for i, row in enumerate(appointments, start=2):
-            if row["Date"] == new_date and row["Time"] == new_time:
-                if not row["Patient_ID"]:  # Check if the slot is available
-                    # Book the new appointment
-                    sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
-                    sheet.update(f"C{i}", [[row["Treatment_ID"]]])  # Reassign Treatment_ID
-                    sheet.update(f"G{i}", [[new_notes]])  # Update Notes
-                    print(f"Appointment rescheduled to {new_date} at {new_time}.")
+            if row["Date"] == new_date and row["Time"] == new_time and not row["Patient_ID"]:  # Check availability
+                # Book the new appointment
+                sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
+                sheet.update(f"C{i}", [[treatment_id]])  # Update Treatment_ID with the same treatment
+                sheet.update(f"G{i}", [[new_notes]])  # Update Notes
+                print(f"Appointment rescheduled to {new_date} at {new_time}.")
 
-                    # Check if a matching patient record exists
-                    user = next(
-                        (row for row in patient_data if row["Patient_ID"] == patient_id),
-                        None
-                    )
+                # Confirmation email logic
+                patient_data = get_worksheet("Patient").get_all_records()
+                user = next((row for row in patient_data if row["Patient_ID"] == patient_id), None)
+                if user:
+                    try:
+                        appointment_confirmation(user, new_date, new_time)
+                    except Exception as e:
+                        print(f"Error sending confirmation email: {e}")
 
-                    # Send appointment confirmation email if user found
-                    if user:
-                        try:
-                            appointment_confirmation(user, new_date, new_time)
-                        except Exception as e:
-                            print(f"Error sending confirmation email: {e}")
+                return jsonify({"success": True, "message": "Appointment rescheduled successfully."}), 200
 
-                    return jsonify({"success": True, "message": "Appointment rescheduled successfully."}), 200
-
-        # If the slot is not available
         return jsonify({"success": False, "error": "Selected time slot is not available."}), 400
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @patients_blueprint.route('/create_account', methods=['POST'])
 def create_account():
