@@ -329,7 +329,7 @@ const StaffDashboard = ({ user }) => {
                       <div>
                         <Row className='bg-secondary'>
                           <Col style={{color: 'white'}}>Treatment Number: </Col>
-                          <Col>{item.treatment_ID}</Col>
+                          <Col style={{color: 'white'}}>{item.treatment_ID}</Col>
                         </Row>
                         <Row>
                           <Col>Patient Name: </Col>

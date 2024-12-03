@@ -67,8 +67,6 @@ def upcoming_appointments():
     # Create a new list to store the full names
     patient_full_names = [f"{first} {last}" for first, last in zip(patient_first_names, patient_last_names)]
 
-    treatment_id = get_worksheet("Appoitmentd")
-
     # Format the total data list
     total_data = [
         [name, treatment, f"{row['Time']} {row['Date']}", f"{row['Treatment_ID']}"]
