@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {Row, Col, FormGroup, Label, Modal, ModalHeader, ModalBody, Button} from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from 'axios';
-
+import xray from "../components/xray.jpeg";//image for homepage
 
 export const PatientDashboard = () => {
   const [scheduleAppointmentModalOpen, setScheduleAppointmentModalOpen] = useState(false);
@@ -698,7 +698,12 @@ export const PatientDashboard = () => {
             <Modal isOpen={viewXrayModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
               <ModalHeader toggle={() => setViewXrayModalOpen(false)}>X-ray</ModalHeader>
               <ModalBody>
-                image
+              <div>
+                <img 
+                  className='image-wrappe image img-fluid'
+                  src={xray} alt="patient mouth xrays" 
+                />
+              </div>
               </ModalBody>
             </Modal>
 
@@ -708,7 +713,7 @@ export const PatientDashboard = () => {
                 <div className="text-wrapper-5">View Treatment Plan</div>
             </button>
 
-            <Modal isOpen={viewTreatmentPlanModalOpen} className='modal-dialog modal-dialog-centered modal-lg'>
+            <Modal isOpen={viewTreatmentPlanModalOpen} className='modal-dialog modal-dialog-centered modal-md'>
               <ModalHeader toggle={() => setViewTreatmentPlanModalOpen(false)}>Treatment Plan</ModalHeader>
               <ModalBody>
                 {user?.Treatment_Plan || "No treatment plan at the moment"}
