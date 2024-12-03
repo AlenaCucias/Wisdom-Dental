@@ -1619,7 +1619,7 @@
 .admin-page .overlap {
   background-color: #7495AF;  /* Match the navigation bar */
   width: 220px;
-  position: fixed;  /* Fix position so it stays in place */
+  position: absolute;  
   top: 0;  /* Align to the top of the viewport */
   left: 0;
   height: 100vh;  /* Full height of viewport */
