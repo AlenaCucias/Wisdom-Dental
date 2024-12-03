@@ -1,11 +1,30 @@
 # staff.py
-from user import User
-from common import get_worksheet, extract, append_row
+from .user import User
+from .common import get_worksheet, extract, append_row
 from datetime import datetime
 from collections import defaultdict
 from flask import Blueprint, jsonify, request
 
 staff_blueprint = Blueprint('staff', __name__)
+
+@staff_blueprint.route('/get_treatment_details', methods=['POST'])
+def get_treatment_details():
+    appointment_data = get_worksheet("Treatment").get_all_records()
+    data = request.json
+    id1 = data.get('id1')
+    id2 = data.get('id2')
+    print(id1)
+
+    filtered_row1 = [row for row in appointment_data if str(row["Treatment_ID"]).strip().lower() == id1]
+    filtered_row2 = [row for row in appointment_data if str(row["Treatment_ID"]).strip().lower() == id2]
+
+    print(f"Filtered rows for id1: {filtered_row1}")
+    print(f"Filtered rows for id2: {filtered_row2}")
+
+    total_data = [[row['Description']] for row in filtered_row1] + [[row['Description']] for row in filtered_row2]
+    print(total_data)
+    return jsonify(total_data)
+
 
 @staff_blueprint.route('/upcoming_appointments', methods=['POST'])
 def upcoming_appointments():
@@ -48,15 +67,16 @@ def upcoming_appointments():
     # Create a new list to store the full names
     patient_full_names = [f"{first} {last}" for first, last in zip(patient_first_names, patient_last_names)]
 
+    treatment_id = get_worksheet("Appoitmentd")
+
     # Format the total data list
     total_data = [
-        [name, treatment, f"{row['Time']} {row['Date']}"]
+        [name, treatment, f"{row['Time']} {row['Date']}", f"{row['Treatment_ID']}"]
         for name, treatment, row in zip(patient_full_names, treatment_names, filtered_rows)
         if datetime.strptime(row["Date"], "%m-%d-%Y").date() > today  # Ensure date parsing is consistent
     ]
 
     return total_data
-
 @staff_blueprint.route('/update_timesheet', methods=['POST'])
 def update_timesheet():
 

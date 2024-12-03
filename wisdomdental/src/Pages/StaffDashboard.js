@@ -18,6 +18,11 @@ const StaffDashboard = ({ user }) => {
   const [performanceReviews, setPerformanceReviews] = useState([]);
   const [topProcedures, setTopProcedures] = useState([]);
   const [qualifications, setQualifications] = useState([]);
+  const [treatmentID, setTreatmentID] = useState([]);
+  const [treatment, setTreatment] = useState([]);
+  const [openTreatment, setOpenTreatment] = useState(false);
+  const [patientNames, setPatientNames] = useState([]);
+  const [apptTime, setApptTime] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -32,7 +37,15 @@ const StaffDashboard = ({ user }) => {
           .sort((a, b) => a.formattedDate - b.formattedDate); // Sort by the Date object
 
         // Get the two soonest appointments
-        setAppointments(sortedAppointments.slice(0, 2));
+        const soonestAppt = sortedAppointments.slice(0, 2);
+        setAppointments(soonestAppt);
+
+        const ids = soonestAppt.map((appt) => appt[3]);
+        setTreatmentID(ids);
+        const names = soonestAppt.map((appt) => appt[0]);
+        setPatientNames(names);
+        const times = soonestAppt.map((appt) => appt[2]);
+        setApptTime(times);
       } catch (error) {
         console.error("Error fetching appointments: ", error);
         setError("Failed to load appointments.");
@@ -143,6 +156,27 @@ const StaffDashboard = ({ user }) => {
     }
     resetForm();
     setOpenPayroll(false);
+  }
+
+  const handleTreatment = async () => {
+    const id1 = treatmentID[0];
+    const id2 = treatmentID[1];
+    console.log({ id1, id2 });  // Check if the values are correct
+
+
+    try{
+      const response = await axios.post('http://127.0.0.1:5000/staff/get_treatment_details', { id1, id2 });
+      console.log(response.data);
+      const details = response.data.map((description, index) => ({
+          treatment_ID: treatmentID[index],
+          patientName: patientNames[index],
+          appt_Time: apptTime[index],
+          treatmentDetails: description
+        }))
+      setTreatment(details);
+    } catch(error) {
+      console.error("error fetch treatment details: ", error)
+    }
   }
 
   const userName = user.First_Name;
@@ -273,10 +307,47 @@ const StaffDashboard = ({ user }) => {
                     </div>
                     <div className="container-2">
                       <div className="title-7">Upcoming Appointments</div>
+                      <div
+                        className='title-9 mb-1' 
+                        onClick={() => {
+                          handleTreatment()
+                          setOpenTreatment(true);
+                        }}
+                      >
+                        View Details
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <Modal isOpen={openTreatment} className='modal-dialog modal-dialog-centered modal-lg'>
+                <ModalHeader toggle={() => setOpenTreatment(false)}>
+                  Treatment Details
+                </ModalHeader>
+                  <ModalBody className='my-3'>
+                    {treatment.map((item, index) => (
+                      <div>
+                        <Row className='bg-secondary'>
+                          <Col style={{color: 'white'}}>Treatment Number: </Col>
+                          <Col>{item.treatment_ID}</Col>
+                        </Row>
+                        <Row>
+                          <Col>Patient Name: </Col>
+                          <Col>{item.patientName}</Col>
+                        </Row>
+                        <Row>
+                          <Col>Appointment Time: </Col>
+                          <Col>{item.appt_Time}</Col>
+                        </Row>
+                        <Row>
+                          <Col>Treatment Details: </Col>
+                          <Col>{item.treatmentDetails}</Col>
+                        </Row>
+                      </div>
+                    ))}
+                    
+                  </ModalBody>
+              </Modal>
               <div className="text-wrapper-3">Logout</div>
               <div className="overlap-wrapper">
                 <div className="overlap-3">
