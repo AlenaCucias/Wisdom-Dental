@@ -170,13 +170,13 @@ const CreateAccountPage = () => {
 
         {/* Submit Button */}
         <div className="group-8">
-          <div className="group-9">
-            <button type="submit" className="Button-5">
-              <span className="text-13">Create Account</span>
+          <div className="">
+            <button type="submit" className="btn shadow rounded" style={{width: '240px', height: '48px'}}>
+             Create Account
             </button>
           </div>
-          <button type="button" className="Button-5" onClick={handleCancel}>
-            <span className="text-14">Cancel</span>
+          <button type="button" className="btn shadow rounded" style={{width: '240px', height: '48px'}} onClick={handleCancel}>
+            Cancel
           </button>
         </div>
       </form>
