@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from "react-router-dom";
-import { Row, Col } from 'reactstrap';
-import LoginForm from "../components/LoginForm";
+import React from 'react';//core react library
+import { Link } from "react-router-dom";//link component for navigation
+import { Row, Col } from 'reactstrap';//layout components from Reactstrap
+import LoginForm from "../components/LoginForm";//login form component
 
 
-
+//login component - render the login interface
 const LoginPage = ({ onLogin }) => {
   return (
     <div className='login-page'>
@@ -42,4 +42,4 @@ const LoginPage = ({ onLogin }) => {
   )
 }
 
-export default LoginPage
+export default LoginPage //export the login component
