@@ -334,6 +334,7 @@ export const PatientDashboard = () => {
       new_date: selectedDate,  // The new selected date
       new_time: selectedTime,  // The new selected time
       new_notes: "Rescheduled Appointment",  // Optional notes for the new appointment
+      treatment: selectedAppointment.treatment_id,
     };
   
     axios
