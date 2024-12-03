@@ -1,3 +1,4 @@
+from user import User
 from common import get_worksheet, append_row
 from patients import dental_history
 from datetime import datetime
@@ -239,12 +240,19 @@ def view_staff_performance():
             for record in performance_data if record["Staff_ID"] == int(staff_id)  # Ensure Staff_ID is compared as integer
         ]
 
-        return jsonify({"staff_performance": filtered_data}), 200
+        # Sort the filtered data by Date in descending order
+        sorted_filtered_data = sorted(
+            filtered_data,
+            key=lambda record: datetime.strptime(record["Date"], "%m-%d-%Y"),
+            reverse=True
+        )
+
+        return jsonify({"staff_performance": sorted_filtered_data}), 200
 
     except Exception as e:
         return jsonify({"error": f"Failed to fetch staff performance: {str(e)}"}), 500
 
-
+@admin_blueprint.route('/view_feedback', methods=['GET'])
 def view_feedback():
     """
     Retrieves and formats all feedback, sorted by the most recent entries first.
@@ -258,10 +266,21 @@ def view_feedback():
               - Role
               - Email
     """
-    feedback_data = get_worksheet("Feedback").get_all_records()
-    # Sort by Date in descending order
-    sorted_feedback = sorted(feedback_data, key=lambda row: datetime.strptime(row["Date"], "%m-%d-%Y"), reverse=True)
-    # Format the sorted data
-    formatted_data = [[row["Date"], row["Name"], row["Rating"], row["Comments"], row["Role"], row["Email"]]
-                      for row in feedback_data]
-    return formatted_data
+    try:
+        feedback_data = get_worksheet("Feedback").get_all_records()
+        # Sort by Date in descending order
+        sorted_feedback = sorted(feedback_data, key=lambda row: datetime.strptime(row["Date"], "%m-%d-%Y"), reverse=True)
+        # Format the sorted data
+        formatted_data = [
+            {
+                "Date": row["Date"],
+                "Name": row["Name"],
+                "Rating": row["Rating"],
+                "Comments": row["Comments"],
+                "Role": row["Role"],
+                "Email": row["Email"]}
+                          for row in sorted_feedback]
+        return jsonify({"feedback": formatted_data}), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Failed to fetch feedback: {str(e)}"}), 500

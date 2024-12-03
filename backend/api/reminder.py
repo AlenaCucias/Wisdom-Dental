@@ -10,22 +10,24 @@ def appointment_reminder():
     # Get all relevant sheets
     appt_data = get_worksheet("Appointments").get_all_records()
     patient_data = get_worksheet("Patient").get_all_records()
+    treatment_data = get_worksheet("Treatment").get_all_records()
 
     # Filter Appointments table to only those that match with the current user
     filtered_rows = [ row for row in appt_data if row["Date"] == target_date]
     patient_names = extract(patient_data, filtered_rows, "Patient_ID", "Patient_ID", "First_Name")
     patient_emails = extract(patient_data, filtered_rows, "Patient_ID", "Patient_ID", "Email")
+    treatments = extract(treatment_data, filtered_rows, "Treatment_ID", "Treatment_ID", "Name")
 
     # Format data in a list of tuples
-    total_data = [[email, name, date, time]
-                   for email, name, date, time in
-                   zip(patient_emails, patient_names, [row["Date"]for row in filtered_rows], [row["Time"]for row in filtered_rows])
+    total_data = [[email, name, treatment, date, time]
+                   for email, name, treatment, date, time in
+                   zip(patient_emails, patient_names, treatments, [row["Date"]for row in filtered_rows], [row["Time"]for row in filtered_rows])
                    ]
 
     subject = "Dentist Appointment Reminder"
 
     # Iterate through each patient and send the reminder email
-    for email, name, date, time in total_data:
+    for email, name, treatment, date, time in total_data:
         # Create the email body with dynamic content
         body = f"""
         <html>
@@ -43,6 +45,7 @@ def appointment_reminder():
             <div style="padding: 20px;">
                 <h2>Hello {name}!</h2>
                 <p><strong>This is a reminder that your appointment on <span style="color: #007bff;">{date}</span> at <span style="color: #007bff;">{time}</span> is coming up.</strong></p>
+                <p>Treatment: <span style="color: #007bff;">{treatment}</span</p>
                 <p>See you soon!</p>
                 <br>
                 <p>Best regards,<br>

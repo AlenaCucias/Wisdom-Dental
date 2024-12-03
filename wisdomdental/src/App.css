@@ -1542,7 +1542,6 @@
   padding: 20px;
 }
 
-
 .admin-page .div {
   background-color: #ffffff;
   width: 100%;
@@ -1550,7 +1549,6 @@
   margin: 0 auto;
   padding: 20px;  /* Add some padding inside the container */
 }
-
 
 .admin-page .title {
   margin: 0 auto;  /* Center container if needed */
@@ -1565,9 +1563,7 @@
   margin-top: 34px;  /* Adjust space from the top */
   margin-left: -22px;
   text-align: left;  /* Ensure the text is left aligned */
-
 }
-
 
 .admin-page .description {
   color: #000000;
@@ -1578,9 +1574,7 @@
   margin-top: 19px;  /* Adjust space from the title */
   margin-left: -22px;
   text-align: left;  /* Ensure the text is left aligned */
-
 }
-
 
 .admin-page .rectangle {
   background-color: #839cb4;
@@ -1590,13 +1584,11 @@
   margin-top: 30px;  /* Adjust space from the description */
 }
 
-
 .admin-page .group-wrapper {
   display: flex;
   justify-content: center;
   margin-top: 40px;  /* Adjust space between button groups */
 }
-
 
 .admin-page .group-wrapper .overlap-group {
   background-color: #839cb4;
@@ -1607,7 +1599,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .admin-page .text-wrapper {
   color: #ffffff;
@@ -1624,21 +1615,38 @@
   padding: 0;  /* Remove any padding */
 }
 
-
+/* Fixed Sidebar with Color Extending to Top */
 .admin-page .overlap {
   background-color: #7495AF;  /* Match the navigation bar */
   width: 220px;
-  position: fixed;  /* Fix position so it stays below the navbar */
-  top: 4rem;  /* Offset by navbar height */
+  position: absolute;  
+  top: 0;  /* Align to the top of the viewport */
   left: 0;
-  height: calc(100vh - 4rem);  /* Full height of viewport minus navbar height */
+  height: 120vh;  /* Full height of viewport */
   display: flex;  /* Make sure children are flex items */
   flex-direction: column;
   align-items: center;  /* Center items horizontally */
+  z-index: 999;  /* Ensure the sidebar stays on top of the content */
+  padding-top: 20px;  /* Optional: If you want to add spacing from the top */
+  box-sizing: border-box;  /* Ensure padding doesn't mess with the layout */
 }
 
+/* Prevent sidebar components from moving */
+.admin-page .overlap > * {
+  width: 100%;  /* Make all children full-width */
+  box-sizing: border-box;  /* Ensure padding doesn't mess with the layout */
+  margin-bottom: 20px;  /* Optional: Space between components */
+  text-align: center;  /* Optional: Center content within the sidebar */
+  position: relative; /* Ensure no movement when scrolling */
+}
 
+/* Content section adjustment */
+.admin-page .content {
+  margin-left: 220px; /* This makes room for the fixed sidebar */
+  padding: 20px;
+}
 
+/* Adjust the appearance of buttons and labels in the sidebar */
 .admin-page .group-2 {
   color: #ffffff;
   font-size: 24px;
@@ -1653,11 +1661,6 @@
   text-overflow: ellipsis;
   position: relative;
 }
-
-.admin-dashboard .staff-profile:hover {
-  overflow: visible;
-}
-
 
 .admin-page .label-normal {
   justify-content: center;
@@ -1687,7 +1690,6 @@
   padding: 10px 40px;
 }
 
-
 .admin-page .avatar {
   background-color: #d8d8d880;
   border-radius: 50px;
@@ -1696,7 +1698,6 @@
   width: 100px;
   justify-content: center;
 }
-
 
 .admin-page .email-johndoe-gmail {
   color: #ffffff;
@@ -1724,7 +1725,6 @@
   background-color: #7495AF;
 }
 
-
 .admin-page button {
   background: transparent;
   border: none;
@@ -1738,7 +1738,6 @@
   text-align: center;
   display: inline-block;
 }
-
 
 button {
   background-color: #839cb4;
@@ -1766,19 +1765,16 @@ button:hover {
   background-color: #f0f4f7;
 }
 
-
 .modal-header {
   background-color: #839cb4;
   color: white;
   font-weight: bold;
 }
 
-
 .modal-body {
   background-color: #ffffff;
   padding: 20px;
 }
-
 
 .admin-page .text-wrapper button {
   width: 100%;
@@ -1810,10 +1806,8 @@ button:hover {
   text-align: center;
 }
 
-
-
-
 /* End of Admin Page CSS */
+
 
 
 
@@ -3850,6 +3844,19 @@ position: relative;
   font-family: "Roboto-Bold", Helvetica;
   font-size: 20px;
   font-weight: 700;
+  letter-spacing: 0;
+  line-height: 22.4px;
+  margin-top: -0.47px;
+  position: relative;
+  text-align: center;
+}
+
+.staff-dashboard .title-9 {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Roboto-Bold", Helvetica;
+  font-size: 10px;
+  font-weight: 350;
   letter-spacing: 0;
   line-height: 22.4px;
   margin-top: -0.47px;

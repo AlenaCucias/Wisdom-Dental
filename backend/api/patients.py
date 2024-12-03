@@ -1,4 +1,5 @@
 # patients.py
+from user import User
 from flask import  Blueprint, Flask, request, jsonify
 from common import get_worksheet, hash_password, append_row, extract
 from notification import appointment_confirmation
@@ -107,7 +108,7 @@ def dental_history():
 
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -130,7 +131,7 @@ def dental_history():
                     ]
 
         return jsonify({"appointments": total_data}),200
-    
+
     except Exception as e:
         return jsonify({"error":f"Failed to fetch dental history: {str(e)}"}),500
 
@@ -157,7 +158,7 @@ def payment_history():
 
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -172,11 +173,11 @@ def payment_history():
                     for date, treatment, cost, status in
                     zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
                     ]
-        
+
         return jsonify({"payments": total_data}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to fetch payment history: {str(e)}"}), 500
-    
+
 @patients_blueprint.route('/get_total_cost', methods=['GET'])
 def get_total_cost():
     """
@@ -189,10 +190,10 @@ def get_total_cost():
         float: The total outstanding cost for the user, summing the costs of appointments where the "Paid" status is "FALSE".
     """
     patient_id = request.args.get("patient_id")
-    
+
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -209,9 +210,9 @@ def get_total_cost():
                     for date, treatment, cost, status in
                     zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
                     ]
-        
+
         total_cost = sum(row[2] for row in total_data if row[3] == "FALSE")  # row[2] refers to the "cost" column, and row[3] refers to the "status" column
-        
+
         return jsonify({"total_cost": total_cost}), 200
     except Exception as e:
         print(f"Error in get_total_cost: {e}")
@@ -239,10 +240,10 @@ def update_payments():
     data = sheet.get_all_records()
 
     patient_id = request.args.get("patient_id")
-    
+
     if not patient_id:
         return jsonify({"error": "Patient ID is required"}), 400
-    
+
     try:
         # Get all relevant sheets
         appt_data = get_worksheet("Appointments").get_all_records()
@@ -259,8 +260,8 @@ def update_payments():
                     for date, treatment, cost, status in
                     zip([row["Date"]for row in filtered_rows], treatment_names, cost, [row["Paid"] for row in filtered_rows])
                     ]
-        
-        payment_amount = sum(row[2] for row in total_data if row[3] == "FALSE") 
+
+        payment_amount = sum(row[2] for row in total_data if row[3] == "FALSE")
 
         if payment_amount == 0:
             return jsonify({"error": "No outstanding payment to update."}), 400
@@ -277,7 +278,7 @@ def update_payments():
         append_row("Payments", payment_data)
 
         return jsonify({"message":f"Payments updated"}), 200
-    
+
     except Exception as e:
         return jsonify({"error": f"Failed to update payments: {str(e)}"}), 500
 
@@ -326,7 +327,7 @@ def get_available_appointments():
         return jsonify({"available_slots": available_slots}), 200
     else:
         return jsonify({"message": "No available appointment slots at the moment."}), 404
-    
+
 @patients_blueprint.route('/book_appointment', methods=['POST'])
 def book_appointment():
     """
@@ -395,8 +396,8 @@ def book_appointment():
     except Exception as e:
         print(f"Error booking appointment: {e}")  # Log the error
         return jsonify({"success": False, "error": str(e)}), 500
-    
-    
+
+
 @patients_blueprint.route('/get_treatments', methods=['GET'])
 def get_treatments():
     """
@@ -421,7 +422,7 @@ def get_treatments():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-    
+
 
 @patients_blueprint.route('/get_upcoming_appointments', methods=['GET'])
 def get_upcoming_appointments():
@@ -542,52 +543,47 @@ def reschedule_appointment():
     try:
         sheet = get_worksheet("Appointments")
         appointments = sheet.get_all_records()
-        patient_data = get_worksheet("Patient").get_all_records()
 
-        # Step 1: Cancel the original appointment
-        old_appointment_found = False
+        # Step 1: Retrieve the Treatment_ID of the original appointment
+        treatment_id = None
         for i, row in enumerate(appointments, start=2):
             if row["Date"] == old_date and row["Time"] == old_time and str(row["Patient_ID"]) == str(patient_id):
+                treatment_id = row["Treatment_ID"]  # Get the Treatment_ID
+                # Clear the original appointment slot
                 sheet.update(f"B{i}", [[""]])  # Clear Patient_ID
                 sheet.update(f"C{i}", [[""]])  # Clear Treatment_ID
                 sheet.update(f"G{i}", [[""]])  # Clear Notes
-                old_appointment_found = True
                 print(f"Original appointment {old_date} at {old_time} canceled.")
                 break
 
-        if not old_appointment_found:
+        if not treatment_id:
             return jsonify({"success": False, "error": "Original appointment not found"}), 400
 
-        # Step 2: Check if the new time slot is available
+        # Step 2: Reschedule the appointment with the same Treatment_ID
         for i, row in enumerate(appointments, start=2):
-            if row["Date"] == new_date and row["Time"] == new_time:
-                if not row["Patient_ID"]:  # Check if the slot is available
-                    # Book the new appointment
-                    sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
-                    sheet.update(f"C{i}", [[row["Treatment_ID"]]])  # Reassign Treatment_ID
-                    sheet.update(f"G{i}", [[new_notes]])  # Update Notes
-                    print(f"Appointment rescheduled to {new_date} at {new_time}.")
+            if row["Date"] == new_date and row["Time"] == new_time and not row["Patient_ID"]:  # Check availability
+                # Book the new appointment
+                sheet.update(f"B{i}", [[patient_id]])  # Update Patient_ID
+                sheet.update(f"C{i}", [[treatment_id]])  # Update Treatment_ID with the same treatment
+                sheet.update(f"G{i}", [[new_notes]])  # Update Notes
+                print(f"Appointment rescheduled to {new_date} at {new_time}.")
 
-                    # Check if a matching patient record exists
-                    user = next(
-                        (row for row in patient_data if row["Patient_ID"] == patient_id),
-                        None
-                    )
+                # Confirmation email logic
+                patient_data = get_worksheet("Patient").get_all_records()
+                user = next((row for row in patient_data if row["Patient_ID"] == patient_id), None)
+                if user:
+                    try:
+                        appointment_confirmation(user, new_date, new_time)
+                    except Exception as e:
+                        print(f"Error sending confirmation email: {e}")
 
-                    # Send appointment confirmation email if user found
-                    if user:
-                        try:
-                            appointment_confirmation(user, new_date, new_time)
-                        except Exception as e:
-                            print(f"Error sending confirmation email: {e}")
+                return jsonify({"success": True, "message": "Appointment rescheduled successfully."}), 200
 
-                    return jsonify({"success": True, "message": "Appointment rescheduled successfully."}), 200
-
-        # If the slot is not available
         return jsonify({"success": False, "error": "Selected time slot is not available."}), 400
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 @patients_blueprint.route('/create_account', methods=['POST'])
 def create_account():

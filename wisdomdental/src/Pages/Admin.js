@@ -8,6 +8,7 @@ export const AdminPage = () => {
     payrollInfo: false,
     staffPerformance: false,
     payrollTimesheet: false,
+    feedback: false,
   });
 
   const [payrollInfo, setPayrollInfo] = useState([]);
@@ -16,6 +17,7 @@ export const AdminPage = () => {
   const [staffPerformance, setStaffPerformance] = useState([]);
   const [staffList, setStaffList] = useState([]);
   const [selectedStaffName, setSelectedStaffName] = useState("");
+  const [feedbackList, setFeedbackList] = useState([]);
   const [staffPerfID, setStaffPerfID] = useState(null);
   const [staffPayID, setStaffPayID] = useState(null);
   const [payDate, setPayDate] = useState(null);
@@ -80,6 +82,22 @@ export const AdminPage = () => {
       console.error("Error fetching dental history:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/admin/view_feedback");
+        if (response.status === 200) {
+          setFeedbackList(response.data.feedback || []);
+        }
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      }
+    };
+
+    fetchFeedback();
+  }, []);
+
   const getPayroll = async (userID) => {
     toggleModal('payrollTimesheet');
     try {
@@ -229,6 +247,17 @@ export const AdminPage = () => {
             </div>
           </div>
         </div>
+
+
+      <div className="group-wrapper">
+          <div className="overlap-group">
+            <div className="text-wrapper">
+              <button onClick={() => toggleModal("feedback")}>
+                View Feedback
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="overlap">
@@ -270,17 +299,17 @@ export const AdminPage = () => {
             <div>
               <h5>Select a Patient</h5>
               <div className="button-grid-container">
-              {patientList.map((patient) => (
-                <Button
-                  key={patient.Patient_ID}
-                  className="btn shadow rounded my-2"
-                  onClick={() =>
-                    fetchDentalHistory(patient.Patient_ID, patient.Name)
-                  }
-                >
-                  {patient.Name}
-                </Button>
-              ))}
+                {patientList.map((patient) => (
+                  <Button
+                    key={patient.Patient_ID}
+                    className="btn shadow rounded my-2"
+                    onClick={() =>
+                      fetchDentalHistory(patient.Patient_ID, patient.Name)
+                    }
+                  >
+                    {patient.Name}
+                  </Button>
+                ))}
               </div>
             </div>
           ) : (
@@ -295,9 +324,9 @@ export const AdminPage = () => {
                 <table style={{ width: "100%", textAlign: "center" }}>
                   <thead>
                     <tr>
-                      <th style={{ width: "25%", textAlign: "center", padding: "10px" }}>Date</th>
-                      <th style={{ width: "50%", textAlign: "center", padding: "10px" }}>Treatment</th>
-                      <th style={{ width: "75%", textAlign: "center", padding: "10px" }}>Doctor</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "25%", textAlign: "center", padding: "10px" }}>Date</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "50%", textAlign: "center", padding: "10px" }}>Treatment</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "75%", textAlign: "center", padding: "10px" }}>Doctor</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -320,258 +349,29 @@ export const AdminPage = () => {
       <Modal isOpen={modal.payrollInfo} toggle={() => toggleModal("payrollInfo")} style={{ maxWidth: '800px', width: '80%' }}>
         <ModalHeader toggle={() => toggleModal("payrollInfo")}>View Payroll Information</ModalHeader>
         <ModalBody>
-          <Row className="mb-2">
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2001);
-                }}
-              >
-                James Bunt
+          {!selectedStaffName ? (
+            <div>
+              <h5>Select a Staff Member</h5>
+              <div className="button-grid-container">
+                {staffList.map((staff) => (
+                  <Button
+                    key={staff.Staff_ID}
+                    className="btn shadow rounded my-2"
+                    onClick={() => getPayroll(staff.Staff_ID)}
+                  >
+                    {staff.Name}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h5>Selected Staff: {selectedStaffName}</h5>
+              <Button className="btn shadow rounded" onClick={() => setSelectedStaffName(null)}>
+                Reset Selection
               </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2002);
-                }}
-              >
-                Joesphine Darakjy
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2003);
-                }}
-              >
-                Art	Venere
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2004);
-                }}
-              >
-                Jane Smith
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mb-2">
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2005);
-                }}
-              >
-                Donette	Foller
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2006);
-                }}
-              >
-                Simona	Morasca
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2007);
-                }}
-              >
-                Mitsue	Tollner
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2008);
-                }}
-              >
-                Leota	Dilliard
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mb-2">
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2009);
-                }}
-              >
-                Sage	Wieser
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2010);
-                }}
-              >
-                Kris	Marrier
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2011);
-                }}
-              >
-                Minna	Amigon
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2012);
-                }}
-              >
-                Abel	Maclead
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mb-2">
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2013);
-                }}
-              >
-                Kiley	Caldarera
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2014);
-                }}
-              >
-                Graciela	Ruta
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2015);
-                }}
-              >
-                Cammy	Albares
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2016);
-                }}
-              >
-                Mattie	Poquette
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mb-2">
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2017);
-                }}
-              >
-                Meaghan	Garufi
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2018);
-                }}
-              >
-                Gladys	Rim
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2019);
-                }}
-              >
-                Yuki	Whobrey
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2020);
-                }}
-              >
-                Fletcher	Flosi
-              </Button>
-            </Col>
-          </Row>
-          <Row className="mb-2">
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2021);
-                }}
-              >
-                Bette	Nicka
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2022);
-                }}
-              >
-                Veronika	Inouye
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2023);
-                }}
-              >
-                Willard	Kolmetz
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                className="btn shadow rounded"
-                onClick={() => {
-                  getPayroll(2024);
-                }}
-              >
-                Maryann	Royster
-              </Button>
-            </Col>
-          </Row>
+            </div>
+          )}
         </ModalBody>
       </Modal>
 
@@ -653,18 +453,17 @@ export const AdminPage = () => {
         <ModalBody>
           {/* Show Staff List if no staff is selected */}
           {!selectedStaffName ? (
-            <Row className="mb-2">
+            <div className="button-grid-container">
               {staffList.map((staff) => (
-                <Col key={staff.Staff_ID} className="mb-2">
-                  <Button
-                    className="btn shadow rounded"
-                    onClick={() => fetchStaffPerformance(staff.Staff_ID, staff.Name)}
-                  >
-                    {staff.Name}
-                  </Button>
-                </Col>
+                <Button
+                  key={staff.Staff_ID}
+                  className="btn shadow rounded my-2"
+                  onClick={() => fetchStaffPerformance(staff.Staff_ID, staff.Name)}
+                >
+                  {staff.Name}
+                </Button>
               ))}
-            </Row>
+            </div>
           ) : (
             <>
               {/* Show Performance Data for the selected staff */}
@@ -678,10 +477,10 @@ export const AdminPage = () => {
                 <table style={{ width: "100%", textAlign: "center" }}>
                   <thead>
                     <tr>
-                      <th style={{ width: "30%", textAlign: "center", padding: "10px" }}>Date</th>
-                      <th style={{ width: "20%", textAlign: "center", padding: "10px" }}>Time</th>
-                      <th style={{ width: "30%", textAlign: "center", padding: "10px" }}>Procedure</th>
-                      <th style={{ width: "20%", textAlign: "center", padding: "10px" }}>Performance</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "30%", textAlign: "center", padding: "10px" }}>Date</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "20%", textAlign: "center", padding: "10px" }}>Time</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "30%", textAlign: "center", padding: "10px" }}>Procedure</th>
+                      <th style={{ borderBottom: "1px solid #ddd", width: "20%", textAlign: "center", padding: "10px" }}>Performance</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -699,6 +498,46 @@ export const AdminPage = () => {
                 <p>No performance data available for this staff member.</p>
               )}
             </>
+          )}
+        </ModalBody>
+      </Modal>
+
+      <Modal
+        isOpen={modal.feedback}
+        toggle={() => toggleModal("feedback")}
+        style={{ maxWidth: "1200px", width: "80%" }}
+      >
+        <ModalHeader toggle={() => toggleModal("feedback")}>
+          Feedback List
+        </ModalHeader>
+        <ModalBody>
+          {feedbackList.length > 0 ? (
+            <table style={{ width: "100%", textAlign: "center", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ borderBottom: "1px solid #ddd", padding: "10px" }}>Date</th>
+                  <th style={{ borderBottom: "1px solid #ddd", padding: "10px" }}>Name</th>
+                  <th style={{ borderBottom: "1px solid #ddd", padding: "10px" }}>Rating</th>
+                  <th style={{ borderBottom: "1px solid #ddd", padding: "10px" }}>Comments</th>
+                  <th style={{ borderBottom: "1px solid #ddd", padding: "10px" }}>Role</th>
+                  <th style={{ borderBottom: "1px solid #ddd", padding: "10px" }}>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                {feedbackList.map((feedback, index) => (
+                  <tr key={index}>
+                    <td style={{ width: "10%", padding: "10px" }}>{feedback.Date}</td>
+                    <td style={{ padding: "10px" }}>{feedback.Name}</td>
+                    <td style={{ padding: "10px" }}>{feedback.Rating}</td>
+                    <td style={{ padding: "10px" }}>{feedback.Comments}</td>
+                    <td style={{ width: "15%", padding: "10px" }}>{feedback.Role}</td>
+                    <td style={{ padding: "10px" }}>{feedback.Email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No feedback available.</p>
           )}
         </ModalBody>
       </Modal>
